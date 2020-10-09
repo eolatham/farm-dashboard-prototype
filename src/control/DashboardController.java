@@ -7,7 +7,6 @@ package control;
 
 import boundary.Main;
 import entity.ItemComponent;
-import entity.ItemContainer;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -85,58 +84,10 @@ public class DashboardController {
 
   @FXML
   /*
-   * Called when the "Name" text field is changed
+   * Called when the "Save Changes" button is clicked
    */
-  public void setItemName(ActionEvent event) {
-    System.out.println("name changed");
-  }
-
-  @FXML
-  /*
-   * Called when the "Location X" text field is changed
-   */
-  public void setItemLocationX(ActionEvent event) {
-    System.out.println("locationX changed");
-  }
-
-  @FXML
-  /*
-   * Called when the "Location Y" text field is changed
-   */
-  public void setItemLocationY(ActionEvent event) {
-    System.out.println("locationY changed");
-  }
-
-  @FXML
-  /*
-   * Called when the "Length" text field is changed
-   */
-  public void setItemLength(ActionEvent event) {
-    System.out.println("length changed");
-  }
-
-  @FXML
-  /*
-   * Called when the "Width" text field is changed
-   */
-  public void setItemWidth(ActionEvent event) {
-    System.out.println("width changed");
-  }
-
-  @FXML
-  /*
-   * Called when the "Height" text field is changed
-   */
-  public void setItemHeight(ActionEvent event) {
-    System.out.println("height changed");
-  }
-
-  @FXML
-  /*
-   * Called when the "Price" text field is changed
-   */
-  public void setItemPrice(ActionEvent event) {
-    System.out.println("price changed");
+  public void updateItem(ActionEvent event) {
+    System.out.println("item updated");
   }
 
   @FXML

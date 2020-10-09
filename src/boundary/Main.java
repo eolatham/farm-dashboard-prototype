@@ -13,7 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.SplitPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -49,7 +49,7 @@ public class Main extends Application {
       // load dashboard
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(Main.class.getResource("Dashboard.fxml"));
-      SplitPane Dashboard = (SplitPane) loader.load();
+      HBox Dashboard = (HBox) loader.load();
 
       // set dashboard into the center of root layout
       rootLayout.setCenter(Dashboard);
