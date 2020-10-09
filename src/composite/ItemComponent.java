@@ -1,22 +1,69 @@
 package composite;
 
 public abstract class ItemComponent {
-	public abstract String getName();
-	public abstract void setName(String name);
-	public abstract int getLocationX();
-	public abstract void setLocationX(int x);
-	public abstract int getLocationY();
-	public abstract void setLocationY(int y);
-	public abstract int getLength();
-	public abstract void setLength(int length);
-	public abstract int getWidth();
-	public abstract void setWidth(int width);
-	public abstract int getHeight();
-	public abstract void setHeight(int height);
-	public abstract double getPrice();
-	public abstract void setPrice(double price);
-	public abstract void addItem(ItemComponent item);
-	public abstract void deleteItem(int index);
-	public abstract void addItemContainer(ItemComponent itemContainer);
-	public abstract void deleteItemContainer(int index);
+
+	private String name = "New Item Component";
+    private int locationX = 0;  // feet
+    private int locationY = 0;  // feet
+    private int length = 0;  // feet
+    private int width = 0;  // feet
+    private int height = 0;  // feet
+    private double price = 0;  // dollars
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getLocationX() {
+		return this.locationX;
+	}
+
+	public void setLocationX(int x) {
+		this.locationX = x;
+	}
+
+	public int getLocationY() {
+		return this.locationY;
+	}
+
+	public void setLocationY(int y) {
+		this.locationY = y;
+
+	}
+
+	public int getLength() {
+		return this.length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public int getWidth() {
+		return this.width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return this.height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public double getPrice() {
+		return this.price;
+	}
+
+	public abstract void addItemComponent(ItemComponent itemComponent);
+
+	public abstract void deleteItemComponent(int index);
 }
