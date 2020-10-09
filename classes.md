@@ -10,17 +10,19 @@
 
 ### Entity Classes
 
-- Component Class (abstract)
+- Component Class (composite, pro-transparency)
   - Item Class
   - Item Container Class
 
+- Dashboard Class (singleton)
+
 ### Boundary Classes
 
-- User Interface Class
+- Dashboard Interface Class
 
 ### Control Classes
 
--
+- Dashboard Controller Class
 
 ### Class Diagram
 
