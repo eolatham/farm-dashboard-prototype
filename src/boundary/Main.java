@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
-  private ItemContainer itemContainer;
+  private ItemContainer itemContainer = new ItemContainer();
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;

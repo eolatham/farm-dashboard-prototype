@@ -56,6 +56,8 @@ public class DashboardController {
     this.itemTreeView.setRoot(
         new TreeItem<ItemComponent>(main.getItemContainer())
       );
+    this.itemTreeView.setShowRoot(false);
+    this.itemTreeView.getRoot().setExpanded(true);
   }
 
   @FXML

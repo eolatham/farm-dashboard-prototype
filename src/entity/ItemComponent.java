@@ -64,4 +64,8 @@ public abstract class ItemComponent {
   public abstract void addItemComponent(ItemComponent itemComponent);
 
   public abstract void deleteItemComponent(int index);
+
+  public String toString() {
+    return getName();
+  }
 }
