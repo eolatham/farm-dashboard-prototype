@@ -5,83 +5,145 @@
 
 package control;
 
+import boundary.Main;
+import entity.ItemComponent;
+import entity.ItemContainer;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import boundary.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
 public class DashboardController {
+  @FXML
+  private ResourceBundle resources;
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
+  @FXML
+  private URL location;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+  @FXML
+  private TreeView<ItemComponent> itemTreeView = new TreeView<ItemComponent>();
 
-    @FXML // fx:id="elements" (value injected by FXMLLoader)
-    private ChoiceBox<String> elements = new ChoiceBox<String>();
+  @FXML
+  private TextField itemName = new TextField();
 
-    @FXML // fx:id="messages" (value injected by FXMLLoader)
-    private TextArea messages = new TextArea("");
+  @FXML
+  private TextField itemLocationX = new TextField();
 
-    // reference to the main application
-    private Main main;
+  @FXML
+  private TextField itemLocationY = new TextField();
 
-    /*
-     * Helper method for handleElementButtonEvent
-     */
-    public String getSelectedElement() {
-    	return elements.getValue();
-    }
+  @FXML
+  private TextField itemLength = new TextField();
 
-    /*
-     * Helper method for selectElement and deleteElement
-     */
-    public void handleElementButtonEvent(String event) {
-    	String selectedElement = getSelectedElement();
-    	if (selectedElement != null) {
-    		String message = String.format("%s %s\n", selectedElement, event);
-    		messages.appendText(message);
-    	}
-    }
+  @FXML
+  private TextField itemHeight = new TextField();
 
-    @FXML
-    /*
-     * Called when the "Select" button is clicked
-     */
-    public void selectElement(ActionEvent event) {
-    	handleElementButtonEvent("selected");
-    }
+  @FXML
+  private TextField itemPrice = new TextField();
 
-    @FXML
-    /*
-     * Called when the "Delete" button is clicked
-     */
-    public void deleteElement(ActionEvent event) {
-    	handleElementButtonEvent("deleted");
-    }
+  private Main main;
 
-    @FXML
-    /*
-     * Called by the FXMLLoader when initialization is complete
-     */
-    public void initialize() {
-        assert elements != null :
-        	"fx:id=\"elements\" was not injected: check your FXML file 'MenuOverview.fxml'.";
-        assert messages != null :
-        	"fx:id=\"messages\" was not injected: check your FXML file 'MenuOverview.fxml'.";
+  @FXML
+  public void initialize() {
+    assert itemTreeView !=
+    null : "fx:id=\"itemTreeView\" was not injected: check your FXML file 'Dashboard.fxml'.";
+  }
 
-    }
+  public void setMain(Main main) {
+    this.main = main;
+    this.itemTreeView.setRoot(
+        new TreeItem<ItemComponent>(main.getItemContainer())
+      );
+  }
 
-    /*
-     * Called by the main application to give a reference back to itself
-     */
-    public void setMain(Main main) {
-        this.main = main;
-        this.elements.setItems(main.elementChoices);
-    }
+  @FXML
+  /*
+   * Called when the "Add Item" button is clicked
+   */
+  public void addItem(ActionEvent event) {
+    System.out.println("item added");
+  }
+
+  @FXML
+  /*
+   * Called when the "Add Container" button is clicked
+   */
+  public void addContainer(ActionEvent event) {
+    System.out.println("container added");
+  }
+
+  @FXML
+  /*
+   * Called when the "Delete Item" button is clicked
+   */
+  public void deleteItem(ActionEvent event) {
+    System.out.println("item deleted");
+  }
+
+  @FXML
+  /*
+   * Called when the "Name" text field is changed
+   */
+  public void setItemName(ActionEvent event) {
+    System.out.println("name changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Location X" text field is changed
+   */
+  public void setItemLocationX(ActionEvent event) {
+    System.out.println("locationX changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Location Y" text field is changed
+   */
+  public void setItemLocationY(ActionEvent event) {
+    System.out.println("locationY changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Length" text field is changed
+   */
+  public void setItemLength(ActionEvent event) {
+    System.out.println("length changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Width" text field is changed
+   */
+  public void setItemWidth(ActionEvent event) {
+    System.out.println("width changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Height" text field is changed
+   */
+  public void setItemHeight(ActionEvent event) {
+    System.out.println("height changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Price" text field is changed
+   */
+  public void setItemPrice(ActionEvent event) {
+    System.out.println("price changed");
+  }
+
+  @FXML
+  /*
+   * Called when the "Deploy Drone" button is clicked
+   */
+  public void deployDrone(ActionEvent event) {
+    System.out.println("drone deployed");
+  }
 }

@@ -2,62 +2,84 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DashboardController">
-   <children>
-      <SplitPane dividerPositions="0.7638190954773869" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="300.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="300.0">
-         <items>
-            <AnchorPane prefHeight="298.0" prefWidth="300.0">
+<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DashboardController">
+   <items>
+      <Pane maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0">
+         <children>
+            <VBox maxHeight="800.0" maxWidth="400.0" minHeight="800.0" minWidth="400.0" prefHeight="800.0" prefWidth="400.0">
                <children>
-                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0">
+                  <TitledPane maxHeight="730.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" text="Farm Items">
+                     <content>
+                        <TreeView fx:id="itemTreeView" />
+                     </content>
+                  </TitledPane>
+                  <ToolBar prefHeight="40.0" prefWidth="325.0">
+                    <items>
+                      <Button mnemonicParsing="false" onAction="#addItem" text="Add Item" />
+                        <Button mnemonicParsing="false" onAction="#addContainer" text="Add Container" />
+                        <Button mnemonicParsing="false" onAction="#deleteItem" text="Delete Item" />
+                    </items>
+                  </ToolBar>
+                  <Button maxWidth="400.0" minWidth="400.0" mnemonicParsing="false" onAction="#deployDrone" prefWidth="400.0" text="Deploy Drone" />
+               </children>
+            </VBox>
+            <TitledPane layoutX="410.0" maxHeight="400.0" maxWidth="175.0" minHeight="400.0" minWidth="175.0" prefHeight="400.0" prefWidth="175.0" text="Item Information">
+               <content>
+                  <VBox>
                      <children>
-                        <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="150.0" prefHeight="300.0" prefWidth="150.0" text="Farm Items">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <content>
-                              <TreeView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </TreeView>
-                           </content>
-                        </TitledPane>
-                        <ChoiceBox fx:id="elements" layoutX="155.0" layoutY="207.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="140.0" />
-                        <Button layoutX="155.0" layoutY="247.0" mnemonicParsing="false" onAction="#selectElement" text="Select" />
-                        <Button layoutX="237.0" layoutY="247.0" mnemonicParsing="false" onAction="#deleteElement" text="Delete" />
-                        <TitledPane animated="false" layoutX="150.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="150.0" prefHeight="200.0" prefWidth="150.0" text="Messages">
-                           <content>
-                              <TextArea fx:id="messages" editable="false" prefHeight="200.0" prefWidth="200.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </TextArea>
-                           </content>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </TitledPane>
+                        <Label text="Name">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin></Label>
+                        <TextField fx:id="itemName" onAction="#setItemName">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
+                        <Label text="Location X (feet)" />
+                        <TextField fx:id="itemLocationX" onAction="#setItemLocationX">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
+                        <Label text="Location Y (feet)" />
+                        <TextField fx:id="itemLocationY" onAction="#setItemLocationY">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
+                        <Label text="Length (feet)" />
+                        <TextField fx:id="itemLength" onAction="#setItemLength">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
+                        <Label text="Width (feet)" />
+                        <TextField fx:id="itemWidth" onAction="#setItemWidth">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
+                        <Label text="Height (feet)" />
+                        <TextField fx:id="itemHeight" onAction="#setItemHeight">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
+                        <Label text="Price (dollars)" />
+                        <TextField fx:id="itemPrice" onAction="#setItemPrice">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin></TextField>
                      </children>
-                  </Pane>
-               </children>
-            </AnchorPane>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="90.0" minWidth="300.0" prefHeight="90.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
-               <children>
-                  <Button layoutX="14.0" layoutY="32.0" mnemonicParsing="false" text="Change Color" />
-                  <ColorPicker layoutX="150.0" layoutY="32.0" />
-               </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
-   </children>
-</HBox>
+                  </VBox>
+               </content>
+            </TitledPane>
+         </children>
+      </Pane>
+      <Pane maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0" />
+   </items>
+</SplitPane>
