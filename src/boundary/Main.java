@@ -4,10 +4,11 @@
  * https://code.makery.ch/library/javafx-tutorial/part1/
  */
 
-package menu;
+package boundary;
 
 import java.io.IOException;
 
+import control.DashboardController;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
@@ -17,14 +18,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-import menu.view.MenuOverviewController;
-
 public class Main extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
 
-    // choices to be set in the "elements" ChoiceBox by MenuOverviewController
+    // choices to be set in the "elements" ChoiceBox by DashboardController
     public ObservableList<String> elementChoices =
     		FXCollections.observableArrayList(
     		"Element 1",
@@ -34,9 +33,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Menu");
+        this.primaryStage.setTitle("Dashboard");
         initRootLayout();
-        showMenuOverview();
+        showDashboard();
     }
 
     /*
@@ -46,7 +45,7 @@ public class Main extends Application {
         try {
             // load root layout from FXML file
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/RootLayout.fxml"));
+            loader.setLocation(Main.class.getResource("RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // show the scene containing the root layout
@@ -62,18 +61,18 @@ public class Main extends Application {
     /*
      * Shows the menu overview inside the root layout
      */
-    public void showMenuOverview() {
+    public void showDashboard() {
         try {
             // load menu overview
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/MenuOverview.fxml"));
-            HBox menuOverview = (HBox) loader.load();
+            loader.setLocation(Main.class.getResource("Dashboard.fxml"));
+            HBox Dashboard = (HBox) loader.load();
 
             // set menu overview into the center of root layout
-            rootLayout.setCenter(menuOverview);
+            rootLayout.setCenter(Dashboard);
 
             // give the controller access to the main application
-            MenuOverviewController controller = loader.getController();
+            DashboardController controller = loader.getController();
             controller.setMain(this);
 
         } catch (IOException e) {

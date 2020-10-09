@@ -1,4 +1,4 @@
-package composite;
+package entity;
 
 public class Item extends ItemComponent {
 

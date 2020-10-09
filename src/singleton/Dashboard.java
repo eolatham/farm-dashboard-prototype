@@ -1,6 +1,6 @@
 package singleton;
 
-import composite.ItemContainer;
+import entity.ItemContainer;
 
 public class Dashboard {
 

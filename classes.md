@@ -13,16 +13,15 @@
 - Component Class (composite, pro-transparency)
   - Item Class
   - Item Container Class
-
-- Dashboard Class (singleton)
+- Drone Class
 
 ### Boundary Classes
 
-- Dashboard Interface Class
+- Dashboard Class (singleton)
 
 ### Control Classes
 
-- Dashboard Controller Class
+- Dashboard Controller Class (singleton)
 
 ### Class Diagram
 
