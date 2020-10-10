@@ -29,7 +29,7 @@ public class DashboardController {
   private URL location;
 
   @FXML
-  private TextArea infoLog = new TextArea("");
+  private TextArea infoLog = new TextArea();
 
   @FXML
   private TreeView<ItemComponent> farmTreeView = new TreeView<ItemComponent>();
