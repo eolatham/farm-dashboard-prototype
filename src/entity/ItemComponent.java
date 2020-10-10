@@ -63,7 +63,7 @@ public abstract class ItemComponent {
 
   public abstract void addItemComponent(ItemComponent itemComponent);
 
-  public abstract void deleteItemComponent(int index);
+  public abstract void deleteItemComponent(ItemComponent itemComponent);
 
   public String toString() {
     return String.format("%s (%s)", getName(), getClass().getSimpleName());

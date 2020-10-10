@@ -102,6 +102,7 @@ public class DashboardController {
     if (selectionValue instanceof Item) addToInfoLog(
       "Cannot add to an Item; try adding to an ItemContainer"
     ); else { // selection is an ItemContainer
+      selection.getValue().addItemComponent(component);
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
@@ -137,6 +138,7 @@ public class DashboardController {
       "Cannot delete the Root ItemContainer"
     ); else {
       TreeItem<ItemComponent> parent = selection.getParent();
+      parent.getValue().deleteItemComponent(selection.getValue());
       parent.getChildren().remove(selection);
       addToInfoLog("Selection deleted");
     }

@@ -15,7 +15,7 @@ public class ItemContainer extends ItemComponent {
     this.components.add(itemComponent);
   }
 
-  public void deleteItemComponent(int index) {
-    this.components.remove(index);
+  public void deleteItemComponent(ItemComponent itemComponent) {
+    this.components.remove(itemComponent);
   }
 }
