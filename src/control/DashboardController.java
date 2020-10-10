@@ -9,6 +9,8 @@ import boundary.Main;
 import entity.Item;
 import entity.ItemComponent;
 import entity.ItemContainer;
+import java.lang.Double;
+import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -32,25 +34,25 @@ public class DashboardController {
   private TreeView<ItemComponent> farmTreeView = new TreeView<ItemComponent>();
 
   @FXML
-  private TextField itemName = new TextField();
+  private TextField selectionName = new TextField();
 
   @FXML
-  private TextField itemLocationX = new TextField();
+  private TextField selectionLocationX = new TextField();
 
   @FXML
-  private TextField itemLocationY = new TextField();
+  private TextField selectionLocationY = new TextField();
 
   @FXML
-  private TextField itemLength = new TextField();
+  private TextField selectionLength = new TextField();
 
   @FXML
-  private TextField itemWidth = new TextField();
+  private TextField selectionWidth = new TextField();
 
   @FXML
-  private TextField itemHeight = new TextField();
+  private TextField selectionHeight = new TextField();
 
   @FXML
-  private TextField itemPrice = new TextField();
+  private TextField selectionPrice = new TextField();
 
   private Main main;
 
@@ -60,24 +62,25 @@ public class DashboardController {
     null : "fx:id=\"infoLog\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert farmTreeView !=
     null : "fx:id=\"farmTreeView\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemName !=
-    null : "fx:id=\"itemName\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemLocationX !=
-    null : "fx:id=\"itemLocationX\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemLocationY !=
-    null : "fx:id=\"itemLocationY\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemLength !=
-    null : "fx:id=\"itemLength\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemWidth !=
-    null : "fx:id=\"itemWidth\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemHeight !=
-    null : "fx:id=\"itemHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert itemPrice !=
-    null : "fx:id=\"itemPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionName !=
+    null : "fx:id=\"selectionName\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionLocationX !=
+    null : "fx:id=\"selectionLocationX\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionLocationY !=
+    null : "fx:id=\"selectionLocationY\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionLength !=
+    null : "fx:id=\"selectionLength\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionWidth !=
+    null : "fx:id=\"selectionWidth\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionHeight !=
+    null : "fx:id=\"selectionHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionPrice !=
+    null : "fx:id=\"selectionPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
   }
 
   public void setMain(Main main) {
     this.main = main;
+    farmTreeView.setEditable(false);
     farmTreeView.setRoot(
       new TreeItem<ItemComponent>(main.getRootItemContainer())
     );
@@ -89,18 +92,18 @@ public class DashboardController {
   }
 
   private TreeItem<ItemComponent> getCurrentSelection() {
-    TreeItem<ItemComponent> selection = farmTreeView
-      .getSelectionModel()
-      .getSelectedItem();
-    if (selection == null) selection = farmTreeView.getRoot();
-    return selection;
+    return farmTreeView.getSelectionModel().getSelectedItem();
   }
 
   private void addToFarmTreeView(ItemComponent component) {
     TreeItem<ItemComponent> selection = getCurrentSelection();
+    if (selection == null) {
+      addToInfoLog("Failed to add; nothing is selected");
+      return;
+    }
     ItemComponent selectionValue = selection.getValue();
     if (selectionValue instanceof Item) addToInfoLog(
-      "Cannot add to an Item; try adding to an ItemContainer"
+      "Failed to add; Item is selected"
     ); else { // selection is an ItemContainer
       selection.getValue().addItemComponent(component);
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
@@ -134,8 +137,10 @@ public class DashboardController {
    */
   public void deleteSelection(ActionEvent event) {
     TreeItem<ItemComponent> selection = getCurrentSelection();
-    if (selection == farmTreeView.getRoot()) addToInfoLog(
-      "Cannot delete the Root ItemContainer"
+    if (selection == null) addToInfoLog(
+      "Failed to delete; nothing is selected"
+    ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
+      "Failed to delete; Root is selected"
     ); else {
       TreeItem<ItemComponent> parent = selection.getParent();
       parent.getValue().deleteItemComponent(selection.getValue());
@@ -146,10 +151,45 @@ public class DashboardController {
 
   @FXML
   /*
+   * Called when the "Farm TreeView" is interacted with
+   */
+  public void loadSelectionDetails() {
+    TreeItem<ItemComponent> selection = getCurrentSelection();
+    if (selection == null) return;
+    ItemComponent component = selection.getValue();
+    selectionName.setText(component.getName());
+    selectionLocationX.setText(String.format("%d", component.getLocationX()));
+    selectionLocationY.setText(String.format("%d", component.getLocationY()));
+    selectionLength.setText(String.format("%d", component.getLength()));
+    selectionWidth.setText(String.format("%d", component.getWidth()));
+    selectionHeight.setText(String.format("%d", component.getHeight()));
+    selectionPrice.setText(String.format("%.2f", component.getPrice()));
+    addToInfoLog("Selection details loaded");
+  }
+
+  @FXML
+  /*
    * Called when the "Update Selection" button is clicked
    */
   public void updateSelection(ActionEvent event) {
-    addToInfoLog("Selection updated");
+    TreeItem<ItemComponent> selection = getCurrentSelection();
+    if (selection == null) addToInfoLog(
+      "Failed to update; nothing is selected"
+    ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
+      "Failed to update; Root is selected"
+    ); else {
+      ItemComponent component = selection.getValue();
+      component.setName(selectionName.getText());
+      component.setLocationX(Integer.parseInt(selectionLocationX.getText()));
+      component.setLocationY(Integer.parseInt(selectionLocationY.getText()));
+      component.setLength(Integer.parseInt(selectionLength.getText()));
+      component.setWidth(Integer.parseInt(selectionWidth.getText()));
+      component.setHeight(Integer.parseInt(selectionHeight.getText()));
+      component.setPrice(Double.parseDouble(selectionPrice.getText()));
+      selection.setValue(component);
+      farmTreeView.refresh();
+      addToInfoLog("Selection updated");
+    }
   }
 
   @FXML

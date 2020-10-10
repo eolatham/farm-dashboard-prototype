@@ -61,6 +61,10 @@ public abstract class ItemComponent {
     return this.price;
   }
 
+  public void setPrice(double price) {
+    this.price = price;
+  }
+
   public abstract void addItemComponent(ItemComponent itemComponent);
 
   public abstract void deleteItemComponent(ItemComponent itemComponent);

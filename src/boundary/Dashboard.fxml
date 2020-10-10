@@ -20,7 +20,7 @@
                <children>
                   <TitledPane maxHeight="585.0" maxWidth="400.0" minHeight="585.0" minWidth="400.0" prefHeight="585.0" prefWidth="400.0" text="Farm TreeView">
                      <content>
-                        <TreeView fx:id="farmTreeView" />
+                        <TreeView fx:id="farmTreeView" onMouseClicked="#loadSelectionDetails" onTouchPressed="#loadSelectionDetails" />
                      </content>
                   </TitledPane>
                   <ToolBar prefHeight="40.0" prefWidth="325.0">
@@ -53,43 +53,43 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <TextField fx:id="itemName">
+                        <TextField fx:id="selectionName">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Location X (feet)" />
-                        <TextField fx:id="itemLocationX">
+                        <TextField fx:id="selectionLocationX">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Location Y (feet)" />
-                        <TextField fx:id="itemLocationY">
+                        <TextField fx:id="selectionLocationY">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Length (feet)" />
-                        <TextField fx:id="itemLength">
+                        <TextField fx:id="selectionLength">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Width (feet)" />
-                        <TextField fx:id="itemWidth">
+                        <TextField fx:id="selectionWidth">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Height (feet)" />
-                        <TextField fx:id="itemHeight">
+                        <TextField fx:id="selectionHeight">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Price (dollars)" />
-                        <TextField fx:id="itemPrice">
+                        <TextField fx:id="selectionPrice">
                            <VBox.margin>
                               <Insets bottom="20.0" />
                            </VBox.margin>
