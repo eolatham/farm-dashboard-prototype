@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
@@ -11,29 +12,39 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <HBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DashboardController">
    <children>
       <Pane maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0">
          <children>
             <VBox maxHeight="800.0" maxWidth="400.0" minHeight="800.0" minWidth="400.0" prefHeight="800.0" prefWidth="400.0">
                <children>
-                  <TitledPane maxHeight="730.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" text="Farm Items">
+                  <TitledPane maxHeight="585.0" maxWidth="400.0" minHeight="585.0" minWidth="400.0" prefHeight="585.0" prefWidth="400.0" text="Farm TreeView">
                      <content>
-                        <TreeView fx:id="itemTreeView" />
+                        <TreeView fx:id="farmTreeView" />
                      </content>
                   </TitledPane>
                   <ToolBar prefHeight="40.0" prefWidth="325.0">
                     <items>
                       <Button mnemonicParsing="false" onAction="#addItem" text="Add Item" />
-                        <Button mnemonicParsing="false" onAction="#addContainer" text="Add Container" />
-                        <Button mnemonicParsing="false" onAction="#deleteItem" text="Delete Item" />
+                        <Button mnemonicParsing="false" onAction="#addItemContainer" text="Add ItemContainer" />
+                        <Button mnemonicParsing="false" onAction="#deleteSelection" text="Delete Selection" />
                     </items>
                   </ToolBar>
-                  <Button maxWidth="400.0" minWidth="400.0" mnemonicParsing="false" onAction="#deployDrone" prefWidth="400.0" text="Deploy Drone" />
+                  <Button maxWidth="400.0" minWidth="400.0" mnemonicParsing="false" onAction="#deployDrone" prefWidth="400.0" text="Deploy Drone">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
+                  <TitledPane text="Info Log">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <content>
+                        <TextArea fx:id="infoLog" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" />
+                     </content>
+                  </TitledPane>
                </children>
             </VBox>
-            <TitledPane layoutX="410.0" maxHeight="440.0" maxWidth="175.0" minHeight="440.0" minWidth="175.0" prefHeight="440.0" prefWidth="175.0" text="Item Information">
+            <TitledPane layoutX="410.0" maxHeight="440.0" maxWidth="175.0" minHeight="625.0" minWidth="175.0" prefHeight="440.0" prefWidth="175.0" text="Selection Details">
                <content>
                   <VBox>
                      <children>
@@ -44,46 +55,46 @@
                         </Label>
                         <TextField fx:id="itemName">
                            <VBox.margin>
-                              <Insets bottom="7.0" />
+                              <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Location X (feet)" />
                         <TextField fx:id="itemLocationX">
                            <VBox.margin>
-                              <Insets bottom="7.0" />
+                              <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Location Y (feet)" />
                         <TextField fx:id="itemLocationY">
                            <VBox.margin>
-                              <Insets bottom="7.0" />
+                              <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Length (feet)" />
                         <TextField fx:id="itemLength">
                            <VBox.margin>
-                              <Insets bottom="7.0" />
+                              <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Width (feet)" />
                         <TextField fx:id="itemWidth">
                            <VBox.margin>
-                              <Insets bottom="7.0" />
+                              <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Height (feet)" />
                         <TextField fx:id="itemHeight">
                            <VBox.margin>
-                              <Insets bottom="7.0" />
+                              <Insets bottom="15.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Price (dollars)" />
                         <TextField fx:id="itemPrice">
                            <VBox.margin>
-                              <Insets bottom="14.0" />
+                              <Insets bottom="20.0" />
                            </VBox.margin>
                         </TextField>
-                        <Button maxWidth="175.0" minWidth="150.0" mnemonicParsing="false" onAction="#updateItem" prefWidth="175.0" text="Save Changes" />
+                        <Button maxWidth="175.0" minWidth="150.0" mnemonicParsing="false" onAction="#updateSelection" prefWidth="175.0" text="Update Selection" />
                      </children>
                   </VBox>
                </content>

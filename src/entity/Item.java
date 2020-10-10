@@ -1,7 +1,12 @@
 package entity;
 
 public class Item extends ItemComponent {
-  private String name = "New Item";
+
+  public Item() {}
+
+  public Item(String name) {
+    setName(name);
+  }
 
   public void addItemComponent(ItemComponent itemComponent) {
     System.out.println("Cannot add an ItemComponent to an Item!");

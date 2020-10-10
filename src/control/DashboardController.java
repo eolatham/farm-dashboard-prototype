@@ -6,11 +6,14 @@
 package control;
 
 import boundary.Main;
+import entity.Item;
 import entity.ItemComponent;
+import entity.ItemContainer;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -23,7 +26,10 @@ public class DashboardController {
   private URL location;
 
   @FXML
-  private TreeView<ItemComponent> itemTreeView = new TreeView<ItemComponent>();
+  private TextArea infoLog = new TextArea("");
+
+  @FXML
+  private TreeView<ItemComponent> farmTreeView = new TreeView<ItemComponent>();
 
   @FXML
   private TextField itemName = new TextField();
@@ -38,6 +44,9 @@ public class DashboardController {
   private TextField itemLength = new TextField();
 
   @FXML
+  private TextField itemWidth = new TextField();
+
+  @FXML
   private TextField itemHeight = new TextField();
 
   @FXML
@@ -47,17 +56,59 @@ public class DashboardController {
 
   @FXML
   public void initialize() {
-    assert itemTreeView !=
-    null : "fx:id=\"itemTreeView\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert infoLog !=
+    null : "fx:id=\"infoLog\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert farmTreeView !=
+    null : "fx:id=\"farmTreeView\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemName !=
+    null : "fx:id=\"itemName\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemLocationX !=
+    null : "fx:id=\"itemLocationX\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemLocationY !=
+    null : "fx:id=\"itemLocationY\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemLength !=
+    null : "fx:id=\"itemLength\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemWidth !=
+    null : "fx:id=\"itemWidth\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemHeight !=
+    null : "fx:id=\"itemHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert itemPrice !=
+    null : "fx:id=\"itemPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
   }
 
   public void setMain(Main main) {
     this.main = main;
-    this.itemTreeView.setRoot(
-        new TreeItem<ItemComponent>(main.getItemContainer())
+    farmTreeView.setRoot(
+      new TreeItem<ItemComponent>(main.getRootItemContainer())
+    );
+    farmTreeView.getRoot().setExpanded(true);
+  }
+
+  private void addToInfoLog(String message) {
+    infoLog.appendText(String.format("%s\n", message));
+  }
+
+  private TreeItem<ItemComponent> getCurrentSelection() {
+    TreeItem<ItemComponent> selection = farmTreeView
+      .getSelectionModel()
+      .getSelectedItem();
+    if (selection == null) selection = farmTreeView.getRoot();
+    return selection;
+  }
+
+  private void addToFarmTreeView(ItemComponent component) {
+    TreeItem<ItemComponent> selection = getCurrentSelection();
+    ItemComponent selectionValue = selection.getValue();
+    if (selectionValue instanceof Item) addToInfoLog(
+      "Cannot add to an Item; try adding to an ItemContainer"
+    ); else { // selection is an ItemContainer
+      TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
+      treeItem.setExpanded(true);
+      selection.getChildren().add(treeItem);
+      addToInfoLog(
+        String.format("%s added", component.getClass().getSimpleName())
       );
-    this.itemTreeView.setShowRoot(false);
-    this.itemTreeView.getRoot().setExpanded(true);
+    }
   }
 
   @FXML
@@ -65,31 +116,38 @@ public class DashboardController {
    * Called when the "Add Item" button is clicked
    */
   public void addItem(ActionEvent event) {
-    System.out.println("item added");
+    addToFarmTreeView(new Item());
   }
 
   @FXML
   /*
-   * Called when the "Add Container" button is clicked
+   * Called when the "Add ItemContainer" button is clicked
    */
-  public void addContainer(ActionEvent event) {
-    System.out.println("container added");
+  public void addItemContainer(ActionEvent event) {
+    addToFarmTreeView(new ItemContainer());
   }
 
   @FXML
   /*
-   * Called when the "Delete Item" button is clicked
+   * Called when the "Delete Selection" button is clicked
    */
-  public void deleteItem(ActionEvent event) {
-    System.out.println("item deleted");
+  public void deleteSelection(ActionEvent event) {
+    TreeItem<ItemComponent> selection = getCurrentSelection();
+    if (selection == farmTreeView.getRoot()) addToInfoLog(
+      "Cannot delete the Root ItemContainer"
+    ); else {
+      TreeItem<ItemComponent> parent = selection.getParent();
+      parent.getChildren().remove(selection);
+      addToInfoLog("Selection deleted");
+    }
   }
 
   @FXML
   /*
-   * Called when the "Save Changes" button is clicked
+   * Called when the "Update Selection" button is clicked
    */
-  public void updateItem(ActionEvent event) {
-    System.out.println("item updated");
+  public void updateSelection(ActionEvent event) {
+    addToInfoLog("Selection updated");
   }
 
   @FXML
@@ -97,6 +155,6 @@ public class DashboardController {
    * Called when the "Deploy Drone" button is clicked
    */
   public void deployDrone(ActionEvent event) {
-    System.out.println("drone deployed");
+    addToInfoLog("Drone deployed");
   }
 }

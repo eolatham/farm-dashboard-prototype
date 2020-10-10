@@ -1,7 +1,7 @@
 package entity;
 
 public abstract class ItemComponent {
-  private String name = "New Item Component";
+  private String name = "Unnamed";
   private int locationX = 0; // feet
   private int locationY = 0; // feet
   private int length = 0; // feet
@@ -66,6 +66,6 @@ public abstract class ItemComponent {
   public abstract void deleteItemComponent(int index);
 
   public String toString() {
-    return getName();
+    return String.format("%s (%s)", getName(), getClass().getSimpleName());
   }
 }

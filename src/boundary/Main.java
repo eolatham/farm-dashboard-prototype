@@ -19,10 +19,11 @@ import javafx.stage.Stage;
 public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
-  private ItemContainer itemContainer = new ItemContainer();
+  private ItemContainer rootItemContainer = new ItemContainer("Root");
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
+    this.primaryStage.setResizable(false);
     this.primaryStage.setTitle("Dashboard");
     initRootLayout();
     showDashboard();
@@ -66,8 +67,8 @@ public class Main extends Application {
     return primaryStage;
   }
 
-  public ItemContainer getItemContainer() {
-    return itemContainer;
+  public ItemContainer getRootItemContainer() {
+    return rootItemContainer;
   }
 
   public static void main(String[] args) {
