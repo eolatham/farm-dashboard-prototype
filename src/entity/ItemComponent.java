@@ -7,7 +7,7 @@ public abstract class ItemComponent {
   private int length = 0; // feet
   private int width = 0; // feet
   private int height = 0; // feet
-  private double price = 0; // dollars
+  private int price = 0; // dollars
 
   public String getName() {
     return this.name;
@@ -57,11 +57,11 @@ public abstract class ItemComponent {
     this.height = height;
   }
 
-  public double getPrice() {
+  public int getPrice() {
     return this.price;
   }
 
-  public void setPrice(double price) {
+  public void setPrice(int price) {
     this.price = price;
   }
 

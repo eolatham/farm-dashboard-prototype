@@ -11,94 +11,116 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <HBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DashboardController">
    <children>
       <Pane maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0">
          <children>
-            <VBox maxHeight="800.0" maxWidth="400.0" minHeight="800.0" minWidth="400.0" prefHeight="800.0" prefWidth="400.0">
+            <VBox maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0">
                <children>
-                  <TitledPane maxHeight="585.0" maxWidth="400.0" minHeight="585.0" minWidth="400.0" prefHeight="585.0" prefWidth="400.0" text="Farm TreeView">
-                     <content>
-                        <TreeView fx:id="farmTreeView" onMouseClicked="#loadSelectionDetails" onTouchPressed="#loadSelectionDetails" />
-                     </content>
-                  </TitledPane>
-                  <ToolBar prefHeight="40.0" prefWidth="325.0">
-                    <items>
-                      <Button mnemonicParsing="false" onAction="#addItem" text="Add Item" />
-                        <Button mnemonicParsing="false" onAction="#addItemContainer" text="Add ItemContainer" />
-                        <Button mnemonicParsing="false" onAction="#deleteSelection" text="Delete Selection" />
-                    </items>
-                  </ToolBar>
-                  <Button maxWidth="400.0" minWidth="400.0" mnemonicParsing="false" onAction="#deployDrone" prefWidth="400.0" text="Deploy Drone">
+                  <HBox>
+                     <children>
+                        <VBox maxHeight="550.0" maxWidth="400.0" minHeight="550.0" minWidth="400.0" prefHeight="500.0" prefWidth="400.0">
+                           <children>
+                              <TitledPane text="Farm TreeView">
+                                 <content>
+                                    <TreeView fx:id="farmTreeView" minHeight="510.0" onMouseClicked="#loadSelectionDetails" onTouchPressed="#loadSelectionDetails" />
+                                 </content>
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </TitledPane>
+                              <ToolBar>
+                                <items>
+                                  <Button mnemonicParsing="false" onAction="#addItem" text="Add Item" />
+                                    <Button mnemonicParsing="false" onAction="#addItemContainer" text="Add ItemContainer" />
+                                    <Button mnemonicParsing="false" onAction="#deleteSelection" text="Delete Selection" />
+                                </items>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </ToolBar>
+                           </children>
+                        </VBox>
+                        <TitledPane text="Selection Details">
+                           <content>
+                              <VBox maxHeight="550.0" minHeight="550.0" prefHeight="550.0">
+                                 <children>
+                                    <Label text="Name">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="selectionName" promptText="Name">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Location X (feet)" />
+                                    <TextField fx:id="selectionLocationX" promptText="Location X">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Location Y (feet)" />
+                                    <TextField fx:id="selectionLocationY" promptText="Location Y">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Length (feet)" />
+                                    <TextField fx:id="selectionLength" promptText="Length">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Width (feet)" />
+                                    <TextField fx:id="selectionWidth" promptText="Width">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Height (feet)" />
+                                    <TextField fx:id="selectionHeight" promptText="Height">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Price (dollars)" />
+                                    <TextField fx:id="selectionPrice" promptText="Price">
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Button maxWidth="175.0" minWidth="150.0" mnemonicParsing="false" onAction="#updateSelection" prefWidth="175.0" text="Update Selection" />
+                                 </children>
+                              </VBox>
+                           </content>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TitledPane>
+                     </children>
+                  </HBox>
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deployDrone" prefHeight="100.0" text="Deploy Drone">
                      <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></Button>
-                  <TitledPane text="Info Log">
-                     <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <TitledPane maxWidth="1.7976931348623157E308" text="Info Log">
                      <content>
-                        <TextArea fx:id="infoLog" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" />
+                        <TextArea fx:id="infoLog" maxHeight="1.7976931348623157E308" />
                      </content>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
                   </TitledPane>
                </children>
             </VBox>
-            <TitledPane layoutX="410.0" maxHeight="440.0" maxWidth="175.0" minHeight="625.0" minWidth="175.0" prefHeight="440.0" prefWidth="175.0" text="Selection Details">
-               <content>
-                  <VBox>
-                     <children>
-                        <Label text="Name">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="selectionName">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Location X (feet)" />
-                        <TextField fx:id="selectionLocationX">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Location Y (feet)" />
-                        <TextField fx:id="selectionLocationY">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Length (feet)" />
-                        <TextField fx:id="selectionLength">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Width (feet)" />
-                        <TextField fx:id="selectionWidth">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Height (feet)" />
-                        <TextField fx:id="selectionHeight">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Price (dollars)" />
-                        <TextField fx:id="selectionPrice">
-                           <VBox.margin>
-                              <Insets bottom="20.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Button maxWidth="175.0" minWidth="150.0" mnemonicParsing="false" onAction="#updateSelection" prefWidth="175.0" text="Update Selection" />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
          </children>
       </Pane>
       <Pane maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0" />

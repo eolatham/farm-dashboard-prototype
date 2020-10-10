@@ -9,14 +9,15 @@ import boundary.Main;
 import entity.Item;
 import entity.ItemComponent;
 import entity.ItemContainer;
-import java.lang.Double;
 import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
@@ -54,6 +55,14 @@ public class DashboardController {
   @FXML
   private TextField selectionPrice = new TextField();
 
+  private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
+
+    public TextFormatter.Change apply(TextFormatter.Change textField) {
+      textField.setText(textField.getText().replaceAll("[^0-9]", ""));
+      return textField;
+    }
+  };
+
   private Main main;
 
   @FXML
@@ -76,6 +85,12 @@ public class DashboardController {
     null : "fx:id=\"selectionHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert selectionPrice !=
     null : "fx:id=\"selectionPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    selectionLocationX.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionLocationY.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionLength.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionWidth.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionHeight.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionPrice.setTextFormatter(new TextFormatter<>(intFilter));
   }
 
   public void setMain(Main main) {
@@ -163,7 +178,7 @@ public class DashboardController {
     selectionLength.setText(String.format("%d", component.getLength()));
     selectionWidth.setText(String.format("%d", component.getWidth()));
     selectionHeight.setText(String.format("%d", component.getHeight()));
-    selectionPrice.setText(String.format("%.2f", component.getPrice()));
+    selectionPrice.setText(String.format("%d", component.getPrice()));
     addToInfoLog("Selection details loaded");
   }
 
@@ -185,7 +200,7 @@ public class DashboardController {
       component.setLength(Integer.parseInt(selectionLength.getText()));
       component.setWidth(Integer.parseInt(selectionWidth.getText()));
       component.setHeight(Integer.parseInt(selectionHeight.getText()));
-      component.setPrice(Double.parseDouble(selectionPrice.getText()));
+      component.setPrice(Integer.parseInt(selectionPrice.getText()));
       selection.setValue(component);
       farmTreeView.refresh();
       addToInfoLog("Selection updated");
