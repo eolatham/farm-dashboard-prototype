@@ -1,5 +1,8 @@
 package entity;
 
+/*
+ * Composite design pattern
+ */
 public abstract class ItemComponent {
   private String name = "Unnamed";
   private int locationX = 0; // feet

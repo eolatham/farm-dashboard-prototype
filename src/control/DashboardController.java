@@ -21,6 +21,9 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
+/*
+ * Singleton design pattern
+ */
 public class DashboardController {
   @FXML
   private ResourceBundle resources;
@@ -63,7 +66,24 @@ public class DashboardController {
     }
   };
 
+  // Only here for singleton design pattern exercise
+  private DashboardController instance = null;
+
   private Main main;
+
+  /*
+   * Only here for singleton design pattern exercise
+   * Only public because FXML requires it to be
+   */
+  public DashboardController() {}
+
+  /*
+   * Only here for singleton design pattern exercise
+   */
+  public DashboardController getInstance() {
+    if (instance == null) instance = new DashboardController();
+    return instance;
+  }
 
   @FXML
   public void initialize() {

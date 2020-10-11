@@ -2,6 +2,9 @@ package entity;
 
 import java.util.ArrayList;
 
+/*
+ * Composite design pattern
+ */
 public class ItemContainer extends ItemComponent {
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 

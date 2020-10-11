@@ -1,5 +1,8 @@
 package entity;
 
+/*
+ * Composite design pattern
+ */
 public class Item extends ItemComponent {
 
   public Item() {}

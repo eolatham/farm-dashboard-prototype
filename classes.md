@@ -17,7 +17,7 @@
 
 ### Boundary Classes
 
-- Dashboard Class (singleton)
+- Dashboard Class (main)
 
 ### Control Classes
 
