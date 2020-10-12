@@ -10,7 +10,7 @@
 
 ### Entity Classes
 
-- Component Class (composite, pro-transparency)
+- Item Component Class (composite, pro-transparency)
   - Item Class
   - Item Container Class
 - Drone Class
