@@ -196,6 +196,7 @@ public class DashboardController {
       parent.getValue().deleteItemComponent(selection.getValue());
       parent.getChildren().remove(selection);
       addToInfoLog("Selection deleted");
+      loadSelectionDetails();
     }
   }
 
