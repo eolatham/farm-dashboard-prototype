@@ -21,6 +21,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /*
  * Singleton design pattern
@@ -58,9 +60,9 @@ public class DashboardController {
 
   @FXML
   private TextField selectionPrice = new TextField();
-  
+
   @FXML
-  private Pane map;
+  private Pane farmMap;
 
   private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
 
@@ -109,6 +111,8 @@ public class DashboardController {
     null : "fx:id=\"selectionHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert selectionPrice !=
     null : "fx:id=\"selectionPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert farmMap !=
+    null : "fx:id=\"farmMap\" was not injected: check your FXML file 'Dashboard.fxml'.";
     selectionLocationX.setTextFormatter(new TextFormatter<>(intFilter));
     selectionLocationY.setTextFormatter(new TextFormatter<>(intFilter));
     selectionLength.setTextFormatter(new TextFormatter<>(intFilter));
