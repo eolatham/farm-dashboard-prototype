@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.Pane;
 
 /*
  * Singleton design pattern
@@ -57,6 +58,9 @@ public class DashboardController {
 
   @FXML
   private TextField selectionPrice = new TextField();
+  
+  @FXML
+  private Pane map;
 
   private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
 

@@ -123,6 +123,6 @@
             </VBox>
          </children>
       </Pane>
-      <Pane maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0" />
+      <Pane fx:id="map" maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0" />
    </children>
 </HBox>
