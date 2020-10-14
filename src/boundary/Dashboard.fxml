@@ -19,7 +19,7 @@
          <children>
             <VBox maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0">
                <children>
-                  <HBox>
+                  <HBox minHeight="588.0" minWidth="600.0">
                      <children>
                         <VBox maxHeight="550.0" maxWidth="400.0" minHeight="550.0" minWidth="400.0" prefHeight="500.0" prefWidth="400.0">
                            <children>
