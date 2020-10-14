@@ -15,14 +15,18 @@ public class ItemContainer extends ItemComponent {
     setName(name);
   }
 
+  public void setPrice(int price) {
+    this.price = price;
+  }
+
   public int getPrice() {
+    return price;
+  }
+
+  public int getAggregatePrice() {
     int total = price;
     for (ItemComponent c : components) total += c.getPrice();
     return total;
-  }
-
-  public void setPrice(int price) {
-    this.price = price;
   }
 
   public void addItemComponent(ItemComponent itemComponent) {

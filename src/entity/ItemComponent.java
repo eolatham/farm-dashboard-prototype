@@ -1,5 +1,7 @@
 package entity;
 
+import java.lang.UnsupportedOperationException;
+
 /*
  * Composite design pattern
  */
@@ -11,61 +13,65 @@ public abstract class ItemComponent {
   private int width = 0; // feet
   private int height = 0; // feet
 
-  public String getName() {
-    return name;
-  }
-
   public void setName(String name) {
     this.name = name;
   }
 
-  public int getLocationX() {
-    return locationX;
+  public String getName() {
+    return name;
   }
 
   public void setLocationX(int x) {
     this.locationX = x;
   }
 
-  public int getLocationY() {
-    return locationY;
+  public int getLocationX() {
+    return locationX;
   }
 
   public void setLocationY(int y) {
     this.locationY = y;
   }
 
-  public int getLength() {
-    return length;
+  public int getLocationY() {
+    return locationY;
   }
 
   public void setLength(int length) {
     this.length = length;
   }
 
-  public int getWidth() {
-    return width;
+  public int getLength() {
+    return length;
   }
 
   public void setWidth(int width) {
     this.width = width;
   }
 
-  public int getHeight() {
-    return height;
+  public int getWidth() {
+    return width;
   }
 
   public void setHeight(int height) {
     this.height = height;
   }
 
-  public abstract int getPrice();
+  public int getHeight() {
+    return height;
+  }
 
   public abstract void setPrice(int price);
 
-  public abstract void addItemComponent(ItemComponent itemComponent);
+  public abstract int getPrice();
 
-  public abstract void deleteItemComponent(ItemComponent itemComponent);
+  public abstract int getAggregatePrice() throws UnsupportedOperationException;
+
+  public abstract void addItemComponent(ItemComponent itemComponent)
+    throws UnsupportedOperationException;
+
+  public abstract void deleteItemComponent(ItemComponent itemComponent)
+    throws UnsupportedOperationException;
 
   public String toString() {
     return String.format("%s (%s)", getName(), getClass().getSimpleName());
