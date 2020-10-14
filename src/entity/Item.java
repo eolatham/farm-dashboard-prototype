@@ -22,10 +22,8 @@ public class Item extends ItemComponent {
     return price;
   }
 
-  public int getAggregatePrice() throws UnsupportedOperationException {
-    throw new UnsupportedOperationException(
-      "Cannot get aggregate price of an Item!"
-    );
+  public int getAggregatePrice() {
+    return getPrice();
   }
 
   public void addItemComponent(ItemComponent itemComponent)

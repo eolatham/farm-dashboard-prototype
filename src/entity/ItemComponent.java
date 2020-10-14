@@ -65,7 +65,7 @@ public abstract class ItemComponent {
 
   public abstract int getPrice();
 
-  public abstract int getAggregatePrice() throws UnsupportedOperationException;
+  public abstract int getAggregatePrice();
 
   public abstract void addItemComponent(ItemComponent itemComponent)
     throws UnsupportedOperationException;

@@ -25,7 +25,7 @@ public class ItemContainer extends ItemComponent {
 
   public int getAggregatePrice() {
     int total = price;
-    for (ItemComponent c : components) total += c.getPrice();
+    for (ItemComponent c : components) total += c.getAggregatePrice();
     return total;
   }
 

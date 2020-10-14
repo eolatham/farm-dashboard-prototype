@@ -62,6 +62,9 @@ public class DashboardController {
   private TextField selectionPrice = new TextField();
 
   @FXML
+  private TextField selectionAggregatePrice = new TextField();
+
+  @FXML
   private Pane farmMap;
 
   private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
@@ -111,14 +114,18 @@ public class DashboardController {
     null : "fx:id=\"selectionHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert selectionPrice !=
     null : "fx:id=\"selectionPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionAggregatePrice !=
+    null : "fx:id=\"selectionAggregatePrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert farmMap !=
     null : "fx:id=\"farmMap\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    infoLog.setEditable(false);
     selectionLocationX.setTextFormatter(new TextFormatter<>(intFilter));
     selectionLocationY.setTextFormatter(new TextFormatter<>(intFilter));
     selectionLength.setTextFormatter(new TextFormatter<>(intFilter));
     selectionWidth.setTextFormatter(new TextFormatter<>(intFilter));
     selectionHeight.setTextFormatter(new TextFormatter<>(intFilter));
     selectionPrice.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionAggregatePrice.setEditable(false);
   }
 
   public void setMain(Main main) {
@@ -192,6 +199,12 @@ public class DashboardController {
     }
   }
 
+  private void refreshSelectionAggregatePrice(ItemComponent component) {
+    selectionAggregatePrice.setText(
+      String.format("%d", component.getAggregatePrice())
+    );
+  }
+
   @FXML
   /*
    * Called when the "Farm TreeView" is interacted with
@@ -207,6 +220,7 @@ public class DashboardController {
     selectionWidth.setText(String.format("%d", component.getWidth()));
     selectionHeight.setText(String.format("%d", component.getHeight()));
     selectionPrice.setText(String.format("%d", component.getPrice()));
+    refreshSelectionAggregatePrice(component);
     addToInfoLog("Selection details loaded");
   }
 
@@ -230,6 +244,7 @@ public class DashboardController {
       component.setHeight(Integer.parseInt(selectionHeight.getText()));
       component.setPrice(Integer.parseInt(selectionPrice.getText()));
       selection.setValue(component);
+      refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();
       addToInfoLog("Selection updated");
     }
