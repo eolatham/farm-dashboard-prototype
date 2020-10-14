@@ -10,10 +10,9 @@ public abstract class ItemComponent {
   private int length = 0; // feet
   private int width = 0; // feet
   private int height = 0; // feet
-  private int price = 0; // dollars
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setName(String name) {
@@ -21,7 +20,7 @@ public abstract class ItemComponent {
   }
 
   public int getLocationX() {
-    return this.locationX;
+    return locationX;
   }
 
   public void setLocationX(int x) {
@@ -29,7 +28,7 @@ public abstract class ItemComponent {
   }
 
   public int getLocationY() {
-    return this.locationY;
+    return locationY;
   }
 
   public void setLocationY(int y) {
@@ -37,7 +36,7 @@ public abstract class ItemComponent {
   }
 
   public int getLength() {
-    return this.length;
+    return length;
   }
 
   public void setLength(int length) {
@@ -45,7 +44,7 @@ public abstract class ItemComponent {
   }
 
   public int getWidth() {
-    return this.width;
+    return width;
   }
 
   public void setWidth(int width) {
@@ -53,20 +52,16 @@ public abstract class ItemComponent {
   }
 
   public int getHeight() {
-    return this.height;
+    return height;
   }
 
   public void setHeight(int height) {
     this.height = height;
   }
 
-  public int getPrice() {
-    return this.price;
-  }
+  public abstract int getPrice();
 
-  public void setPrice(int price) {
-    this.price = price;
-  }
+  public abstract void setPrice(int price);
 
   public abstract void addItemComponent(ItemComponent itemComponent);
 
