@@ -143,7 +143,7 @@ public class DashboardController {
     return farmTreeView.getSelectionModel().getSelectedItem();
   }
 
-  private void addToFarmTreeView(ItemComponent component) {
+  private void addToFarmTreeViewAndFarmMap(ItemComponent component) {
     TreeItem<ItemComponent> selection = getCurrentSelection();
     if (selection == null) {
       addToInfoLog("Failed to add; nothing is selected");
@@ -157,11 +157,11 @@ public class DashboardController {
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
+      farmMap.getChildren().add(component.getRectangle());
+      addToInfoLog(
+        String.format("%s added", component.getClass().getSimpleName())
+      );
     }
-  }
-
-  private void addToFarmMap(ItemComponent component) {
-    farmMap.getChildren().add(component.getRectangle());
   }
 
   @FXML
@@ -169,10 +169,7 @@ public class DashboardController {
    * Called when the "Add Item" button is clicked
    */
   public void addItem(ActionEvent event) {
-    Item item = new Item();
-    addToFarmTreeView(item);
-    addToFarmMap(item);
-    addToInfoLog("Item added");
+    addToFarmTreeViewAndFarmMap(new Item());
   }
 
   @FXML
@@ -180,10 +177,7 @@ public class DashboardController {
    * Called when the "Add ItemContainer" button is clicked
    */
   public void addItemContainer(ActionEvent event) {
-    ItemContainer container = new ItemContainer();
-    addToFarmTreeView(container);
-    addToFarmMap(container);
-    addToInfoLog("ItemContainer added");
+    addToFarmTreeViewAndFarmMap(new ItemContainer());
   }
 
   @FXML
@@ -255,7 +249,7 @@ public class DashboardController {
       refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();
       farmMap.getChildren().remove(component.getRectangle());
-      addToFarmMap(component);
+      farmMap.getChildren().add(component.getRectangle());
       addToInfoLog("Selection updated");
     }
   }
