@@ -157,11 +157,11 @@ public class DashboardController {
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
-      farmMap.getChildren().add(component.getRectangle());
-      addToInfoLog(
-        String.format("%s added", component.getClass().getSimpleName())
-      );
     }
+  }
+
+  private void addToFarmMap(ItemComponent component) {
+    farmMap.getChildren().add(component.getRectangle());
   }
 
   @FXML
@@ -169,7 +169,10 @@ public class DashboardController {
    * Called when the "Add Item" button is clicked
    */
   public void addItem(ActionEvent event) {
-    addToFarmTreeView(new Item());
+    Item item = new Item();
+    addToFarmTreeView(item);
+    addToFarmMap(item);
+    addToInfoLog("Item added");
   }
 
   @FXML
@@ -177,7 +180,10 @@ public class DashboardController {
    * Called when the "Add ItemContainer" button is clicked
    */
   public void addItemContainer(ActionEvent event) {
-    addToFarmTreeView(new ItemContainer());
+    ItemContainer container = new ItemContainer();
+    addToFarmTreeView(container);
+    addToFarmMap(container);
+    addToInfoLog("ItemContainer added");
   }
 
   @FXML
@@ -249,7 +255,7 @@ public class DashboardController {
       refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();
       farmMap.getChildren().remove(component.getRectangle());
-      farmMap.getChildren().add(component.getRectangle());
+      addToFarmMap(component);
       addToInfoLog("Selection updated");
     }
   }
