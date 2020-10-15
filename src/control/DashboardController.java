@@ -226,6 +226,12 @@ public class DashboardController {
     addToInfoLog("Selection details loaded");
   }
 
+  private int parseIntFromTextField(TextField textField) {
+    String text = textField.getText();
+    if (text.length() == 0) text = "0";
+    return Integer.parseInt(text);
+  }
+
   @FXML
   /*
    * Called when the "Update Selection" button is clicked
@@ -239,12 +245,12 @@ public class DashboardController {
     ); else {
       ItemComponent component = selection.getValue();
       component.setName(selectionName.getText());
-      component.setLocationX(Integer.parseInt(selectionLocationX.getText()));
-      component.setLocationY(Integer.parseInt(selectionLocationY.getText()));
-      component.setLength(Integer.parseInt(selectionLength.getText()));
-      component.setWidth(Integer.parseInt(selectionWidth.getText()));
-      component.setHeight(Integer.parseInt(selectionHeight.getText()));
-      component.setPrice(Integer.parseInt(selectionPrice.getText()));
+      component.setLocationX(parseIntFromTextField(selectionLocationX));
+      component.setLocationY(parseIntFromTextField(selectionLocationY));
+      component.setLength(parseIntFromTextField(selectionLength));
+      component.setWidth(parseIntFromTextField(selectionWidth));
+      component.setHeight(parseIntFromTextField(selectionHeight));
+      component.setPrice(parseIntFromTextField(selectionPrice));
       selection.setValue(component);
       refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();
