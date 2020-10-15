@@ -75,9 +75,13 @@ public abstract class ItemComponent {
 
   public abstract ArrayList<Rectangle> getRectangles();
 
-  public abstract void setPrice(int price);
+  public void setPrice(int price) {
+    this.price = price;
+  }
 
-  public abstract int getPrice();
+  public int getPrice() {
+    return price;
+  }
 
   public abstract int getAggregatePrice();
 
