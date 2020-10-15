@@ -1,23 +1,25 @@
 package entity;
 
 import java.util.ArrayList;
-
 import javafx.scene.shape.Rectangle;
 
 /*
  * Composite design pattern
  */
 public class ItemContainer extends ItemComponent {
-  private int price = 0; // dollars
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 
-  public ItemContainer(Rectangle rectangle) {
-	setRectangle(rectangle);
+  public ItemContainer() {}
+
+  public ItemContainer(String name) {
+    setName(name);
   }
 
-  public ItemContainer(String name, Rectangle rectangle) {
-    setName(name);
-    setRectangle(rectangle);
+  public ArrayList<Rectangle> getRectangles() {
+    ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
+    rectangles.add(getRectangle());
+    for (ItemComponent c : components) rectangles.addAll(c.getRectangles());
+    return rectangles;
   }
 
   public void setPrice(int price) {

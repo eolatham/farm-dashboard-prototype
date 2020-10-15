@@ -1,20 +1,21 @@
 package entity;
 
 import java.lang.UnsupportedOperationException;
-
+import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
 /*
  * Composite design pattern
  */
 public abstract class ItemComponent {
-  private String name = "Unnamed";
-  private int locationX = 0; // feet
-  private int locationY = 0; // feet
-  private int length = 0; // feet
-  private int width = 0; // feet
-  private int height = 0; // feet
-  private Rectangle rectangle = null;
+  protected String name = "Unnamed";
+  protected int locationX = 0; // feet
+  protected int locationY = 0; // feet
+  protected int length = 0; // feet
+  protected int width = 0; // feet
+  protected int height = 0; // feet
+  protected Rectangle rectangle = new Rectangle(0, 0, 0, 0); // 2D representation
+  protected int price = 0; // dollars
 
   public void setName(String name) {
     this.name = name;
@@ -26,6 +27,7 @@ public abstract class ItemComponent {
 
   public void setLocationX(int x) {
     this.locationX = x;
+    rectangle.setX(x);
   }
 
   public int getLocationX() {
@@ -34,6 +36,7 @@ public abstract class ItemComponent {
 
   public void setLocationY(int y) {
     this.locationY = y;
+    rectangle.setY(y);
   }
 
   public int getLocationY() {
@@ -42,6 +45,7 @@ public abstract class ItemComponent {
 
   public void setLength(int length) {
     this.length = length;
+    rectangle.setHeight(length);
   }
 
   public int getLength() {
@@ -50,6 +54,7 @@ public abstract class ItemComponent {
 
   public void setWidth(int width) {
     this.width = width;
+    rectangle.setWidth(width);
   }
 
   public int getWidth() {
@@ -64,13 +69,11 @@ public abstract class ItemComponent {
     return height;
   }
 
-  public void setRectangle(Rectangle rectangle) {
-	  this.rectangle = rectangle;
+  public Rectangle getRectangle() {
+    return rectangle;
   }
 
-  public Rectangle getRectangle() {
-	  return rectangle;
-  }
+  public abstract ArrayList<Rectangle> getRectangles();
 
   public abstract void setPrice(int price);
 
