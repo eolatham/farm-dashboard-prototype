@@ -2,6 +2,8 @@ package entity;
 
 import java.lang.UnsupportedOperationException;
 
+import javafx.scene.shape.Rectangle;
+
 /*
  * Composite design pattern
  */
@@ -12,6 +14,7 @@ public abstract class ItemComponent {
   private int length = 0; // feet
   private int width = 0; // feet
   private int height = 0; // feet
+  private Rectangle rectangle = null;
 
   public void setName(String name) {
     this.name = name;
@@ -59,6 +62,14 @@ public abstract class ItemComponent {
 
   public int getHeight() {
     return height;
+  }
+
+  public void setRectangle(Rectangle rectangle) {
+	  this.rectangle = rectangle;
+  }
+
+  public Rectangle getRectangle() {
+	  return rectangle;
   }
 
   public abstract void setPrice(int price);

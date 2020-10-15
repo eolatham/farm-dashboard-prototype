@@ -159,10 +159,18 @@ public class DashboardController {
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
+	  farmMap.getChildren().add(component.getRectangle());
       addToInfoLog(
         String.format("%s added", component.getClass().getSimpleName())
       );
     }
+  }
+
+  private void changeRectangle(ItemComponent component) {
+	  // remove the rectangle and add a new one for an illusion of updating it
+	  farmMap.getChildren().remove(component.getRectangle());
+	  component.setRectangle(new Rectangle(component.getLocationX(), component.getLocationY(), component.getLength(), component.getWidth()));
+	  farmMap.getChildren().add(component.getRectangle());
   }
 
   @FXML
@@ -170,7 +178,7 @@ public class DashboardController {
    * Called when the "Add Item" button is clicked
    */
   public void addItem(ActionEvent event) {
-    addToFarmTreeView(new Item());
+    addToFarmTreeView(new Item(new Rectangle()));
   }
 
   @FXML
@@ -178,7 +186,7 @@ public class DashboardController {
    * Called when the "Add ItemContainer" button is clicked
    */
   public void addItemContainer(ActionEvent event) {
-    addToFarmTreeView(new ItemContainer());
+    addToFarmTreeView(new ItemContainer(new Rectangle()));
   }
 
   @FXML
@@ -192,9 +200,11 @@ public class DashboardController {
     ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
       "Failed to delete; Root is selected"
     ); else {
+      ItemComponent component = selection.getValue();
       TreeItem<ItemComponent> parent = selection.getParent();
       parent.getValue().deleteItemComponent(selection.getValue());
       parent.getChildren().remove(selection);
+      farmMap.getChildren().remove(component.getRectangle());
       addToInfoLog("Selection deleted");
       loadSelectionDetails();
     }
@@ -244,6 +254,7 @@ public class DashboardController {
       component.setWidth(Integer.parseInt(selectionWidth.getText()));
       component.setHeight(Integer.parseInt(selectionHeight.getText()));
       component.setPrice(Integer.parseInt(selectionPrice.getText()));
+      changeRectangle(component);
       selection.setValue(component);
       refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();

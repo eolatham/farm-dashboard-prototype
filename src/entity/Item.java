@@ -2,16 +2,21 @@ package entity;
 
 import java.lang.UnsupportedOperationException;
 
+import javafx.scene.shape.Rectangle;
+
 /*
  * Composite design pattern
  */
 public class Item extends ItemComponent {
   private int price = 0; // dollars
 
-  public Item() {}
+  public Item(Rectangle rectangle) {
+	  setRectangle(rectangle);
+  }
 
-  public Item(String name) {
+  public Item(String name, Rectangle rectangle) {
     setName(name);
+    setRectangle(rectangle);
   }
 
   public void setPrice(int price) {

@@ -14,12 +14,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
-  private ItemContainer rootItemContainer = new ItemContainer("Root");
+  private ItemContainer rootItemContainer = new ItemContainer("Root", new Rectangle());
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
