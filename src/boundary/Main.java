@@ -7,7 +7,9 @@
 package boundary;
 
 import control.DashboardController;
+
 import entity.ItemContainer;
+import entity.Drone;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,12 +17,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.animation.TranslateTransition;
 
 public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
   private ItemContainer rootItemContainer = new ItemContainer("Root");
-
+  private Drone dummyDrone;
+  
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
     this.primaryStage.setResizable(false);
