@@ -23,7 +23,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -68,9 +67,7 @@ public class DashboardController {
   private TextField selectionAggregatePrice = new TextField();
 
   @FXML
-  private Pane farmMap = new Pane();
-
-  private Group farmMapGroup = new Group();
+  private Group farmMap = new Group();
 
   private PathTransition droneAnimation = new PathTransition();
 
@@ -146,8 +143,7 @@ public class DashboardController {
     droneAnimation.setPath(new Rectangle(50, 50, 500, 700));
     droneAnimation.setDuration(Duration.seconds(5));
     droneAnimation.setCycleCount(1);
-    farmMapGroup.getChildren().add(droneAnimation.getNode());
-    farmMap.getChildren().add(farmMapGroup);
+    farmMap.getChildren().add(droneAnimation.getNode());
   }
 
   private void sendDroneAnimationToFront() {
@@ -176,7 +172,7 @@ public class DashboardController {
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
-      farmMapGroup.getChildren().add(component.getRectangle());
+      farmMap.getChildren().add(component.getRectangle());
       sendDroneAnimationToFront();
       addToInfoLog(
         String.format("%s added", component.getClass().getSimpleName())
@@ -215,7 +211,7 @@ public class DashboardController {
       TreeItem<ItemComponent> parent = selection.getParent();
       parent.getValue().deleteItemComponent(selection.getValue());
       parent.getChildren().remove(selection);
-      farmMapGroup.getChildren().removeAll(component.getRectangles());
+      farmMap.getChildren().removeAll(component.getRectangles());
       addToInfoLog("Selection deleted");
       loadSelectionDetails();
     }
@@ -274,8 +270,8 @@ public class DashboardController {
       selection.setValue(component);
       refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();
-      farmMapGroup.getChildren().remove(component.getRectangle());
-      farmMapGroup.getChildren().add(component.getRectangle());
+      farmMap.getChildren().remove(component.getRectangle());
+      farmMap.getChildren().add(component.getRectangle());
       sendDroneAnimationToFront();
       addToInfoLog("Selection updated");
     }
