@@ -6,33 +6,26 @@
 package control;
 
 import boundary.Main;
-
 import entity.Item;
 import entity.ItemComponent;
 import entity.ItemContainer;
-
-import java.io.FileInputStream;
 import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
+import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.Pane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.Group;
-import javafx.animation.TranslateTransition;
-import javafx.animation.PathTransition;
-import javafx.animation.PathTransition.*;
-import javafx.scene.shape.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import javafx.scene.shape.Circle;
 
 /*
  * Singleton design pattern
@@ -75,9 +68,11 @@ public class DashboardController {
   private TextField selectionAggregatePrice = new TextField();
 
   @FXML
-  private Pane farmMap;
-  
-  private PathTransition droneAnimation = new PathTransition(); 
+  private Pane farmMap = new Pane();
+
+  private Group farmMapGroup = new Group();
+
+  private PathTransition droneAnimation = new PathTransition();
 
   private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
 
@@ -147,14 +142,16 @@ public class DashboardController {
       new TreeItem<ItemComponent>(main.getRootItemContainer())
     );
     farmTreeView.getRoot().setExpanded(true);
-    ImageView imageView = new ImageView(main.getDrone().getIcon());
-    imageView.toFront();
-    droneAnimation.setNode(imageView);
-    droneAnimation.setDuration(Duration.seconds(5));
+    droneAnimation.setNode(new ImageView(main.getDrone().getIcon()));
     droneAnimation.setPath(new Rectangle(50, 50, 500, 700));
+    droneAnimation.setDuration(Duration.seconds(5));
     droneAnimation.setCycleCount(1);
-    farmMap.getChildren().add(droneAnimation.getNode());
-    
+    farmMapGroup.getChildren().add(droneAnimation.getNode());
+    farmMap.getChildren().add(farmMapGroup);
+  }
+
+  private void sendDroneAnimationToFront() {
+    droneAnimation.getNode().toFront();
   }
 
   private void addToInfoLog(String message) {
@@ -179,11 +176,11 @@ public class DashboardController {
       TreeItem<ItemComponent> treeItem = new TreeItem<ItemComponent>(component);
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
-      farmMap.getChildren().add(component.getRectangle());
+      farmMapGroup.getChildren().add(component.getRectangle());
+      sendDroneAnimationToFront();
       addToInfoLog(
         String.format("%s added", component.getClass().getSimpleName())
       );
-      droneAnimation.getNode().toFront();
     }
   }
 
@@ -218,7 +215,7 @@ public class DashboardController {
       TreeItem<ItemComponent> parent = selection.getParent();
       parent.getValue().deleteItemComponent(selection.getValue());
       parent.getChildren().remove(selection);
-      farmMap.getChildren().removeAll(component.getRectangles());
+      farmMapGroup.getChildren().removeAll(component.getRectangles());
       addToInfoLog("Selection deleted");
       loadSelectionDetails();
     }
@@ -277,20 +274,19 @@ public class DashboardController {
       selection.setValue(component);
       refreshSelectionAggregatePrice(component);
       farmTreeView.refresh();
-      farmMap.getChildren().remove(component.getRectangle());
-      farmMap.getChildren().add(component.getRectangle());
+      farmMapGroup.getChildren().remove(component.getRectangle());
+      farmMapGroup.getChildren().add(component.getRectangle());
+      sendDroneAnimationToFront();
       addToInfoLog("Selection updated");
     }
   }
-  
+
   @FXML
   /*
    * Called when the "Deploy Drone" button is clicked
    */
   public void deployDrone(ActionEvent event) {
-	droneAnimation.play();
+    droneAnimation.play();
     addToInfoLog("Drone deployed");
   }
-  
-  
 }

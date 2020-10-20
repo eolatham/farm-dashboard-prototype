@@ -26,7 +26,7 @@ public abstract class ItemComponent {
   }
 
   public void setLocationX(int x) {
-    this.locationX = x;
+    locationX = x;
     rectangle.setX(x);
   }
 
@@ -35,7 +35,7 @@ public abstract class ItemComponent {
   }
 
   public void setLocationY(int y) {
-    this.locationY = y;
+    locationY = y;
     rectangle.setY(y);
   }
 
