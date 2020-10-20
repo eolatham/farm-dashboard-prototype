@@ -17,13 +17,15 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.animation.TranslateTransition;
 
 public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
   private ItemContainer rootItemContainer = new ItemContainer("Root");
-  private Drone dummyDrone;
+  private Drone dummyDrone = new Drone("file:img/drone.png");
   
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -31,6 +33,7 @@ public class Main extends Application {
     this.primaryStage.setTitle("Dashboard");
     initRootLayout();
     showDashboard();
+    
   }
 
   public void initRootLayout() {
@@ -77,5 +80,9 @@ public class Main extends Application {
 
   public static void main(String[] args) {
     launch(args);
+  }
+  
+  public Drone getDrone() {
+	  return dummyDrone;
   }
 }

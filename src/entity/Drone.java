@@ -1,16 +1,22 @@
 package entity;
 
+import javafx.scene.image.Image;
+
 public class Drone {
 	
-	private String icon = "Null";
-	private int locationX = 0;
-	private int locationY = 0;
+	private Image icon;
+	private int locationX = 100;
+	private int locationY = 100;
 
-
-	public void setIcon(String icon) {
+	public Drone(String iconFilePath) {
+		setIcon(new Image(iconFilePath, 100, 100, true, true));
+	}
+	
+	public void setIcon(Image icon) {
 		this.icon = icon;
-}
-	public String getIcon() {
+	}
+	
+	public Image getIcon() {
 		return icon;
 	}
 	
