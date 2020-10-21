@@ -13,7 +13,11 @@ import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
-import javafx.animation.PathTransition;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -23,7 +27,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /*
@@ -66,11 +69,6 @@ public class DashboardController {
   @FXML
   private TextField selectionAggregatePrice = new TextField();
 
-  @FXML
-  private Group farmMap = new Group();
-
-  private PathTransition droneAnimation = new PathTransition();
-
   private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
 
     public TextFormatter.Change apply(TextFormatter.Change textField) {
@@ -78,6 +76,27 @@ public class DashboardController {
       return textField;
     }
   };
+
+  @FXML
+  private Group farmMap = new Group();
+
+  private ImageView drone = null;
+
+  // Used by the drone animations
+  private Duration timelineDurationLong = Duration.seconds(1);
+
+  // Used by the drone animations
+  private Duration timelineDurationShort = Duration.seconds(0.5);
+
+  // Used by the drone animations
+  private KeyFrame startKeyFrame = null;
+
+  // Used by the drone animations
+  private Timeline goBackToBaseTimeline = null;
+
+  private SequentialTransition visitSelectionAnimation = null;
+
+  private SequentialTransition scanFarmAnimation = null;
 
   // Only here for singleton design pattern exercise
   private DashboardController instance = null;
@@ -132,6 +151,109 @@ public class DashboardController {
     selectionAggregatePrice.setEditable(false);
   }
 
+  private void initializeStartKeyFrame() {
+    if (startKeyFrame == null) {
+      KeyValue startXKeyValue = new KeyValue(drone.translateXProperty(), 0);
+      KeyValue startYKeyValue = new KeyValue(drone.translateYProperty(), 0);
+      startKeyFrame =
+        new KeyFrame(Duration.seconds(0), startXKeyValue, startYKeyValue);
+    }
+  }
+
+  private void initializeGoBackToBaseTimeline() {
+    if (goBackToBaseTimeline == null) {
+      KeyValue goBackToBaseXKeyValue = new KeyValue(
+        drone.translateXProperty(),
+        0
+      );
+      KeyValue goBackToBaseYKeyValue = new KeyValue(
+        drone.translateYProperty(),
+        0
+      );
+      KeyFrame goBackToBaseKeyFrame = new KeyFrame(
+        timelineDurationLong,
+        goBackToBaseXKeyValue,
+        goBackToBaseYKeyValue
+      );
+      goBackToBaseTimeline = new Timeline(goBackToBaseKeyFrame);
+    }
+  }
+
+  private void initializeVisitSelectionAnimation() {
+    if (visitSelectionAnimation == null) visitSelectionAnimation =
+      new SequentialTransition();
+  }
+
+  private void initializeScanFarmAnimation() {
+    if (scanFarmAnimation == null) {
+      initializeStartKeyFrame();
+      initializeGoBackToBaseTimeline();
+
+      KeyValue goDownKeyValue = new KeyValue(drone.translateYProperty(), 700);
+      KeyFrame goDownKeyFrame = new KeyFrame(
+        timelineDurationLong,
+        goDownKeyValue
+      );
+      Timeline goDownTimeline1 = new Timeline(startKeyFrame, goDownKeyFrame);
+      Timeline goDownTimeline2 = new Timeline(goDownKeyFrame);
+      Timeline goDownTimeline3 = new Timeline(goDownKeyFrame);
+
+      KeyValue goRightKeyValue1 = new KeyValue(drone.translateXProperty(), 100);
+      KeyValue goRightKeyValue2 = new KeyValue(drone.translateXProperty(), 200);
+      KeyValue goRightKeyValue3 = new KeyValue(drone.translateXProperty(), 300);
+      KeyValue goRightKeyValue4 = new KeyValue(drone.translateXProperty(), 400);
+      KeyValue goRightKeyValue5 = new KeyValue(drone.translateXProperty(), 500);
+      KeyFrame goRightKeyFrame1 = new KeyFrame(
+        timelineDurationShort,
+        goRightKeyValue1
+      );
+      KeyFrame goRightKeyFrame2 = new KeyFrame(
+        timelineDurationShort,
+        goRightKeyValue2
+      );
+      KeyFrame goRightKeyFrame3 = new KeyFrame(
+        timelineDurationShort,
+        goRightKeyValue3
+      );
+      KeyFrame goRightKeyFrame4 = new KeyFrame(
+        timelineDurationShort,
+        goRightKeyValue4
+      );
+      KeyFrame goRightKeyFrame5 = new KeyFrame(
+        timelineDurationShort,
+        goRightKeyValue5
+      );
+      Timeline goRightTimeline1 = new Timeline(goRightKeyFrame1);
+      Timeline goRightTimeline2 = new Timeline(goRightKeyFrame2);
+      Timeline goRightTimeline3 = new Timeline(goRightKeyFrame3);
+      Timeline goRightTimeline4 = new Timeline(goRightKeyFrame4);
+      Timeline goRightTimeline5 = new Timeline(goRightKeyFrame5);
+
+      KeyValue goUpKeyValue = new KeyValue(drone.translateYProperty(), 0);
+      KeyFrame goUpKeyFrame = new KeyFrame(timelineDurationLong, goUpKeyValue);
+      Timeline goUpTimeline1 = new Timeline(goUpKeyFrame);
+      Timeline goUpTimeline2 = new Timeline(goUpKeyFrame);
+      Timeline goUpTimeline3 = new Timeline(goUpKeyFrame);
+
+      scanFarmAnimation =
+        new SequentialTransition(
+          goDownTimeline1,
+          goRightTimeline1,
+          goUpTimeline1,
+          goRightTimeline2,
+          goDownTimeline2,
+          goRightTimeline3,
+          goUpTimeline2,
+          goRightTimeline4,
+          goDownTimeline3,
+          goRightTimeline5,
+          goUpTimeline3,
+          goBackToBaseTimeline
+        );
+      scanFarmAnimation.setCycleCount(1);
+    }
+  }
+
   public void setMain(Main main) {
     this.main = main;
     farmTreeView.setEditable(false);
@@ -139,15 +261,16 @@ public class DashboardController {
       new TreeItem<ItemComponent>(main.getRootItemContainer())
     );
     farmTreeView.getRoot().setExpanded(true);
-    droneAnimation.setNode(new ImageView(main.getDrone().getIcon()));
-    droneAnimation.setPath(new Rectangle(50, 50, 500, 700));
-    droneAnimation.setDuration(Duration.seconds(5));
-    droneAnimation.setCycleCount(1);
-    farmMap.getChildren().add(droneAnimation.getNode());
+    drone = new ImageView(main.getDrone().getIcon());
+    farmMap.getChildren().add(drone);
+    initializeStartKeyFrame();
+    initializeGoBackToBaseTimeline();
+    initializeVisitSelectionAnimation();
+    initializeScanFarmAnimation();
   }
 
-  private void sendDroneAnimationToFront() {
-    droneAnimation.getNode().toFront();
+  private void sendDroneToFront() {
+    drone.toFront();
   }
 
   private void addToInfoLog(String message) {
@@ -173,7 +296,7 @@ public class DashboardController {
       treeItem.setExpanded(true);
       selection.getChildren().add(treeItem);
       farmMap.getChildren().add(component.getRectangle());
-      sendDroneAnimationToFront();
+      sendDroneToFront();
       addToInfoLog(
         String.format("%s added", component.getClass().getSimpleName())
       );
@@ -272,17 +395,69 @@ public class DashboardController {
       farmTreeView.refresh();
       farmMap.getChildren().remove(component.getRectangle());
       farmMap.getChildren().add(component.getRectangle());
-      sendDroneAnimationToFront();
+      sendDroneToFront();
       addToInfoLog("Selection updated");
+    }
+  }
+
+  private Timeline goToSelectionTimeline(ItemComponent selection) {
+    KeyValue goToSelectionXKeyValue = new KeyValue(
+      drone.translateXProperty(),
+      selection.getLocationX()
+    );
+    KeyValue goToSelectionYKeyValue = new KeyValue(
+      drone.translateYProperty(),
+      selection.getLocationY()
+    );
+    KeyFrame goToSelectionKeyFrame = new KeyFrame(
+      timelineDurationLong,
+      goToSelectionXKeyValue,
+      goToSelectionYKeyValue
+    );
+    return new Timeline(startKeyFrame, goToSelectionKeyFrame);
+  }
+
+  private boolean droneIsDeployed() {
+    return (
+      scanFarmAnimation.getStatus() == Animation.Status.RUNNING ||
+      visitSelectionAnimation.getStatus() == Animation.Status.RUNNING
+    );
+  }
+
+  @FXML
+  /*
+   * Called when the "Visit Selection button is clicked
+   */
+  public void visitSelection() {
+    TreeItem<ItemComponent> selection = getCurrentSelection();
+    if (droneIsDeployed()) addToInfoLog(
+      "Failed to visit; drone is already deployed"
+    ); else if (selection == null) addToInfoLog(
+      "Failed to visit; nothing is selected"
+    ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
+      "Failed to visit; Root is selected"
+    ); else {
+      visitSelectionAnimation =
+        new SequentialTransition(
+          goToSelectionTimeline(selection.getValue()),
+          goBackToBaseTimeline
+        );
+      visitSelectionAnimation.setCycleCount(1);
+      visitSelectionAnimation.play();
+      addToInfoLog("Drone deployed");
     }
   }
 
   @FXML
   /*
-   * Called when the "Deploy Drone" button is clicked
+   * Called when the "Scan Farm" button is clicked
    */
-  public void deployDrone(ActionEvent event) {
-    droneAnimation.play();
-    addToInfoLog("Drone deployed");
+  public void scanFarm() {
+    if (droneIsDeployed()) addToInfoLog(
+      "Failed to scan; drone is already deployed"
+    ); else {
+      scanFarmAnimation.play();
+      addToInfoLog("Drone deployed");
+    }
   }
 }

@@ -110,14 +110,23 @@
                         </TitledPane>
                      </children>
                   </HBox>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deployDrone" prefHeight="100.0" text="Deploy Drone">
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                     <children>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scanFarm" prefHeight="100.0" prefWidth="300.0" text="Scan Farm">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#visitSelection" prefHeight="100.0" prefWidth="300.0" text="Visit Selection">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
+                  </HBox>
                   <TitledPane maxWidth="1.7976931348623157E308" text="Info Log">
                      <content>
                         <TextArea fx:id="infoLog" editable="false" maxHeight="1.7976931348623157E308" />
