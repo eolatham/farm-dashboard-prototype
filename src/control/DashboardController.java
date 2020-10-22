@@ -42,6 +42,10 @@ public class DashboardController {
   @FXML
   private TextArea infoLog = new TextArea();
 
+  private TreeItem<ItemComponent> rootTreeItem;
+  private TreeItem<ItemComponent> commandCenterTreeItem;
+  private TreeItem<ItemComponent> droneTreeItem;
+
   @FXML
   private TreeView<ItemComponent> farmTreeView = new TreeView<ItemComponent>();
 
@@ -80,7 +84,7 @@ public class DashboardController {
   @FXML
   private Group farmMap = new Group();
 
-  private ImageView drone = null;
+  private ImageView droneIcon;
 
   // Used by the drone animations
   private Duration timelineDurationLong = Duration.seconds(1);
@@ -153,8 +157,8 @@ public class DashboardController {
 
   private void initializeStartKeyFrame() {
     if (startKeyFrame == null) {
-      KeyValue startXKeyValue = new KeyValue(drone.translateXProperty(), 0);
-      KeyValue startYKeyValue = new KeyValue(drone.translateYProperty(), 0);
+      KeyValue startXKeyValue = new KeyValue(droneIcon.translateXProperty(), 0);
+      KeyValue startYKeyValue = new KeyValue(droneIcon.translateYProperty(), 0);
       startKeyFrame =
         new KeyFrame(Duration.seconds(0), startXKeyValue, startYKeyValue);
     }
@@ -163,11 +167,11 @@ public class DashboardController {
   private void initializeGoBackToBaseTimeline() {
     if (goBackToBaseTimeline == null) {
       KeyValue goBackToBaseXKeyValue = new KeyValue(
-        drone.translateXProperty(),
+        droneIcon.translateXProperty(),
         0
       );
       KeyValue goBackToBaseYKeyValue = new KeyValue(
-        drone.translateYProperty(),
+        droneIcon.translateYProperty(),
         0
       );
       KeyFrame goBackToBaseKeyFrame = new KeyFrame(
@@ -189,7 +193,10 @@ public class DashboardController {
       initializeStartKeyFrame();
       initializeGoBackToBaseTimeline();
 
-      KeyValue goDownKeyValue = new KeyValue(drone.translateYProperty(), 700);
+      KeyValue goDownKeyValue = new KeyValue(
+        droneIcon.translateYProperty(),
+        700
+      );
       KeyFrame goDownKeyFrame = new KeyFrame(
         timelineDurationLong,
         goDownKeyValue
@@ -198,11 +205,26 @@ public class DashboardController {
       Timeline goDownTimeline2 = new Timeline(goDownKeyFrame);
       Timeline goDownTimeline3 = new Timeline(goDownKeyFrame);
 
-      KeyValue goRightKeyValue1 = new KeyValue(drone.translateXProperty(), 100);
-      KeyValue goRightKeyValue2 = new KeyValue(drone.translateXProperty(), 200);
-      KeyValue goRightKeyValue3 = new KeyValue(drone.translateXProperty(), 300);
-      KeyValue goRightKeyValue4 = new KeyValue(drone.translateXProperty(), 400);
-      KeyValue goRightKeyValue5 = new KeyValue(drone.translateXProperty(), 500);
+      KeyValue goRightKeyValue1 = new KeyValue(
+        droneIcon.translateXProperty(),
+        100
+      );
+      KeyValue goRightKeyValue2 = new KeyValue(
+        droneIcon.translateXProperty(),
+        200
+      );
+      KeyValue goRightKeyValue3 = new KeyValue(
+        droneIcon.translateXProperty(),
+        300
+      );
+      KeyValue goRightKeyValue4 = new KeyValue(
+        droneIcon.translateXProperty(),
+        400
+      );
+      KeyValue goRightKeyValue5 = new KeyValue(
+        droneIcon.translateXProperty(),
+        500
+      );
       KeyFrame goRightKeyFrame1 = new KeyFrame(
         timelineDurationShort,
         goRightKeyValue1
@@ -229,7 +251,7 @@ public class DashboardController {
       Timeline goRightTimeline4 = new Timeline(goRightKeyFrame4);
       Timeline goRightTimeline5 = new Timeline(goRightKeyFrame5);
 
-      KeyValue goUpKeyValue = new KeyValue(drone.translateYProperty(), 0);
+      KeyValue goUpKeyValue = new KeyValue(droneIcon.translateYProperty(), 0);
       KeyFrame goUpKeyFrame = new KeyFrame(timelineDurationLong, goUpKeyValue);
       Timeline goUpTimeline1 = new Timeline(goUpKeyFrame);
       Timeline goUpTimeline2 = new Timeline(goUpKeyFrame);
@@ -256,13 +278,33 @@ public class DashboardController {
 
   public void setMain(Main main) {
     this.main = main;
+
+    ItemContainer root = main.getRootItemContainer();
+    root.setLength(800);
+    root.setWidth(600);
+    rootTreeItem = new TreeItem<ItemComponent>(root);
+    ItemContainer commandCenter = new ItemContainer("Command Center");
+    commandCenter.setLength(100);
+    commandCenter.setWidth(100);
+    commandCenterTreeItem = new TreeItem<ItemComponent>(commandCenter);
+    Item drone = new Item("Drone");
+    drone.setLength(100);
+    drone.setWidth(100);
+    drone.setPrice(1000);
+    droneTreeItem = new TreeItem<ItemComponent>(drone);
+    commandCenter.addItemComponent(drone);
+    root.addItemComponent(commandCenter);
+
     farmTreeView.setEditable(false);
-    farmTreeView.setRoot(
-      new TreeItem<ItemComponent>(main.getRootItemContainer())
-    );
-    farmTreeView.getRoot().setExpanded(true);
-    drone = new ImageView(main.getDrone().getIcon());
-    farmMap.getChildren().add(drone);
+    farmTreeView.setRoot(rootTreeItem);
+    commandCenterTreeItem.getChildren().add(droneTreeItem);
+    rootTreeItem.getChildren().add(commandCenterTreeItem);
+    rootTreeItem.setExpanded(true);
+    commandCenterTreeItem.setExpanded(true);
+
+    farmMap.getChildren().add(commandCenter.getRectangle());
+    droneIcon = new ImageView(main.getDrone().getIcon());
+    farmMap.getChildren().add(droneIcon);
     initializeStartKeyFrame();
     initializeGoBackToBaseTimeline();
     initializeVisitSelectionAnimation();
@@ -270,7 +312,7 @@ public class DashboardController {
   }
 
   private void sendDroneToFront() {
-    drone.toFront();
+    droneIcon.toFront();
   }
 
   private void addToInfoLog(String message) {
@@ -327,8 +369,12 @@ public class DashboardController {
     TreeItem<ItemComponent> selection = getCurrentSelection();
     if (selection == null) addToInfoLog(
       "Failed to delete; nothing is selected"
-    ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
+    ); else if (selection == rootTreeItem) addToInfoLog(
       "Failed to delete; Root is selected"
+    ); else if (selection == commandCenterTreeItem) addToInfoLog(
+      "Failed to delete; Command Center is selected"
+    ); else if (selection == droneTreeItem) addToInfoLog(
+      "Failed to delete; Drone is selected"
     ); else {
       ItemComponent component = selection.getValue();
       TreeItem<ItemComponent> parent = selection.getParent();
@@ -379,8 +425,12 @@ public class DashboardController {
     TreeItem<ItemComponent> selection = getCurrentSelection();
     if (selection == null) addToInfoLog(
       "Failed to update; nothing is selected"
-    ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
+    ); else if (selection == rootTreeItem) addToInfoLog(
       "Failed to update; Root is selected"
+    ); else if (selection == commandCenterTreeItem) addToInfoLog(
+      "Failed to update; Command Center is selected"
+    ); else if (selection == droneTreeItem) addToInfoLog(
+      "Failed to update; Drone is selected"
     ); else {
       ItemComponent component = selection.getValue();
       component.setName(selectionName.getText());
@@ -402,11 +452,11 @@ public class DashboardController {
 
   private Timeline goToSelectionTimeline(ItemComponent selection) {
     KeyValue goToSelectionXKeyValue = new KeyValue(
-      drone.translateXProperty(),
+      droneIcon.translateXProperty(),
       selection.getLocationX()
     );
     KeyValue goToSelectionYKeyValue = new KeyValue(
-      drone.translateYProperty(),
+      droneIcon.translateYProperty(),
       selection.getLocationY()
     );
     KeyFrame goToSelectionKeyFrame = new KeyFrame(
@@ -434,7 +484,7 @@ public class DashboardController {
       "Failed to visit; drone is already deployed"
     ); else if (selection == null) addToInfoLog(
       "Failed to visit; nothing is selected"
-    ); else if (selection == farmTreeView.getRoot()) addToInfoLog(
+    ); else if (selection == rootTreeItem) addToInfoLog(
       "Failed to visit; Root is selected"
     ); else {
       visitSelectionAnimation =
