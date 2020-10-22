@@ -486,6 +486,10 @@ public class DashboardController {
       "Failed to visit; nothing is selected"
     ); else if (selection == rootTreeItem) addToInfoLog(
       "Failed to visit; Root is selected"
+    ); else if (selection == commandCenterTreeItem) addToInfoLog(
+      "Failed to visit; Command Center is selected"
+    ); else if (selection == droneTreeItem) addToInfoLog(
+      "Failed to visit; Drone is selected"
     ); else {
       visitSelectionAnimation =
         new SequentialTransition(
