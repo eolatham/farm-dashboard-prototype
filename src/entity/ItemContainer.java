@@ -9,9 +9,12 @@ import javafx.scene.shape.Rectangle;
 public class ItemContainer extends ItemComponent {
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 
-  public ItemContainer() {}
+  public ItemContainer() {
+    rectangle.setOpacity(0.5);
+  }
 
   public ItemContainer(String name) {
+    rectangle.setOpacity(0.5);
     setName(name);
   }
 
