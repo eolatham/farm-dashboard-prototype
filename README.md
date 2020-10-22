@@ -12,7 +12,7 @@
 
 (assuming you have **Eclipse IDE** and **Java JDK 8** installed)
 
-- go to https://gitlab.cs.uab.edu/420/project2
+- go to [https://gitlab.cs.uab.edu/420/project2](https://gitlab.cs.uab.edu/420/project2)
 - clone this repository into `project2`
 - open **Eclipse**
 - select **File** -> **Import** -> **Existing Projects into Workspace** -> **Next** -> **Browse**
