@@ -73,7 +73,24 @@ public class AnimatedDrone extends ImageView {
     return new Timeline(rotateKeyFrame);
   }
 
+  private Timeline rotateUpTimeline() {
+    return rotateFromAToBTimeline(0, 0, 0, -1);
+  }
+
+  private Timeline rotateDownTimeline() {
+    return rotateFromAToBTimeline(0, 0, 0, 1);
+  }
+
+  private Timeline rotateLeftTimeline() {
+    return rotateFromAToBTimeline(0, 0, -1, 0);
+  }
+
+  private Timeline rotateRightTimeline() {
+    return rotateFromAToBTimeline(0, 0, 1, 0);
+  }
+
   // TODO: add stop times
+  // TODO: use constant speed by dynamically generating durations
   public void visitLocation(int x, int y) {
     KeyValue goToXKeyValue = new KeyValue(translateXProperty(), x);
     KeyValue goToYKeyValue = new KeyValue(translateYProperty(), y);
@@ -149,17 +166,29 @@ public class AnimatedDrone extends ImageView {
 
     scanFarmAnimation =
       new SequentialTransition(
+        rotateDownTimeline(),
         goDownTimeline1,
+        rotateRightTimeline(),
         goRightTimeline1,
+        rotateUpTimeline(),
         goUpTimeline1,
+        rotateRightTimeline(),
         goRightTimeline2,
+        rotateDownTimeline(),
         goDownTimeline2,
+        rotateRightTimeline(),
         goRightTimeline3,
+        rotateUpTimeline(),
         goUpTimeline2,
+        rotateRightTimeline(),
         goRightTimeline4,
+        rotateDownTimeline(),
         goDownTimeline3,
+        rotateRightTimeline(),
         goRightTimeline5,
+        rotateUpTimeline(),
         goUpTimeline3,
+        rotateLeftTimeline(),
         goToCurrentLocationTimeline()
       );
     scanFarmAnimation.setCycleCount(1);
