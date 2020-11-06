@@ -13,6 +13,9 @@
 - Item Component Class (composite, pro-transparency)
   - Item Class
   - Item Container Class
+- Item Component Visitor Class
+  - Aggregate Purchase Price Visitor Class
+  - Aggregate Market Value Visitor Class
 - Drone Class
 
 ### Boundary Classes
