@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
  * Composite design pattern
  */
 public class Item extends ItemComponent {
+  private int marketValue = 0; // dollars
 
   public Item() {
     rectangle.setOpacity(0.5);
@@ -26,6 +27,14 @@ public class Item extends ItemComponent {
 
   public int getAggregatePurchasePrice() {
     return getPurchasePrice();
+  }
+
+  public void setMarketValue(int marketValue) {
+    this.marketValue = marketValue;
+  }
+
+  public int getMarketValue() {
+    return marketValue;
   }
 
   public void addItemComponent(ItemComponent itemComponent)
