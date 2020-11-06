@@ -21,7 +21,7 @@ public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
   private ItemContainer rootItemContainer = new ItemContainer("Root");
-  private AnimatedDrone drone = new AnimatedDrone("file:img/drone.png");
+  private AnimatedDrone animatedDrone = new AnimatedDrone("file:img/drone.png");
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -73,8 +73,8 @@ public class Main extends Application {
     return rootItemContainer;
   }
 
-  public AnimatedDrone getDrone() {
-    return drone;
+  public AnimatedDrone getAnimatedDrone() {
+    return animatedDrone;
   }
 
   public static void main(String[] args) {
