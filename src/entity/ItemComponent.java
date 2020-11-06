@@ -16,7 +16,6 @@ public abstract class ItemComponent {
   protected int height = 0; // feet
   protected Rectangle rectangle = new Rectangle(0, 0, 0, 0); // 2D representation
   protected int purchasePrice = 0; // dollars
-  protected int marketValue = 0; // dollars
 
   public void setName(String name) {
     this.name = name;
