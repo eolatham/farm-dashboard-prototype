@@ -1,5 +1,6 @@
 package entity;
 
+import java.lang.Math;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -51,6 +52,28 @@ public class AnimatedDrone extends ImageView {
     return new Timeline(goBackKeyFrame);
   }
 
+  private double angleFromAToB(double aX, double aY, double bX, double bY) {
+    return Math.toDegrees(Math.atan2(bY - aY, bX - aX));
+  }
+
+  private Timeline rotateFromAToBTimeline(
+    double aX,
+    double aY,
+    double bX,
+    double bY
+  ) {
+    KeyValue rotateKeyValue = new KeyValue(
+      rotateProperty(),
+      angleFromAToB(aX, aY, bX, bY)
+    );
+    KeyFrame rotateKeyFrame = new KeyFrame(
+      timelineDurationShort,
+      rotateKeyValue
+    );
+    return new Timeline(rotateKeyFrame);
+  }
+
+  // TODO: add stop times
   public void visitLocation(int x, int y) {
     KeyValue goToXKeyValue = new KeyValue(translateXProperty(), x);
     KeyValue goToYKeyValue = new KeyValue(translateYProperty(), y);
@@ -65,7 +88,9 @@ public class AnimatedDrone extends ImageView {
     );
     visitLocationAnimation =
       new SequentialTransition(
+        rotateFromAToBTimeline(getTranslateX(), getTranslateY(), x, y),
         goToGivenLocationTimeline,
+        rotateFromAToBTimeline(x, y, getTranslateX(), getTranslateY()),
         goToCurrentLocationTimeline()
       );
     visitLocationAnimation.setCycleCount(1);
