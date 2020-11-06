@@ -55,50 +55,92 @@
                                     </Label>
                                     <TextField fx:id="selectionName" promptText="Name">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Label text="Location X (feet)" />
                                     <TextField fx:id="selectionLocationX" promptText="Location X">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Label text="Location Y (feet)" />
                                     <TextField fx:id="selectionLocationY" promptText="Location Y">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Label text="Length (feet)" />
                                     <TextField fx:id="selectionLength" promptText="Length">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Label text="Width (feet)" />
                                     <TextField fx:id="selectionWidth" promptText="Width">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Label text="Height (feet)" />
                                     <TextField fx:id="selectionHeight" promptText="Height">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Label text="Purchase Price (dollars)" />
                                     <TextField fx:id="selectionPurchasePrice" promptText="Purchase Price">
                                        <VBox.margin>
-                                          <Insets bottom="15.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
-                                    <Label text="Aggregate Purchase Price (dollars)" />
+                                    <Label layoutX="20.0" layoutY="374.0" text="Market Value (dollars)" />
+                                    <TextField fx:id="selectionMarketValue" layoutX="20.0" layoutY="391.0" promptText="Market Value">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <Label text="Aggregate Purchase Price" />
                                     <TextField fx:id="selectionAggregatePurchasePrice" editable="false" promptText="Aggregate Purchase Price">
                                        <VBox.margin>
-                                          <Insets bottom="20.0" />
+                                          <Insets bottom="10.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <Label layoutX="20.0" layoutY="433.0" text="Aggregate Market Value" />
+                                    <TextField fx:id="selectionAggregateMarketValue" editable="false" layoutX="20.0" layoutY="450.0" promptText="Aggregate Market Value">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
                                     </TextField>
                                     <Button maxWidth="175.0" minWidth="150.0" mnemonicParsing="false" onAction="#updateSelection" prefWidth="175.0" text="Update Selection" />
                                  </children>
