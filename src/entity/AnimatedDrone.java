@@ -4,6 +4,7 @@ import java.lang.Math;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
@@ -89,7 +90,7 @@ public class AnimatedDrone extends ImageView {
     return rotateFromAToBTimeline(0, 0, 1, 0);
   }
 
-  // TODO: add stop times
+  // TODO: enforce location bounds
   // TODO: use constant speed by dynamically generating durations
   public void visitLocation(int x, int y) {
     KeyValue goToXKeyValue = new KeyValue(translateXProperty(), x);
@@ -107,6 +108,7 @@ public class AnimatedDrone extends ImageView {
       new SequentialTransition(
         rotateFromAToBTimeline(getTranslateX(), getTranslateY(), x, y),
         goToGivenLocationTimeline,
+        new PauseTransition(timelineDurationLong),
         rotateFromAToBTimeline(x, y, getTranslateX(), getTranslateY()),
         goToCurrentLocationTimeline()
       );
