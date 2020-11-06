@@ -25,10 +25,17 @@ public class ItemContainer extends ItemComponent {
     return rectangles;
   }
 
-  public int getAggregatePurchasePrice() {
-    int total = purchasePrice;
-    for (ItemComponent c : components) total += c.getAggregatePurchasePrice();
-    return total;
+  public void setMarketValue(int marketValue)
+    throws UnsupportedOperationException {
+    throw new UnsupportedOperationException(
+      "Cannot set the marketValue of an ItemContainer!"
+    );
+  }
+
+  public int getMarketValue() throws UnsupportedOperationException {
+    throw new UnsupportedOperationException(
+      "Cannot get the marketValue of an ItemContainer!"
+    );
   }
 
   public void addItemComponent(ItemComponent itemComponent) {
