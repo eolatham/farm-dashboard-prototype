@@ -6,6 +6,7 @@
 package control;
 
 import boundary.Main;
+import entity.AggregatePurchasePriceVisitor;
 import entity.Item;
 import entity.ItemComponent;
 import entity.ItemContainer;
@@ -387,8 +388,10 @@ public class DashboardController {
   }
 
   private void refreshselectionAggregatePurchasePrice(ItemComponent component) {
+    AggregatePurchasePriceVisitor visitor = new AggregatePurchasePriceVisitor();
+    component.acceptVisitor(visitor);
     selectionAggregatePurchasePrice.setText(
-      String.format("%d", component.getAggregatePurchasePrice())
+      String.format("%d", visitor.value())
     );
   }
 
