@@ -38,4 +38,9 @@ public class ItemContainer extends ItemComponent {
   public void deleteItemComponent(ItemComponent itemComponent) {
     this.components.remove(itemComponent);
   }
+
+  public ArrayList<ItemComponent> getComponents()
+    throws UnsupportedOperationException {
+    return components;
+  }
 }

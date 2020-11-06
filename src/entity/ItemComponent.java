@@ -91,7 +91,14 @@ public abstract class ItemComponent {
   public abstract void deleteItemComponent(ItemComponent itemComponent)
     throws UnsupportedOperationException;
 
+  public abstract ArrayList<ItemComponent> getComponents()
+    throws UnsupportedOperationException;
+
   public String toString() {
     return String.format("%s (%s)", getName(), getClass().getSimpleName());
+  }
+
+  public void acceptVisitor(ItemComponentVisitor visitor) {
+    visitor.visit(this);
   }
 }

@@ -50,4 +50,11 @@ public class Item extends ItemComponent {
       "Cannot delete an ItemComponent from an Item!"
     );
   }
+
+  public ArrayList<ItemComponent> getComponents()
+    throws UnsupportedOperationException {
+    throw new UnsupportedOperationException(
+      "Cannot get components of an Item!"
+    );
+  }
 }
