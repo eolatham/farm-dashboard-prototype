@@ -2,12 +2,12 @@ package entity;
 
 import javafx.scene.image.Image;
 
-public class Drone {
+public class AnimationDrone {
   private Image icon;
   private int locationX = 0;
   private int locationY = 0;
 
-  public Drone(String iconFilePath) {
+  public AnimationDrone(String iconFilePath) {
     setIcon(new Image(iconFilePath, 100, 100, true, true));
   }
 
