@@ -25,9 +25,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-/*
- * Singleton design pattern
- */
 public class DashboardController {
   private Main main;
   private AnimatedDrone animatedDrone;

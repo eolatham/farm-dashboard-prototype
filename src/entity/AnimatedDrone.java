@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+/*
+ * Adapter design pattern
+ */
 public class AnimatedDrone extends ImageView {
   private Duration timelineDurationLong = Duration.seconds(1);
   private Duration timelineDurationShort = Duration.seconds(0.5);
