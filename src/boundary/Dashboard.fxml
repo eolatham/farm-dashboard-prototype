@@ -88,14 +88,14 @@
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <Label text="Price (dollars)" />
-                                    <TextField fx:id="selectionPrice" promptText="Price">
+                                    <Label text="Purchase Price (dollars)" />
+                                    <TextField fx:id="selectionPurchasePrice" promptText="Purchase Price">
                                        <VBox.margin>
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <Label text="Aggregate Price (dollars)" />
-                                    <TextField fx:id="selectionAggregatePrice" editable="false" promptText="Aggregate Price">
+                                    <Label text="Aggregate Purchase Price (dollars)" />
+                                    <TextField fx:id="selectionAggregatePurchasePrice" editable="false" promptText="Aggregate Purchase Price">
                                        <VBox.margin>
                                           <Insets bottom="20.0" />
                                        </VBox.margin>

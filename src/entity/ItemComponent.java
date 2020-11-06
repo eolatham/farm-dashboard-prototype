@@ -15,7 +15,7 @@ public abstract class ItemComponent {
   protected int width = 0; // feet
   protected int height = 0; // feet
   protected Rectangle rectangle = new Rectangle(0, 0, 0, 0); // 2D representation
-  protected int price = 0; // dollars
+  protected int purchasePrice = 0; // dollars
 
   public void setName(String name) {
     this.name = name;
@@ -75,15 +75,15 @@ public abstract class ItemComponent {
 
   public abstract ArrayList<Rectangle> getRectangles();
 
-  public void setPrice(int price) {
-    this.price = price;
+  public void setPurchasePrice(int purchasePrice) {
+    this.purchasePrice = purchasePrice;
   }
 
-  public int getPrice() {
-    return price;
+  public int getPurchasePrice() {
+    return purchasePrice;
   }
 
-  public abstract int getAggregatePrice();
+  public abstract int getAggregatePurchasePrice();
 
   public abstract void addItemComponent(ItemComponent itemComponent)
     throws UnsupportedOperationException;

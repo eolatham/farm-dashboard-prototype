@@ -68,10 +68,10 @@ public class DashboardController {
   private TextField selectionHeight = new TextField();
 
   @FXML
-  private TextField selectionPrice = new TextField();
+  private TextField selectionPurchasePrice = new TextField();
 
   @FXML
-  private TextField selectionAggregatePrice = new TextField();
+  private TextField selectionAggregatePurchasePrice = new TextField();
 
   private UnaryOperator<TextFormatter.Change> intFilter = new UnaryOperator<TextFormatter.Change>() {
 
@@ -139,10 +139,10 @@ public class DashboardController {
     null : "fx:id=\"selectionWidth\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert selectionHeight !=
     null : "fx:id=\"selectionHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionPrice !=
-    null : "fx:id=\"selectionPrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionAggregatePrice !=
-    null : "fx:id=\"selectionAggregatePrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionPurchasePrice !=
+    null : "fx:id=\"selectionPurchasePrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert selectionAggregatePurchasePrice !=
+    null : "fx:id=\"selectionAggregatePurchasePrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert farmMap !=
     null : "fx:id=\"farmMap\" was not injected: check your FXML file 'Dashboard.fxml'.";
     infoLog.setEditable(false);
@@ -151,8 +151,8 @@ public class DashboardController {
     selectionLength.setTextFormatter(new TextFormatter<>(intFilter));
     selectionWidth.setTextFormatter(new TextFormatter<>(intFilter));
     selectionHeight.setTextFormatter(new TextFormatter<>(intFilter));
-    selectionPrice.setTextFormatter(new TextFormatter<>(intFilter));
-    selectionAggregatePrice.setEditable(false);
+    selectionPurchasePrice.setTextFormatter(new TextFormatter<>(intFilter));
+    selectionAggregatePurchasePrice.setEditable(false);
   }
 
   private void initializeStartKeyFrame() {
@@ -290,7 +290,7 @@ public class DashboardController {
     Item drone = new Item("Drone");
     drone.setLength(100);
     drone.setWidth(100);
-    drone.setPrice(1000);
+    drone.setPurchasePrice(1000);
     droneTreeItem = new TreeItem<ItemComponent>(drone);
     commandCenter.addItemComponent(drone);
     root.addItemComponent(commandCenter);
@@ -386,9 +386,9 @@ public class DashboardController {
     }
   }
 
-  private void refreshSelectionAggregatePrice(ItemComponent component) {
-    selectionAggregatePrice.setText(
-      String.format("%d", component.getAggregatePrice())
+  private void refreshselectionAggregatePurchasePrice(ItemComponent component) {
+    selectionAggregatePurchasePrice.setText(
+      String.format("%d", component.getAggregatePurchasePrice())
     );
   }
 
@@ -406,8 +406,10 @@ public class DashboardController {
     selectionLength.setText(String.format("%d", component.getLength()));
     selectionWidth.setText(String.format("%d", component.getWidth()));
     selectionHeight.setText(String.format("%d", component.getHeight()));
-    selectionPrice.setText(String.format("%d", component.getPrice()));
-    refreshSelectionAggregatePrice(component);
+    selectionPurchasePrice.setText(
+      String.format("%d", component.getPurchasePrice())
+    );
+    refreshselectionAggregatePurchasePrice(component);
     addToInfoLog("Selection details loaded");
   }
 
@@ -439,9 +441,9 @@ public class DashboardController {
       component.setLength(parseIntFromTextField(selectionLength));
       component.setWidth(parseIntFromTextField(selectionWidth));
       component.setHeight(parseIntFromTextField(selectionHeight));
-      component.setPrice(parseIntFromTextField(selectionPrice));
+      component.setPurchasePrice(parseIntFromTextField(selectionPurchasePrice));
       selection.setValue(component);
-      refreshSelectionAggregatePrice(component);
+      refreshselectionAggregatePurchasePrice(component);
       farmTreeView.refresh();
       farmMap.getChildren().remove(component.getRectangle());
       farmMap.getChildren().add(component.getRectangle());

@@ -24,8 +24,8 @@ public class Item extends ItemComponent {
     return rectangles;
   }
 
-  public int getAggregatePrice() {
-    return getPrice();
+  public int getAggregatePurchasePrice() {
+    return getPurchasePrice();
   }
 
   public void addItemComponent(ItemComponent itemComponent)
