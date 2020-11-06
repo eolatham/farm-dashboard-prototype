@@ -7,7 +7,7 @@
 package boundary;
 
 import control.DashboardController;
-import entity.AnimationDrone;
+import entity.AnimatedDrone;
 import entity.ItemContainer;
 import java.io.IOException;
 import javafx.application.Application;
@@ -21,7 +21,7 @@ public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
   private ItemContainer rootItemContainer = new ItemContainer("Root");
-  private AnimationDrone drone = new AnimationDrone("file:img/drone.png");
+  private AnimatedDrone drone = new AnimatedDrone("file:img/drone.png");
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -73,7 +73,7 @@ public class Main extends Application {
     return rootItemContainer;
   }
 
-  public AnimationDrone getDrone() {
+  public AnimatedDrone getDrone() {
     return drone;
   }
 
