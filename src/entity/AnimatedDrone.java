@@ -218,7 +218,7 @@ public class AnimatedDrone extends ImageView {
     LinkedList<Timeline> rightTimelines = new LinkedList<Timeline>();
     for (
       int x = travelRightDistance;
-      x < Constants.SCREEN_DRONE_X_BOUND;
+      x <= Constants.SCREEN_DRONE_X_BOUND;
       x += travelRightDistance
     ) rightTimelines.add(
       new Timeline(
