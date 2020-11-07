@@ -1,6 +1,7 @@
 package entity;
 
 import constants.Constants;
+import java.lang.IllegalArgumentException;
 import java.lang.Math;
 import java.util.LinkedList;
 import javafx.animation.Animation;
@@ -127,13 +128,15 @@ public class AnimatedDrone extends ImageView {
     goToOriginAnimation.play();
   }
 
-  public void visitLocation(int x, int y) {
+  public void visitLocation(int x, int y) throws IllegalArgumentException {
     if (isDeployed()) return;
-    if (x < 0) x = 0; else if (x > Constants.SCREEN_DRONE_X_BOUND) x =
-      Constants.SCREEN_DRONE_X_BOUND;
-    if (y < 0) y = 0; else if (y > Constants.SCREEN_DRONE_Y_BOUND) y =
-      Constants.SCREEN_DRONE_Y_BOUND;
     if (getTranslateX() == x && getTranslateY() == y) return;
+    if (
+      x < 0 ||
+      y < 0 ||
+      x > Constants.SCREEN_DRONE_X_BOUND ||
+      y > Constants.SCREEN_DRONE_Y_BOUND
+    ) throw new IllegalArgumentException("Location is out of bounds!");
 
     Duration keyFrameDuration = secondsToTravelFromAToB(
       getTranslateX(),
