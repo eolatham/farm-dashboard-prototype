@@ -1,4 +1,4 @@
-package entity;
+package entity.adapter.drone.virtual;
 
 import constants.Constants;
 import java.lang.IllegalArgumentException;

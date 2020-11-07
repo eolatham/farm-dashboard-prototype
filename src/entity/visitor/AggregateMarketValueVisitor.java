@@ -1,4 +1,7 @@
-package entity;
+package entity.visitor;
+
+import entity.composite.Item;
+import entity.composite.ItemComponent;
 
 public class AggregateMarketValueVisitor extends ItemComponentVisitor {
   private int total = 0; // dollars

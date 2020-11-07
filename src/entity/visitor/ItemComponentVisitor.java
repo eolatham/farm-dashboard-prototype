@@ -1,4 +1,6 @@
-package entity;
+package entity.visitor;
+
+import entity.composite.ItemComponent;
 
 public abstract class ItemComponentVisitor {
 

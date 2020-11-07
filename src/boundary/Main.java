@@ -7,8 +7,8 @@
 package boundary;
 
 import control.DashboardController;
-import entity.AnimatedDrone;
-import entity.ItemContainer;
+import entity.adapter.drone.virtual.AnimatedDrone;
+import entity.composite.ItemContainer;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

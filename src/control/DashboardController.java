@@ -7,12 +7,12 @@ package control;
 
 import boundary.Main;
 import constants.Constants;
-import entity.AggregateMarketValueVisitor;
-import entity.AggregatePurchasePriceVisitor;
-import entity.AnimatedDrone;
-import entity.Item;
-import entity.ItemComponent;
-import entity.ItemContainer;
+import entity.adapter.drone.virtual.AnimatedDrone;
+import entity.composite.Item;
+import entity.composite.ItemComponent;
+import entity.composite.ItemContainer;
+import entity.visitor.AggregateMarketValueVisitor;
+import entity.visitor.AggregatePurchasePriceVisitor;
 import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;

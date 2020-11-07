@@ -1,6 +1,7 @@
-package entity;
+package entity.composite;
 
 import constants.Constants;
+import entity.visitor.ItemComponentVisitor;
 import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
