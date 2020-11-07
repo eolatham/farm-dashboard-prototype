@@ -129,6 +129,10 @@ public class AnimatedDrone extends ImageView {
 
   public void visitLocation(int x, int y) {
     if (isDeployed()) return;
+    if (x < 0) x = 0; else if (x > Constants.SCREEN_DRONE_X_BOUND) x =
+      Constants.SCREEN_DRONE_X_BOUND;
+    if (y < 0) y = 0; else if (y > Constants.SCREEN_DRONE_Y_BOUND) y =
+      Constants.SCREEN_DRONE_Y_BOUND;
     if (getTranslateX() == x && getTranslateY() == y) return;
 
     Duration keyFrameDuration = secondsToTravelFromAToB(
