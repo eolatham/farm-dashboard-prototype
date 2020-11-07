@@ -15,8 +15,9 @@ import javafx.util.Duration;
  * Adapter design pattern
  */
 public class AnimatedDrone extends ImageView {
-  private Duration timelineDurationLong = Duration.seconds(1);
-  private Duration timelineDurationShort = Duration.seconds(0.5);
+  private final int travelSpeed = 100; // pixels per second
+  private final Duration rotateDuration = Duration.seconds(1.5); // seconds
+  private final Duration stopDuration = Duration.seconds(1.5); // seconds
   private SequentialTransition visitLocationAnimation = new SequentialTransition();
   private SequentialTransition scanFarmAnimation = new SequentialTransition();
 
@@ -24,33 +25,18 @@ public class AnimatedDrone extends ImageView {
     super(new Image(iconFilePath, 100, 100, true, true));
   }
 
-  private KeyFrame startAnimationKeyFrame() {
-    KeyValue startXKeyValue = new KeyValue(
-      translateXProperty(),
-      getTranslateX()
-    );
-    KeyValue startYKeyValue = new KeyValue(
-      translateYProperty(),
-      getTranslateY()
-    );
-    return new KeyFrame(Duration.seconds(0), startXKeyValue, startYKeyValue);
-  }
-
-  private Timeline goToCurrentLocationTimeline() {
-    KeyValue goBackXKeyValue = new KeyValue(
-      translateXProperty(),
-      getTranslateX()
-    );
-    KeyValue goBackYKeyValue = new KeyValue(
-      translateYProperty(),
-      getTranslateY()
-    );
-    KeyFrame goBackKeyFrame = new KeyFrame(
-      timelineDurationLong,
-      goBackXKeyValue,
-      goBackYKeyValue
-    );
-    return new Timeline(goBackKeyFrame);
+  /*
+   * distance: pixels
+   * speed: pixels per second
+   */
+  private Duration secondsToTravelFromAToB(
+    double aX,
+    double aY,
+    double bX,
+    double bY,
+    double speed
+  ) {
+    return Duration.seconds(Math.abs(Math.hypot(bX - aX, bY - aY) / speed));
   }
 
   private double angleFromAToB(double aX, double aY, double bX, double bY) {
@@ -67,10 +53,7 @@ public class AnimatedDrone extends ImageView {
       rotateProperty(),
       angleFromAToB(aX, aY, bX, bY)
     );
-    KeyFrame rotateKeyFrame = new KeyFrame(
-      timelineDurationShort,
-      rotateKeyValue
-    );
+    KeyFrame rotateKeyFrame = new KeyFrame(rotateDuration, rotateKeyValue);
     return new Timeline(rotateKeyFrame);
   }
 
@@ -90,42 +73,108 @@ public class AnimatedDrone extends ImageView {
     return rotateFromAToBTimeline(0, 0, 1, 0);
   }
 
-  // TODO: enforce location bounds
-  // TODO: use constant speed by dynamically generating durations
+  private KeyFrame startAnimationKeyFrame() {
+    KeyValue startXKeyValue = new KeyValue(
+      translateXProperty(),
+      getTranslateX()
+    );
+    KeyValue startYKeyValue = new KeyValue(
+      translateYProperty(),
+      getTranslateY()
+    );
+    return new KeyFrame(Duration.seconds(0), startXKeyValue, startYKeyValue);
+  }
+
   public void visitLocation(int x, int y) {
+    if (getTranslateX() == x && getTranslateY() == y) return;
+
+    Duration keyFrameDuration = secondsToTravelFromAToB(
+      getTranslateX(),
+      getTranslateY(),
+      x,
+      y,
+      travelSpeed
+    );
+
     KeyValue goToXKeyValue = new KeyValue(translateXProperty(), x);
     KeyValue goToYKeyValue = new KeyValue(translateYProperty(), y);
     KeyFrame goToKeyFrame = new KeyFrame(
-      timelineDurationLong,
+      keyFrameDuration,
       goToXKeyValue,
       goToYKeyValue
     );
-    Timeline goToGivenLocationTimeline = new Timeline(
+    Timeline goToTimeline = new Timeline(
       startAnimationKeyFrame(),
       goToKeyFrame
     );
+
+    KeyValue goBackXKeyValue = new KeyValue(
+      translateXProperty(),
+      getTranslateX()
+    );
+    KeyValue goBackYKeyValue = new KeyValue(
+      translateYProperty(),
+      getTranslateY()
+    );
+    KeyFrame goBackKeyFrame = new KeyFrame(
+      keyFrameDuration,
+      goBackXKeyValue,
+      goBackYKeyValue
+    );
+    Timeline goBackTimeline = new Timeline(goBackKeyFrame);
+
     visitLocationAnimation =
       new SequentialTransition(
         rotateFromAToBTimeline(getTranslateX(), getTranslateY(), x, y),
-        goToGivenLocationTimeline,
-        new PauseTransition(timelineDurationLong),
+        goToTimeline,
+        new PauseTransition(stopDuration),
         rotateFromAToBTimeline(x, y, getTranslateX(), getTranslateY()),
-        goToCurrentLocationTimeline()
+        goBackTimeline
       );
     visitLocationAnimation.setCycleCount(1);
     visitLocationAnimation.play();
   }
 
   public void scanFarm() {
+    Duration timeToTravel700 = secondsToTravelFromAToB(
+      0,
+      0,
+      0,
+      700,
+      travelSpeed
+    );
+    Duration timeToTravel100 = secondsToTravelFromAToB(
+      0,
+      0,
+      100,
+      0,
+      travelSpeed
+    );
+
     KeyValue goDownKeyValue = new KeyValue(translateYProperty(), 700);
-    KeyFrame goDownKeyFrame = new KeyFrame(
-      timelineDurationLong,
-      goDownKeyValue
-    );
-    Timeline goDownTimeline1 = new Timeline(
-      startAnimationKeyFrame(),
-      goDownKeyFrame
-    );
+    KeyFrame goDownKeyFrame = new KeyFrame(timeToTravel700, goDownKeyValue);
+    Timeline goDownTimeline1;
+    if (getTranslateX() != 0 || getTranslateY() != 0) {
+      // make sure we start at (0, 0)
+      KeyValue originXKeyValue = new KeyValue(translateXProperty(), 0);
+      KeyValue originYKeyValue = new KeyValue(translateYProperty(), 0);
+      KeyFrame originKeyFrame = new KeyFrame(
+        secondsToTravelFromAToB(
+          getTranslateX(),
+          getTranslateY(),
+          0,
+          0,
+          travelSpeed
+        ),
+        originXKeyValue,
+        originYKeyValue
+      );
+      goDownTimeline1 =
+        new Timeline(startAnimationKeyFrame(), originKeyFrame, goDownKeyFrame);
+    } else {
+      // we are already at (0, 0)
+      goDownTimeline1 = new Timeline(startAnimationKeyFrame(), goDownKeyFrame);
+    }
     Timeline goDownTimeline2 = new Timeline(goDownKeyFrame);
     Timeline goDownTimeline3 = new Timeline(goDownKeyFrame);
 
@@ -134,26 +183,11 @@ public class AnimatedDrone extends ImageView {
     KeyValue goRightKeyValue3 = new KeyValue(translateXProperty(), 300);
     KeyValue goRightKeyValue4 = new KeyValue(translateXProperty(), 400);
     KeyValue goRightKeyValue5 = new KeyValue(translateXProperty(), 500);
-    KeyFrame goRightKeyFrame1 = new KeyFrame(
-      timelineDurationShort,
-      goRightKeyValue1
-    );
-    KeyFrame goRightKeyFrame2 = new KeyFrame(
-      timelineDurationShort,
-      goRightKeyValue2
-    );
-    KeyFrame goRightKeyFrame3 = new KeyFrame(
-      timelineDurationShort,
-      goRightKeyValue3
-    );
-    KeyFrame goRightKeyFrame4 = new KeyFrame(
-      timelineDurationShort,
-      goRightKeyValue4
-    );
-    KeyFrame goRightKeyFrame5 = new KeyFrame(
-      timelineDurationShort,
-      goRightKeyValue5
-    );
+    KeyFrame goRightKeyFrame1 = new KeyFrame(timeToTravel100, goRightKeyValue1);
+    KeyFrame goRightKeyFrame2 = new KeyFrame(timeToTravel100, goRightKeyValue2);
+    KeyFrame goRightKeyFrame3 = new KeyFrame(timeToTravel100, goRightKeyValue3);
+    KeyFrame goRightKeyFrame4 = new KeyFrame(timeToTravel100, goRightKeyValue4);
+    KeyFrame goRightKeyFrame5 = new KeyFrame(timeToTravel100, goRightKeyValue5);
     Timeline goRightTimeline1 = new Timeline(goRightKeyFrame1);
     Timeline goRightTimeline2 = new Timeline(goRightKeyFrame2);
     Timeline goRightTimeline3 = new Timeline(goRightKeyFrame3);
@@ -161,10 +195,14 @@ public class AnimatedDrone extends ImageView {
     Timeline goRightTimeline5 = new Timeline(goRightKeyFrame5);
 
     KeyValue goUpKeyValue = new KeyValue(translateYProperty(), 0);
-    KeyFrame goUpKeyFrame = new KeyFrame(timelineDurationLong, goUpKeyValue);
+    KeyFrame goUpKeyFrame = new KeyFrame(timeToTravel700, goUpKeyValue);
     Timeline goUpTimeline1 = new Timeline(goUpKeyFrame);
     Timeline goUpTimeline2 = new Timeline(goUpKeyFrame);
     Timeline goUpTimeline3 = new Timeline(goUpKeyFrame);
+
+    KeyValue goLeftKeyValue = new KeyValue(translateXProperty(), 0);
+    KeyFrame goLeftKeyFrame = new KeyFrame(timeToTravel700, goLeftKeyValue);
+    Timeline goLeftTimeline1 = new Timeline(goLeftKeyFrame);
 
     scanFarmAnimation =
       new SequentialTransition(
@@ -191,7 +229,7 @@ public class AnimatedDrone extends ImageView {
         rotateUpTimeline(),
         goUpTimeline3,
         rotateLeftTimeline(),
-        goToCurrentLocationTimeline()
+        goLeftTimeline1
       );
     scanFarmAnimation.setCycleCount(1);
     scanFarmAnimation.play();
