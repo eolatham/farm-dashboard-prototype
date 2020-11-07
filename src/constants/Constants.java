@@ -4,6 +4,16 @@ import javafx.util.Duration;
 
 public class Constants {
   // screen farm constants
+  public static final int ITEM_LENGTH_MIN = 50; // pixels
+  public static final int ITEM_LENGTH_MAX = 500; // pixels
+  public static final int ITEM_WIDTH_MIN = 50; // pixels
+  public static final int ITEM_WIDTH_MAX = 500; // pixels
+  public static final int ITEM_HEIGHT_MIN = 0; // pixels
+  public static final int ITEM_HEIGHT_MAX = 1000; // pixels
+
+  public static final int SCREEN_ITEM_X_BOUND = 550; // pixels
+  public static final int SCREEN_ITEM_Y_BOUND = 750; // pixels
+
   public static final int SCREEN_FARM_LENGTH = 800; // pixels
   public static final int SCREEN_FARM_WIDTH = 600; // pixels
   public static final int SCREEN_DRONE_SIZE = 50; // pixels^2

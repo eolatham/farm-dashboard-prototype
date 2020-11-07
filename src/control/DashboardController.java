@@ -308,13 +308,12 @@ public class DashboardController {
         parseIntFromTextField(selectionMarketValue)
       );
       selection.setValue(component);
-      refreshselectionAggregatePurchasePrice(component);
-      refreshselectionAggregateMarketValue(component);
       farmTreeView.refresh();
       farmMap.getChildren().remove(component.getRectangle());
       farmMap.getChildren().add(component.getRectangle());
       animatedDrone.toFront();
       addToInfoLog("Selection updated");
+      loadSelectionDetails();
     }
   }
 
