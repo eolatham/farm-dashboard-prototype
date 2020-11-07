@@ -6,6 +6,7 @@
 package control;
 
 import boundary.Main;
+import constants.Constants;
 import entity.AggregateMarketValueVisitor;
 import entity.AggregatePurchasePriceVisitor;
 import entity.AnimatedDrone;
@@ -130,16 +131,16 @@ public class DashboardController {
     this.main = main;
 
     ItemContainer root = main.getRootItemContainer();
-    root.setLength(800);
-    root.setWidth(600);
+    root.setLength(Constants.SCREEN_FARM_LENGTH);
+    root.setWidth(Constants.SCREEN_FARM_WIDTH);
     rootTreeItem = new TreeItem<ItemComponent>(root);
     ItemContainer commandCenter = new ItemContainer("Command Center");
-    commandCenter.setLength(100);
-    commandCenter.setWidth(100);
+    commandCenter.setLength(Constants.SCREEN_DRONE_SIZE);
+    commandCenter.setWidth(Constants.SCREEN_DRONE_SIZE);
     commandCenterTreeItem = new TreeItem<ItemComponent>(commandCenter);
     Item droneItem = new Item("Drone");
-    droneItem.setLength(100);
-    droneItem.setWidth(100);
+    droneItem.setLength(Constants.SCREEN_DRONE_SIZE);
+    droneItem.setWidth(Constants.SCREEN_DRONE_SIZE);
     droneItem.setPurchasePrice(1000);
     droneItem.setMarketValue(900);
     droneTreeItem = new TreeItem<ItemComponent>(droneItem);
