@@ -16,7 +16,12 @@ public abstract class ItemComponent {
   protected int length = Constants.ITEM_LENGTH_MIN; // feet
   protected int width = Constants.ITEM_WIDTH_MIN; // feet
   protected int height = Constants.ITEM_HEIGHT_MIN; // feet
-  protected Rectangle rectangle = new Rectangle(0, 0, 0, 0); // 2D representation
+  protected Rectangle rectangle = new Rectangle(
+    0,
+    0,
+    Constants.ITEM_LENGTH_MIN,
+    Constants.ITEM_WIDTH_MIN
+  ); // 2D representation
   protected int purchasePrice = 0; // dollars
 
   public void setName(String name) {
