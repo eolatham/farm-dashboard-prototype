@@ -86,6 +86,7 @@ public class AnimatedDrone extends ImageView {
   }
 
   public void visitLocation(int x, int y) {
+    if (isDeployed()) return;
     if (getTranslateX() == x && getTranslateY() == y) return;
 
     Duration keyFrameDuration = secondsToTravelFromAToB(
@@ -136,6 +137,8 @@ public class AnimatedDrone extends ImageView {
   }
 
   public void scanFarm() {
+    if (isDeployed()) return;
+
     Duration timeToTravel700 = secondsToTravelFromAToB(
       0,
       0,
@@ -151,30 +154,27 @@ public class AnimatedDrone extends ImageView {
       travelSpeed
     );
 
+    KeyValue originXKeyValue = new KeyValue(translateXProperty(), 0);
+    KeyValue originYKeyValue = new KeyValue(translateYProperty(), 0);
+    KeyFrame originKeyFrame = new KeyFrame(
+      secondsToTravelFromAToB(
+        getTranslateX(),
+        getTranslateY(),
+        0,
+        0,
+        travelSpeed
+      ),
+      originXKeyValue,
+      originYKeyValue
+    );
+
     KeyValue goDownKeyValue = new KeyValue(translateYProperty(), 700);
     KeyFrame goDownKeyFrame = new KeyFrame(timeToTravel700, goDownKeyValue);
-    Timeline goDownTimeline1;
-    if (getTranslateX() != 0 || getTranslateY() != 0) {
-      // make sure we start at (0, 0)
-      KeyValue originXKeyValue = new KeyValue(translateXProperty(), 0);
-      KeyValue originYKeyValue = new KeyValue(translateYProperty(), 0);
-      KeyFrame originKeyFrame = new KeyFrame(
-        secondsToTravelFromAToB(
-          getTranslateX(),
-          getTranslateY(),
-          0,
-          0,
-          travelSpeed
-        ),
-        originXKeyValue,
-        originYKeyValue
-      );
-      goDownTimeline1 =
-        new Timeline(startAnimationKeyFrame(), originKeyFrame, goDownKeyFrame);
-    } else {
-      // we are already at (0, 0)
-      goDownTimeline1 = new Timeline(startAnimationKeyFrame(), goDownKeyFrame);
-    }
+    Timeline goDownTimeline1 = new Timeline(
+      startAnimationKeyFrame(),
+      originKeyFrame,
+      goDownKeyFrame
+    );
     Timeline goDownTimeline2 = new Timeline(goDownKeyFrame);
     Timeline goDownTimeline3 = new Timeline(goDownKeyFrame);
 
