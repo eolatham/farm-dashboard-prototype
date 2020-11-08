@@ -14,10 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-/*
- * Adapter design pattern
- */
-public class AnimatedDrone extends ImageView {
+public class AnimatedDrone extends ImageView implements AnimatedDroneInterface {
   private SequentialTransition goToOriginAnimation = new SequentialTransition();
   private SequentialTransition visitLocationAnimation = new SequentialTransition();
   private SequentialTransition scanFarmAnimation = new SequentialTransition();
@@ -35,7 +32,7 @@ public class AnimatedDrone extends ImageView {
   }
 
   /*
-   * distance: pixels
+   * aX, aY, bX, bY: pixels
    * speed: pixels per second
    */
   private Duration secondsToTravelFromAToB(
@@ -48,10 +45,16 @@ public class AnimatedDrone extends ImageView {
     return Duration.seconds(Math.abs(Math.hypot(bX - aX, bY - aY) / speed));
   }
 
+  /*
+   * aX, aY, bX, bY: pixels
+   */
   private double angleFromAToB(double aX, double aY, double bX, double bY) {
     return Math.toDegrees(Math.atan2(bY - aY, bX - aX));
   }
 
+  /*
+   * aX, aY, bX, bY: pixels
+   */
   private Timeline rotateFromAToBTimeline(
     double aX,
     double aY,
@@ -128,6 +131,9 @@ public class AnimatedDrone extends ImageView {
     goToOriginAnimation.play();
   }
 
+  /*
+   * x, y: pixels
+   */
   public void visitLocation(int x, int y) throws IllegalArgumentException {
     if (isDeployed()) return;
     if (getTranslateX() == x && getTranslateY() == y) return;

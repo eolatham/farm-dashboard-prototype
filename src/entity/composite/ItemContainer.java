@@ -3,9 +3,6 @@ package entity.composite;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
-/*
- * Composite design pattern
- */
 public class ItemContainer extends ItemComponent {
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 

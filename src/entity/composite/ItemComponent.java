@@ -6,9 +6,6 @@ import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
-/*
- * Composite design pattern
- */
 public abstract class ItemComponent {
   protected String name = "Unnamed";
   protected int locationX = 0; // feet
