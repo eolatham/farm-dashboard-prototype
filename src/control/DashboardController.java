@@ -319,9 +319,9 @@ public class DashboardController {
 
   @FXML
   /*
-   * Called when the "Visit Selection Simulation" button is clicked
+   * Called when the "Visit Selection button is clicked
    */
-  public void visitSelectionSim() {
+  public void visitSelection() {
     TreeItem<ItemComponent> selection = getCurrentSelection();
     if (animatedDrone.isDeployed()) addToInfoLog(
       "Failed to visit; drone is already deployed"
@@ -345,51 +345,14 @@ public class DashboardController {
 
   @FXML
   /*
-   * Called when the "Scan Farm Simulation" button is clicked
+   * Called when the "Scan Farm" button is clicked
    */
-  public void scanFarmSim() {
+  public void scanFarm() {
     if (animatedDrone.isDeployed()) addToInfoLog(
       "Failed to scan; drone is already deployed"
     ); else {
       animatedDrone.scanFarm();
       addToInfoLog("Drone deployed");
     }
-  
-    @FXML
-    /*
-     * Called when the "Drone Visit Selection" button is clicked
-     */
-    public void droneSelection() {
-    	TreeItem<ItemComponent> selection = getCurrentSelection();
-        if (TelloDroneAdapter.isDeployed()) addToInfoLog(
-          "Failed to visit; drone is already deployed"
-        ); else if (selection == null) addToInfoLog(
-          "Failed to visit; nothing is selected"
-        ); else if (selection == rootTreeItem) addToInfoLog(
-          "Failed to visit; Root is selected"
-        ); else if (selection == commandCenterTreeItem) addToInfoLog(
-          "Failed to visit; Command Center is selected"
-        ); else if (selection == droneTreeItem) addToInfoLog(
-          "Failed to visit; Drone is selected"
-        ); else {
-          ItemComponent component = selection.getValue();
-          TelloDroneAdapter.visitLocation(
-            component.getLocationX(),
-            component.getLocationY()
-          );
-          addToInfoLog("Drone deployed");
-      }
-    
-      @FXML
-      /*
-       * Called when the "Drone Farm Scan" button is clicked
-       */
-      public void droneScan() {
-        if (TelloDroneAdapter.isDeployed()) addToInfoLog(
-          "Failed to scan; drone is already deployed"
-        ); else {
-        	TelloDroneAdapter.scanFarm();
-          addToInfoLog("Drone deployed");
-        }
   }
 }
