@@ -7,6 +7,8 @@
 package boundary;
 
 import control.DashboardController;
+import entity.adapter.drone.physical.TelloDrone;
+import entity.adapter.drone.physical.TelloDroneAdapter;
 import entity.adapter.drone.virtual.AnimatedDrone;
 import entity.composite.ItemContainer;
 import java.io.IOException;
@@ -20,8 +22,10 @@ import javafx.stage.Stage;
 public class Main extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
-  private ItemContainer rootItemContainer = new ItemContainer("Root");
-  private AnimatedDrone animatedDrone = new AnimatedDrone("file:img/drone.png");
+  private ItemContainer rootItemContainer;
+  private AnimatedDrone animatedDrone;
+  private TelloDrone telloDrone;
+  private TelloDroneAdapter telloDroneAdapter;
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -49,6 +53,12 @@ public class Main extends Application {
 
   public void showDashboard() {
     try {
+      // initialize backend objects
+      rootItemContainer = new ItemContainer("Root");
+      animatedDrone = new AnimatedDrone("file:img/drone.png");
+      telloDrone = new TelloDrone();
+      telloDroneAdapter = new TelloDroneAdapter(telloDrone);
+
       // load dashboard
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(Main.class.getResource("Dashboard.fxml"));
@@ -75,6 +85,10 @@ public class Main extends Application {
 
   public AnimatedDrone getAnimatedDrone() {
     return animatedDrone;
+  }
+
+  public TelloDroneAdapter getTelloDroneAdapter() {
+    return telloDroneAdapter;
   }
 
   public static void main(String[] args) {

@@ -7,6 +7,7 @@ package control;
 
 import boundary.Main;
 import constants.Constants;
+import entity.adapter.drone.physical.TelloDroneAdapter;
 import entity.adapter.drone.virtual.AnimatedDrone;
 import entity.composite.Item;
 import entity.composite.ItemComponent;
@@ -31,8 +32,7 @@ import javafx.scene.control.TreeView;
 public class DashboardController {
   private Main main;
   private AnimatedDrone animatedDrone;
-
-  // private TelloDroneAdapter telloDrone;
+  private TelloDroneAdapter telloDroneAdapter;
 
   @FXML
   private URL location;
@@ -176,7 +176,8 @@ public class DashboardController {
     farmMap.getChildren().add(commandCenter.getRectangle());
     animatedDrone = main.getAnimatedDrone();
     farmMap.getChildren().add(animatedDrone);
-    // telloDrone = main.getTelloDrone();
+
+    telloDroneAdapter = main.getTelloDroneAdapter();
   }
 
   private void addToInfoLog(String message) {
@@ -353,16 +354,16 @@ public class DashboardController {
       "Failed to visit; Drone is selected"
     ); else {
       if (droneModeButton.isSelected()) {
-        // if (telloDrone.isDeployed()) addToInfoLog(
-        //   "Failed to visit; drone is already deployed"
-        // ); else {
-        //   ItemComponent component = selection.getValue();
-        //   telloDrone.visitLocation(
-        //     component.getLocationX(),
-        //     component.getLocationY()
-        //   );
-        //   addToInfoLog("Drone deployed");
-        // }
+        if (telloDroneAdapter.isDeployed()) addToInfoLog(
+          "Failed to visit; drone is already deployed"
+        ); else {
+          ItemComponent component = selection.getValue();
+          telloDroneAdapter.visitLocation(
+            component.getLocationX(),
+            component.getLocationY()
+          );
+          addToInfoLog("Drone deployed");
+        }
       } else {
         if (animatedDrone.isDeployed()) addToInfoLog(
           "Failed to visit; simulation is already running"
@@ -384,12 +385,12 @@ public class DashboardController {
    */
   public void scanFarm() {
     if (droneModeButton.isSelected()) {
-      // if (telloDrone.isDeployed()) addToInfoLog(
-      //   "Failed to scan; drone is already deployed"
-      // ); else {
-      //   animatedDrone.scanFarm();
-      //   addToInfoLog("Drone deployed");
-      // }
+      if (telloDroneAdapter.isDeployed()) addToInfoLog(
+        "Failed to scan; drone is already deployed"
+      ); else {
+        animatedDrone.scanFarm();
+        addToInfoLog("Drone deployed");
+      }
     } else {
       if (animatedDrone.isDeployed()) addToInfoLog(
         "Failed to scan; simulation is already running"
