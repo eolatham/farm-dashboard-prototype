@@ -152,31 +152,14 @@
                         </TitledPane>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="591.0" spacing="5.0">
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scanFarmSim" prefHeight="100.0" prefWidth="300.0" text="Scan Farm Simulation">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scanFarm" prefHeight="100.0" prefWidth="300.0" text="Scan Farm">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#visitSelectionSim" prefHeight="100.0" prefWidth="300.0" text="Visit Selection Simulation">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                     </children>
-                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="591.0" spacing="5.0">
-                     <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#droneScan" prefHeight="100.0" prefWidth="300.0" text="Drone Scan Farm">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#droneSelection" prefHeight="100.0" prefWidth="300.0" text="Drone Visit Selection">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#visitSelection" prefHeight="100.0" prefWidth="300.0" text="Visit Selection">
                            <font>
                               <Font size="15.0" />
                            </font>
