@@ -7,4 +7,6 @@ public interface AnimatedDroneInterface {
   public void visitLocation(int x, int y) throws IllegalArgumentException;
 
   public void scanFarm();
+
+  public boolean isDeployed();
 }

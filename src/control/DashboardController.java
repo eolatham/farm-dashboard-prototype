@@ -7,6 +7,7 @@ package control;
 
 import boundary.Main;
 import constants.Constants;
+import entity.adapter.drone.physical.TelloDroneAdapter;
 import entity.adapter.drone.virtual.AnimatedDrone;
 import entity.composite.Item;
 import entity.composite.ItemComponent;
@@ -20,15 +21,18 @@ import java.util.function.UnaryOperator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 public class DashboardController {
   private Main main;
   private AnimatedDrone animatedDrone;
+  private TelloDroneAdapter telloDroneAdapter;
 
   @FXML
   private URL location;
@@ -88,6 +92,14 @@ public class DashboardController {
   private Group farmMap = new Group();
 
   @FXML
+  private RadioButton simulationModeButton = new RadioButton();
+
+  @FXML
+  private RadioButton droneModeButton = new RadioButton();
+
+  private ToggleGroup modeToggleGroup = new ToggleGroup();
+
+  @FXML
   public void initialize() {
     assert infoLog !=
     null : "fx:id=\"infoLog\" was not injected: check your FXML file 'Dashboard.fxml'.";
@@ -115,6 +127,10 @@ public class DashboardController {
     null : "fx:id=\"selectionAggregateMarketValue\" was not injected: check your FXML file 'Dashboard.fxml'.";
     assert farmMap !=
     null : "fx:id=\"farmMap\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert simulationModeButton !=
+    null : "fx:id=\"simulationModeButton\" was not injected: check your FXML file 'Dashboard.fxml'.";
+    assert droneModeButton !=
+    null : "fx:id=\"droneModeButton\" was not injected: check your FXML file 'Dashboard.fxml'.";
     infoLog.setEditable(false);
     selectionLocationX.setTextFormatter(new TextFormatter<>(intFilter));
     selectionLocationY.setTextFormatter(new TextFormatter<>(intFilter));
@@ -125,6 +141,9 @@ public class DashboardController {
     selectionMarketValue.setTextFormatter(new TextFormatter<>(intFilter));
     selectionAggregatePurchasePrice.setEditable(false);
     selectionAggregateMarketValue.setEditable(false);
+    simulationModeButton.setSelected(true);
+    simulationModeButton.setToggleGroup(modeToggleGroup);
+    droneModeButton.setToggleGroup(modeToggleGroup);
   }
 
   public void setMain(Main main) {
@@ -157,6 +176,8 @@ public class DashboardController {
     farmMap.getChildren().add(commandCenter.getRectangle());
     animatedDrone = main.getAnimatedDrone();
     farmMap.getChildren().add(animatedDrone);
+
+    telloDroneAdapter = main.getTelloDroneAdapter();
   }
 
   private void addToInfoLog(String message) {
@@ -323,9 +344,7 @@ public class DashboardController {
    */
   public void visitSelection() {
     TreeItem<ItemComponent> selection = getCurrentSelection();
-    if (animatedDrone.isDeployed()) addToInfoLog(
-      "Failed to visit; drone is already deployed"
-    ); else if (selection == null) addToInfoLog(
+    if (selection == null) addToInfoLog(
       "Failed to visit; nothing is selected"
     ); else if (selection == rootTreeItem) addToInfoLog(
       "Failed to visit; Root is selected"
@@ -334,12 +353,29 @@ public class DashboardController {
     ); else if (selection == droneTreeItem) addToInfoLog(
       "Failed to visit; Drone is selected"
     ); else {
-      ItemComponent component = selection.getValue();
-      animatedDrone.visitLocation(
-        component.getLocationX(),
-        component.getLocationY()
-      );
-      addToInfoLog("Drone deployed");
+      if (droneModeButton.isSelected()) {
+        if (telloDroneAdapter.isDeployed()) addToInfoLog(
+          "Failed to visit; drone is already deployed"
+        ); else {
+          ItemComponent component = selection.getValue();
+          telloDroneAdapter.visitLocation(
+            component.getLocationX(),
+            component.getLocationY()
+          );
+          addToInfoLog("Drone deployed");
+        }
+      } else {
+        if (animatedDrone.isDeployed()) addToInfoLog(
+          "Failed to visit; simulation is already running"
+        ); else {
+          ItemComponent component = selection.getValue();
+          animatedDrone.visitLocation(
+            component.getLocationX(),
+            component.getLocationY()
+          );
+          addToInfoLog("Simulation started");
+        }
+      }
     }
   }
 
@@ -348,11 +384,20 @@ public class DashboardController {
    * Called when the "Scan Farm" button is clicked
    */
   public void scanFarm() {
-    if (animatedDrone.isDeployed()) addToInfoLog(
-      "Failed to scan; drone is already deployed"
-    ); else {
-      animatedDrone.scanFarm();
-      addToInfoLog("Drone deployed");
+    if (droneModeButton.isSelected()) {
+      if (telloDroneAdapter.isDeployed()) addToInfoLog(
+        "Failed to scan; drone is already deployed"
+      ); else {
+        animatedDrone.scanFarm();
+        addToInfoLog("Drone deployed");
+      }
+    } else {
+      if (animatedDrone.isDeployed()) addToInfoLog(
+        "Failed to scan; simulation is already running"
+      ); else {
+        animatedDrone.scanFarm();
+        addToInfoLog("Simulation started");
+      }
     }
   }
 }
