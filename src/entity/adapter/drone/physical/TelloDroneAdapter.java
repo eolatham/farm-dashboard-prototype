@@ -21,4 +21,9 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     // TODO: make physical drone do what our animated drone does
 
   }
+
+  public boolean isDeployed() {
+    // TODO: actually return whether or not the drone is deployed
+    return true;
+  }
 }
