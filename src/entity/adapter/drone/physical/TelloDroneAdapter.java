@@ -5,10 +5,43 @@ import entity.adapter.drone.virtual.AnimatedDroneInterface;
 import java.io.IOException;
 
 public class TelloDroneAdapter implements AnimatedDroneInterface {
-  private TelloDrone telloDrone;
+  private TelloDrone telloDrone; // physical drone object
+  private int flightFloor; // feet
 
   public TelloDroneAdapter(TelloDrone telloDrone) {
     this.telloDrone = telloDrone;
+    this.flightFloor = 0;
+  }
+
+  private int pixelsToFeet(int pixels) {
+    return pixels / Constants.PIXELS_PER_FOOT;
+  }
+
+  /*
+   * flightFloor: pixels
+   */
+  public void setFlightFloor(int flightFloor) {
+    this.flightFloor = pixelsToFeet(flightFloor);
+  }
+
+  private void startFlight() {
+    try {
+      telloDrone.activateSDK();
+      telloDrone.takeoff();
+      // make sure the drone is 5 feet above the flight floor
+      telloDrone.increaseAltitude(flightFloor + 5);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void endFlight() {
+    try {
+      telloDrone.land();
+      telloDrone.end();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /*
@@ -22,92 +55,59 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
   public void scanFarm() {
     if (isDeployed()) return;
 
+    int vDistance = Constants.REAL_DRONE_Y_BOUND;
+    int rDistance = Constants.REAL_DRONE_X_BOUND / 5;
+    int lDistance = Constants.REAL_DRONE_X_BOUND;
+
     try {
-      // unsure where to apply this
-      int flightFloor = Constants.ITEM_HEIGHT_MAX / 25; // converted to feet
+      startFlight();
 
-      int travelVerticalDistance = Constants.REAL_DRONE_Y_BOUND;
-      int travelLeftDistance = Constants.REAL_DRONE_X_BOUND;
-      int travelRightDistance = Constants.REAL_DRONE_X_BOUND / 5;
-
-      // initial turn
-      telloDrone.turnCCW(90);
-      System.out.println("The drone turns 90 degrees counter clockwise");
-
-      for (int i = 0; i < 2; i++) {
-        telloDrone.flyForward(travelVerticalDistance);
-        System.out.println(
-          "The drone travels forward " +
-          travelVerticalDistance +
-          " feet to the bottom of the farm"
-        );
-        telloDrone.turnCCW(90);
-        System.out.println("The drone turns 90 degrees counter clockwise");
-        telloDrone.flyForward(travelRightDistance);
-        System.out.println(
-          "The drone travels forward " +
-          travelRightDistance +
-          " feet to the right"
-        );
-        telloDrone.turnCCW(90);
-        System.out.println("The drone turns 90 degrees counter clockwise");
-        telloDrone.flyForward(travelVerticalDistance);
-        System.out.println(
-          "The drone travels forward " +
-          travelVerticalDistance +
-          " feet to the top of the farm"
-        );
+      for (int i = 0; i < 3; i++) {
+        // down
+        System.out.println("The drone turns 90 degrees clockwise");
         telloDrone.turnCW(90);
-        System.out.println("The drone turns 90 degree clockwise");
-        telloDrone.flyForward(travelRightDistance);
-        System.out.println(
-          "The drone travels forward " +
-          travelRightDistance +
-          " feet to the right"
-        );
-        telloDrone.turnCW(90);
-        System.out.println("The drone turns 90 degree clockwise");
+        System.out.printf("The drone flies forward %d feet", vDistance);
+        telloDrone.flyForward(vDistance);
+
+        // right
+        System.out.println("The drone turns 90 degrees counter clockwise");
+        telloDrone.turnCCW(90);
+        System.out.printf("The drone flies forward %d feet", rDistance);
+        telloDrone.flyForward(rDistance);
+
+        // up
+        System.out.println("The drone turns 90 degrees counter clockwise");
+        telloDrone.turnCCW(90);
+        System.out.printf("The drone flies forward %d feet", vDistance);
+        telloDrone.flyForward(vDistance);
+
+        if (i < 2) {
+          // right
+          System.out.println("The drone turns 90 degrees clockwise");
+          telloDrone.turnCW(90);
+          System.out.printf("The drone flies forward %d feet", rDistance);
+          telloDrone.flyForward(rDistance);
+        }
       }
 
-      telloDrone.flyForward(travelVerticalDistance);
-      System.out.println(
-        "The drone travels forward " +
-        travelVerticalDistance +
-        " feet to the bottom of the farm"
-      );
-      telloDrone.turnCCW(90);
+      // left
       System.out.println("The drone turns 90 degrees counter clockwise");
-      telloDrone.flyForward(travelRightDistance);
-      System.out.println(
-        "The drone travels forward " +
-        travelRightDistance +
-        " feet to the right"
-      );
       telloDrone.turnCCW(90);
-      System.out.println("The drone turns 90 degrees counter clockwise");
-      telloDrone.flyForward(travelVerticalDistance);
-      System.out.println(
-        "The drone travels forward " +
-        travelVerticalDistance +
-        " feet to the top of the farm"
-      );
-      // at top right of farm here
+      System.out.printf("The drone flies forward %d feet", lDistance);
+      telloDrone.flyForward(lDistance);
 
-      telloDrone.turnCCW(90);
-      System.out.println("The drone turns 90 degrees counter clockwise");
-      telloDrone.flyForward(travelLeftDistance);
-      System.out.println(
-        "The drone travels forward " +
-        travelLeftDistance +
-        " feet to the left back to the origin"
-      );
+      endFlight();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
+  /*
+   * Assuming visitLocation and scanFarm are blocking until completion,
+   * this method can only be called when the drone is not deployed.
+   * Therefore, it always returns false.
+   */
   public boolean isDeployed() {
-    // TODO: actually return whether or not the drone is deployed
-    return true;
+    return false;
   }
 }
