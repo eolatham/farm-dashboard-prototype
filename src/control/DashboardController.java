@@ -31,6 +31,7 @@ import javafx.scene.control.TreeView;
 
 public class DashboardController {
   private Main main;
+  private ItemContainer rootItemContainer;
   private AnimatedDrone animatedDrone;
   private TelloDroneAdapter telloDroneAdapter;
 
@@ -146,25 +147,50 @@ public class DashboardController {
     droneModeButton.setToggleGroup(modeToggleGroup);
   }
 
+  private void addToInfoLog(String message) {
+    infoLog.appendText(String.format("%s\n", message));
+  }
+
+  private int getTalletItemHeight(ItemComponent itemComponent) {
+    int h = itemComponent.getHeight();
+    if (itemComponent instanceof ItemContainer) {
+      for (ItemComponent c : itemComponent.getComponents()) {
+        int ch = getTalletItemHeight(c);
+        if (ch > h) h = ch;
+      }
+    }
+    return h;
+  }
+
+  private void updateTelloDroneAdapterFlightFloor() {
+    telloDroneAdapter.setFlightFloor(getTalletItemHeight(rootItemContainer));
+    addToInfoLog(
+      String.format(
+        "Updated drone flight floor with: %d feet",
+        telloDroneAdapter.getFlightFloor()
+      )
+    );
+  }
+
   public void setMain(Main main) {
     this.main = main;
 
-    ItemContainer root = main.getRootItemContainer();
-    root.setLength(Constants.SCREEN_FARM_LENGTH);
-    root.setWidth(Constants.SCREEN_FARM_WIDTH);
-    rootTreeItem = new TreeItem<ItemComponent>(root);
+    rootItemContainer = main.getRootItemContainer();
+    rootItemContainer.setLength(Constants.REAL_FARM_LENGTH);
+    rootItemContainer.setWidth(Constants.REAL_FARM_WIDTH);
+    rootTreeItem = new TreeItem<ItemComponent>(rootItemContainer);
     ItemContainer commandCenter = new ItemContainer("Command Center");
-    commandCenter.setLength(Constants.SCREEN_DRONE_SIZE);
-    commandCenter.setWidth(Constants.SCREEN_DRONE_SIZE);
+    commandCenter.setLength(Constants.REAL_DRONE_SIZE);
+    commandCenter.setWidth(Constants.REAL_DRONE_SIZE);
     commandCenterTreeItem = new TreeItem<ItemComponent>(commandCenter);
     Item droneItem = new Item("Drone");
-    droneItem.setLength(Constants.SCREEN_DRONE_SIZE);
-    droneItem.setWidth(Constants.SCREEN_DRONE_SIZE);
+    droneItem.setLength(Constants.REAL_DRONE_SIZE);
+    droneItem.setWidth(Constants.REAL_DRONE_SIZE);
     droneItem.setPurchasePrice(1000);
     droneItem.setMarketValue(900);
     droneTreeItem = new TreeItem<ItemComponent>(droneItem);
     commandCenter.addItemComponent(droneItem);
-    root.addItemComponent(commandCenter);
+    rootItemContainer.addItemComponent(commandCenter);
 
     farmTreeView.setEditable(false);
     farmTreeView.setRoot(rootTreeItem);
@@ -178,10 +204,7 @@ public class DashboardController {
     farmMap.getChildren().add(animatedDrone);
 
     telloDroneAdapter = main.getTelloDroneAdapter();
-  }
-
-  private void addToInfoLog(String message) {
-    infoLog.appendText(String.format("%s\n", message));
+    updateTelloDroneAdapterFlightFloor();
   }
 
   private TreeItem<ItemComponent> getCurrentSelection() {
@@ -204,6 +227,7 @@ public class DashboardController {
       selection.getChildren().add(treeItem);
       farmMap.getChildren().add(component.getRectangle());
       animatedDrone.toFront();
+      updateTelloDroneAdapterFlightFloor();
       addToInfoLog(
         String.format("%s added", component.getClass().getSimpleName())
       );
@@ -246,12 +270,13 @@ public class DashboardController {
       parent.getValue().deleteItemComponent(selection.getValue());
       parent.getChildren().remove(selection);
       farmMap.getChildren().removeAll(component.getRectangles());
+      updateTelloDroneAdapterFlightFloor();
       addToInfoLog("Selection deleted");
       loadSelectionDetails();
     }
   }
 
-  private void refreshselectionAggregatePurchasePrice(ItemComponent component) {
+  private void refreshSelectionAggregatePurchasePrice(ItemComponent component) {
     AggregatePurchasePriceVisitor visitor = new AggregatePurchasePriceVisitor();
     component.acceptVisitor(visitor);
     selectionAggregatePurchasePrice.setText(
@@ -259,7 +284,7 @@ public class DashboardController {
     );
   }
 
-  private void refreshselectionAggregateMarketValue(ItemComponent component) {
+  private void refreshSelectionAggregateMarketValue(ItemComponent component) {
     AggregateMarketValueVisitor visitor = new AggregateMarketValueVisitor();
     component.acceptVisitor(visitor);
     selectionAggregateMarketValue.setText(String.format("%d", visitor.value()));
@@ -291,8 +316,8 @@ public class DashboardController {
       selectionMarketValue.setText("");
       selectionMarketValue.setDisable(true);
     }
-    refreshselectionAggregatePurchasePrice(component);
-    refreshselectionAggregateMarketValue(component);
+    refreshSelectionAggregatePurchasePrice(component);
+    refreshSelectionAggregateMarketValue(component);
     addToInfoLog("Selection details loaded");
   }
 
@@ -333,6 +358,7 @@ public class DashboardController {
       farmMap.getChildren().remove(component.getRectangle());
       farmMap.getChildren().add(component.getRectangle());
       animatedDrone.toFront();
+      updateTelloDroneAdapterFlightFloor();
       addToInfoLog("Selection updated");
       loadSelectionDetails();
     }
@@ -388,7 +414,7 @@ public class DashboardController {
       if (telloDroneAdapter.isDeployed()) addToInfoLog(
         "Failed to scan; drone is already deployed"
       ); else {
-        animatedDrone.scanFarm();
+        telloDroneAdapter.scanFarm();
         addToInfoLog("Drone deployed");
       }
     } else {

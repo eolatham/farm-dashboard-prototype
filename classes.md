@@ -10,21 +10,24 @@
 
 ### Entity Classes
 
-- Item Component Class (composite, pro-transparency)
-  - Item Class
-  - Item Container Class
-- Item Component Visitor Class
-  - Aggregate Purchase Price Visitor Class
-  - Aggregate Market Value Visitor Class
-- Drone Class
+- **ItemComponent** class (composite, pro-transparency)
+  - **Item** class
+  - **ItemContainer** class
+- **ItemComponentVisitor** class
+  - **AggregatePurchasePriceVisitor** class
+  - **AggregateMarketValueVisitor** class
+- **AnimatedDroneInterface** class
+  - **AnimatedDrone** class
+  - **TelloDroneAdapter** class (adapts **TelloDrone** to **AnimatedDrone**)
+- **TelloDrone** class (provided by Seth)
 
 ### Boundary Classes
 
-- Dashboard Class (main)
+- **Dashboard** class (main)
 
 ### Control Classes
 
-- Dashboard Controller Class (singleton)
+- **DashboardController** class
 
 ### Class Diagram
 

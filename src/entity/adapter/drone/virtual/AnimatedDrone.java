@@ -132,7 +132,7 @@ public class AnimatedDrone extends ImageView implements AnimatedDroneInterface {
   }
 
   /*
-   * x, y: pixels
+   * x, y: feet
    */
   public void visitLocation(int x, int y) throws IllegalArgumentException {
     if (isDeployed()) return;
@@ -143,6 +143,9 @@ public class AnimatedDrone extends ImageView implements AnimatedDroneInterface {
       x > Constants.SCREEN_DRONE_X_BOUND ||
       y > Constants.SCREEN_DRONE_Y_BOUND
     ) throw new IllegalArgumentException("Location is out of bounds!");
+
+    x = x * Constants.PIXELS_PER_FOOT;
+    y = y * Constants.PIXELS_PER_FOOT;
 
     Duration keyFrameDuration = secondsToTravelFromAToB(
       getTranslateX(),

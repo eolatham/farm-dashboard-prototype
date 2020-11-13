@@ -10,14 +10,14 @@ public abstract class ItemComponent {
   protected String name = "Unnamed";
   protected int locationX = 0; // feet
   protected int locationY = 0; // feet
-  protected int length = Constants.ITEM_LENGTH_MIN; // feet
-  protected int width = Constants.ITEM_WIDTH_MIN; // feet
-  protected int height = Constants.ITEM_HEIGHT_MIN; // feet
+  protected int length = Constants.REAL_ITEM_LENGTH_MIN; // feet
+  protected int width = Constants.REAL_ITEM_WIDTH_MIN; // feet
+  protected int height = Constants.REAL_ITEM_HEIGHT_MIN; // feet
   protected Rectangle rectangle = new Rectangle(
     0,
     0,
-    Constants.ITEM_LENGTH_MIN,
-    Constants.ITEM_WIDTH_MIN
+    Constants.SCREEN_ITEM_LENGTH_MIN,
+    Constants.SCREEN_ITEM_WIDTH_MIN
   ); // 2D representation
   protected int purchasePrice = 0; // dollars
 
@@ -31,9 +31,9 @@ public abstract class ItemComponent {
 
   public void setLocationX(int x) {
     if (x < 0) x = 0;
-    if (x > Constants.SCREEN_ITEM_X_BOUND) x = Constants.SCREEN_ITEM_X_BOUND;
+    if (x > Constants.REAL_ITEM_X_BOUND) x = Constants.REAL_ITEM_X_BOUND;
     locationX = x;
-    rectangle.setX(x);
+    rectangle.setX(x * Constants.PIXELS_PER_FOOT);
   }
 
   public int getLocationX() {
@@ -42,9 +42,9 @@ public abstract class ItemComponent {
 
   public void setLocationY(int y) {
     if (y < 0) y = 0;
-    if (y > Constants.SCREEN_ITEM_Y_BOUND) y = Constants.SCREEN_ITEM_Y_BOUND;
+    if (y > Constants.REAL_ITEM_Y_BOUND) y = Constants.REAL_ITEM_Y_BOUND;
     locationY = y;
-    rectangle.setY(y);
+    rectangle.setY(y * Constants.PIXELS_PER_FOOT);
   }
 
   public int getLocationY() {
@@ -52,10 +52,12 @@ public abstract class ItemComponent {
   }
 
   public void setLength(int length) {
-    if (length < Constants.ITEM_LENGTH_MIN) length = Constants.ITEM_LENGTH_MIN;
-    if (length > Constants.ITEM_LENGTH_MAX) length = Constants.ITEM_LENGTH_MAX;
+    if (length < Constants.REAL_ITEM_LENGTH_MIN) length =
+      Constants.REAL_ITEM_LENGTH_MIN;
+    if (length > Constants.REAL_ITEM_LENGTH_MAX) length =
+      Constants.REAL_ITEM_LENGTH_MAX;
     this.length = length;
-    rectangle.setHeight(length);
+    rectangle.setHeight(length * Constants.PIXELS_PER_FOOT);
   }
 
   public int getLength() {
@@ -63,10 +65,12 @@ public abstract class ItemComponent {
   }
 
   public void setWidth(int width) {
-    if (width < Constants.ITEM_WIDTH_MIN) width = Constants.ITEM_WIDTH_MIN;
-    if (width > Constants.ITEM_WIDTH_MAX) width = Constants.ITEM_WIDTH_MAX;
+    if (width < Constants.REAL_ITEM_WIDTH_MIN) width =
+      Constants.REAL_ITEM_WIDTH_MIN;
+    if (width > Constants.REAL_ITEM_WIDTH_MAX) width =
+      Constants.REAL_ITEM_WIDTH_MAX;
     this.width = width;
-    rectangle.setWidth(width);
+    rectangle.setWidth(width * Constants.PIXELS_PER_FOOT);
   }
 
   public int getWidth() {
@@ -74,8 +78,10 @@ public abstract class ItemComponent {
   }
 
   public void setHeight(int height) {
-    if (height < Constants.ITEM_HEIGHT_MIN) height = Constants.ITEM_HEIGHT_MIN;
-    if (height > Constants.ITEM_HEIGHT_MAX) height = Constants.ITEM_HEIGHT_MAX;
+    if (height < Constants.REAL_ITEM_HEIGHT_MIN) height =
+      Constants.REAL_ITEM_HEIGHT_MIN;
+    if (height > Constants.REAL_ITEM_HEIGHT_MAX) height =
+      Constants.REAL_ITEM_HEIGHT_MAX;
     this.height = height;
   }
 
