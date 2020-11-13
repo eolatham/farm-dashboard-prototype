@@ -147,20 +147,45 @@ public class DashboardController {
     droneModeButton.setToggleGroup(modeToggleGroup);
   }
 
+  private void addToInfoLog(String message) {
+    infoLog.appendText(String.format("%s\n", message));
+  }
+
+  private int getTalletItemHeight(ItemComponent itemComponent) {
+    int h = itemComponent.getHeight();
+    if (itemComponent instanceof ItemContainer) {
+      for (ItemComponent c : itemComponent.getComponents()) {
+        int ch = getTalletItemHeight(c);
+        if (ch > h) h = ch;
+      }
+    }
+    return h;
+  }
+
+  private void updateTelloDroneAdapterFlightFloor() {
+    telloDroneAdapter.setFlightFloor(getTalletItemHeight(rootItemContainer));
+    addToInfoLog(
+      String.format(
+        "Updated drone flight floor with: %d feet",
+        telloDroneAdapter.getFlightFloor()
+      )
+    );
+  }
+
   public void setMain(Main main) {
     this.main = main;
 
     rootItemContainer = main.getRootItemContainer();
-    rootItemContainer.setLength(Constants.SCREEN_FARM_LENGTH);
-    rootItemContainer.setWidth(Constants.SCREEN_FARM_WIDTH);
+    rootItemContainer.setLength(Constants.REAL_FARM_LENGTH);
+    rootItemContainer.setWidth(Constants.REAL_FARM_WIDTH);
     rootTreeItem = new TreeItem<ItemComponent>(rootItemContainer);
     ItemContainer commandCenter = new ItemContainer("Command Center");
-    commandCenter.setLength(Constants.SCREEN_DRONE_SIZE);
-    commandCenter.setWidth(Constants.SCREEN_DRONE_SIZE);
+    commandCenter.setLength(Constants.REAL_DRONE_SIZE);
+    commandCenter.setWidth(Constants.REAL_DRONE_SIZE);
     commandCenterTreeItem = new TreeItem<ItemComponent>(commandCenter);
     Item droneItem = new Item("Drone");
-    droneItem.setLength(Constants.SCREEN_DRONE_SIZE);
-    droneItem.setWidth(Constants.SCREEN_DRONE_SIZE);
+    droneItem.setLength(Constants.REAL_DRONE_SIZE);
+    droneItem.setWidth(Constants.REAL_DRONE_SIZE);
     droneItem.setPurchasePrice(1000);
     droneItem.setMarketValue(900);
     droneTreeItem = new TreeItem<ItemComponent>(droneItem);
@@ -180,25 +205,6 @@ public class DashboardController {
 
     telloDroneAdapter = main.getTelloDroneAdapter();
     updateTelloDroneAdapterFlightFloor();
-  }
-
-  private int getTalletItemHeight(ItemComponent itemComponent) {
-    int h = itemComponent.getHeight();
-    if (itemComponent instanceof ItemContainer) {
-      for (ItemComponent c : itemComponent.getComponents()) {
-        int ch = getTalletItemHeight(c);
-        if (ch > h) h = ch;
-      }
-    }
-    return h;
-  }
-
-  private void updateTelloDroneAdapterFlightFloor() {
-    telloDroneAdapter.setFlightFloor(getTalletItemHeight(rootItemContainer));
-  }
-
-  private void addToInfoLog(String message) {
-    infoLog.appendText(String.format("%s\n", message));
   }
 
   private TreeItem<ItemComponent> getCurrentSelection() {
@@ -408,7 +414,7 @@ public class DashboardController {
       if (telloDroneAdapter.isDeployed()) addToInfoLog(
         "Failed to scan; drone is already deployed"
       ); else {
-        animatedDrone.scanFarm();
+        telloDroneAdapter.scanFarm();
         addToInfoLog("Drone deployed");
       }
     } else {

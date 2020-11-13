@@ -13,15 +13,15 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     this.flightFloor = 0;
   }
 
-  private int pixelsToFeet(int pixels) {
-    return pixels / Constants.PIXELS_PER_FOOT;
-  }
-
   /*
-   * flightFloor: pixels
+   * flightFloor: feet
    */
   public void setFlightFloor(int flightFloor) {
-    this.flightFloor = pixelsToFeet(flightFloor);
+    this.flightFloor = flightFloor;
+  }
+
+  public int getFlightFloor() {
+    return flightFloor;
   }
 
   private void startFlight() {
@@ -45,7 +45,7 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
   }
 
   /*
-   * x, y: pixels
+   * x, y: feet
    */
   public void visitLocation(int x, int y) throws IllegalArgumentException {
     // TODO: make physical drone do what our animated drone does
