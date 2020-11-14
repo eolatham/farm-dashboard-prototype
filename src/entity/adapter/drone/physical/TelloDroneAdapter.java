@@ -33,12 +33,16 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     return false;
   }
 
+  private int feetToCentimeters(int feet) {
+    return feet * Constants.CENTIMETERS_PER_FOOT;
+  }
+
   private void startFlight() {
     try {
       telloDrone.activateSDK();
       telloDrone.takeoff();
       // make sure the drone is 5 feet above the flight floor
-      telloDrone.increaseAltitude(flightFloor + 5);
+      telloDrone.increaseAltitude(feetToCentimeters(flightFloor + 5));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -73,7 +77,9 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
       startFlight();
 
       int turnValue = (int) Math.round(angleFromAToB(0, 0, x, y));
-      int distanceToTravel = (int) Math.round(Math.hypot(x, y));
+      int distanceToTravel = feetToCentimeters(
+        (int) Math.round(Math.hypot(x, y))
+      );
 
       // travel to
       System.out.println("The drone turns to face the specified location");
@@ -98,9 +104,9 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
   public void scanFarm() {
     if (isDeployed()) return;
 
-    int vDistance = Constants.REAL_DRONE_Y_BOUND;
-    int rDistance = Constants.REAL_DRONE_X_BOUND / 5;
-    int lDistance = Constants.REAL_DRONE_X_BOUND;
+    int vDistance = feetToCentimeters(Constants.REAL_DRONE_Y_BOUND);
+    int rDistance = feetToCentimeters(Constants.REAL_DRONE_X_BOUND / 5);
+    int lDistance = feetToCentimeters(Constants.REAL_DRONE_X_BOUND);
 
     try {
       startFlight();
@@ -109,26 +115,26 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
         // down
         System.out.println("The drone turns 90 degrees clockwise");
         telloDrone.turnCW(90);
-        System.out.printf("The drone flies forward %d feet", vDistance);
+        System.out.printf("The drone flies forward %d feet\n", vDistance);
         telloDrone.flyForward(vDistance);
 
         // right
         System.out.println("The drone turns 90 degrees counter clockwise");
         telloDrone.turnCCW(90);
-        System.out.printf("The drone flies forward %d feet", rDistance);
+        System.out.printf("The drone flies forward %d feet\n", rDistance);
         telloDrone.flyForward(rDistance);
 
         // up
         System.out.println("The drone turns 90 degrees counter clockwise");
         telloDrone.turnCCW(90);
-        System.out.printf("The drone flies forward %d feet", vDistance);
+        System.out.printf("The drone flies forward %d feet\n", vDistance);
         telloDrone.flyForward(vDistance);
 
         if (i < 2) {
           // right
           System.out.println("The drone turns 90 degrees clockwise");
           telloDrone.turnCW(90);
-          System.out.printf("The drone flies forward %d feet", rDistance);
+          System.out.printf("The drone flies forward %d feet\n", rDistance);
           telloDrone.flyForward(rDistance);
         }
       }
@@ -136,7 +142,7 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
       // left
       System.out.println("The drone turns 90 degrees counter clockwise");
       telloDrone.turnCCW(90);
-      System.out.printf("The drone flies forward %d feet", lDistance);
+      System.out.printf("The drone flies forward %d feet\n", lDistance);
       telloDrone.flyForward(lDistance);
 
       endFlight();

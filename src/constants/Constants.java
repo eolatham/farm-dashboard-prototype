@@ -23,6 +23,7 @@ public class Constants {
 
   // real farm constants
   public static final int PIXELS_PER_FOOT = 25; // screen farm pixels per real farm feet
+  public static final int CENTIMETERS_PER_FOOT = 30;
 
   public static final int REAL_FARM_LENGTH = 32; // feet
   public static final int REAL_FARM_WIDTH = 24; // feet
