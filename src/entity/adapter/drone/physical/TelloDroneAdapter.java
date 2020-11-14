@@ -39,12 +39,14 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
 
   private void startFlight() throws IOException {
     telloDrone.activateSDK();
+    System.out.println("The drone takes off");
     telloDrone.takeoff();
     System.out.println("The drone rises 5 feet above the flight floor");
     telloDrone.increaseAltitude(feetToCentimeters(flightFloor + 5));
   }
 
   private void endFlight() throws IOException {
+    System.out.println("The drone lands");
     telloDrone.land();
   }
 
@@ -57,6 +59,7 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
    */
   public void visitLocation(int x, int y) throws IllegalArgumentException {
     if (isDeployed()) return;
+    if (x == 0 && y == 0) return;
     if (
       x < 0 ||
       y < 0 ||
@@ -64,13 +67,13 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
       y > Constants.REAL_FARM_WIDTH
     ) throw new IllegalArgumentException("Location is out of bounds!");
 
+    int turnValue = (int) Math.round(angleFromAToB(0, 0, x, y));
+    int distanceToTravel = feetToCentimeters(
+      (int) Math.round(Math.hypot(x, y))
+    );
+
     try {
       startFlight();
-
-      int turnValue = (int) Math.round(angleFromAToB(0, 0, x, y));
-      int distanceToTravel = feetToCentimeters(
-        (int) Math.round(Math.hypot(x, y))
-      );
 
       // travel to
       System.out.println("The drone turns to face the specified location");
