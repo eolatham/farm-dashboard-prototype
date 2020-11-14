@@ -24,6 +24,15 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     return flightFloor;
   }
 
+  /*
+   * Assuming visitLocation and scanFarm are blocking until completion,
+   * this method can only be called when the drone is not deployed.
+   * Therefore, it always returns false.
+   */
+  public boolean isDeployed() {
+    return false;
+  }
+
   private void startFlight() {
     try {
       telloDrone.activateSDK();
@@ -44,12 +53,46 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     }
   }
 
+  private double angleFromAToB(double aX, double aY, double bX, double bY) {
+    return Math.toDegrees(Math.atan2(bY - aY, bX - aX));
+  }
+
   /*
    * x, y: feet
    */
   public void visitLocation(int x, int y) throws IllegalArgumentException {
-    // TODO: make physical drone do what our animated drone does
+    if (isDeployed()) return;
+    if (
+      x < 0 ||
+      y < 0 ||
+      x > Constants.REAL_FARM_LENGTH ||
+      y > Constants.REAL_FARM_WIDTH
+    ) throw new IllegalArgumentException("Location is out of bounds!");
 
+    try {
+      startFlight();
+
+      int turnValue = (int) Math.round(angleFromAToB(0, 0, x, y));
+      int distanceToTravel = (int) Math.round(Math.hypot(x, y));
+
+      // travel to
+      System.out.println("The drone turns to face the specified location");
+      telloDrone.turnCW(turnValue);
+      System.out.println("The drone flies to the specified location");
+      telloDrone.flyForward(distanceToTravel);
+      System.out.println("The drone hovers over the specified location");
+      telloDrone.hoverInPlace((int) Constants.DRONE_STOP_DURATION.toSeconds());
+
+      // travel back
+      System.out.println("The drone turns to face the starting location");
+      telloDrone.turnCW(180);
+      System.out.println("The drone flies to the starting location");
+      telloDrone.flyForward(distanceToTravel);
+
+      endFlight();
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   public void scanFarm() {
@@ -100,14 +143,5 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /*
-   * Assuming visitLocation and scanFarm are blocking until completion,
-   * this method can only be called when the drone is not deployed.
-   * Therefore, it always returns false.
-   */
-  public boolean isDeployed() {
-    return false;
   }
 }
