@@ -384,11 +384,11 @@ public class DashboardController {
           "Failed to visit; drone is already deployed"
         ); else {
           ItemComponent component = selection.getValue();
+          addToInfoLog("Deploying drone");
           telloDroneAdapter.visitLocation(
             component.getLocationX(),
             component.getLocationY()
           );
-          addToInfoLog("Drone deployed");
         }
       } else {
         if (animatedDrone.isDeployed()) addToInfoLog(
@@ -414,8 +414,8 @@ public class DashboardController {
       if (telloDroneAdapter.isDeployed()) addToInfoLog(
         "Failed to scan; drone is already deployed"
       ); else {
+        addToInfoLog("Deploying drone");
         telloDroneAdapter.scanFarm();
-        addToInfoLog("Drone deployed");
       }
     } else {
       if (animatedDrone.isDeployed()) addToInfoLog(
