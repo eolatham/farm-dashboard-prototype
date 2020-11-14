@@ -40,7 +40,7 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
   private void startFlight() throws IOException {
     telloDrone.activateSDK();
     telloDrone.takeoff();
-    // make sure the drone is 5 feet above the flight floor
+    System.out.println("The drone rises 5 feet above the flight floor");
     telloDrone.increaseAltitude(feetToCentimeters(flightFloor + 5));
   }
 
@@ -106,26 +106,26 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
         // down
         System.out.println("The drone turns 90 degrees clockwise");
         telloDrone.turnCW(90);
-        System.out.printf("The drone flies forward %d feet\n", vDistance);
+        System.out.printf("The drone flies forward %d cm\n", vDistance);
         telloDrone.flyForward(vDistance);
 
         // right
         System.out.println("The drone turns 90 degrees counter clockwise");
         telloDrone.turnCCW(90);
-        System.out.printf("The drone flies forward %d feet\n", rDistance);
+        System.out.printf("The drone flies forward %d cm\n", rDistance);
         telloDrone.flyForward(rDistance);
 
         // up
         System.out.println("The drone turns 90 degrees counter clockwise");
         telloDrone.turnCCW(90);
-        System.out.printf("The drone flies forward %d feet\n", vDistance);
+        System.out.printf("The drone flies forward %d cm\n", vDistance);
         telloDrone.flyForward(vDistance);
 
         if (i < 2) {
           // right
           System.out.println("The drone turns 90 degrees clockwise");
           telloDrone.turnCW(90);
-          System.out.printf("The drone flies forward %d feet\n", rDistance);
+          System.out.printf("The drone flies forward %d cm\n", rDistance);
           telloDrone.flyForward(rDistance);
         }
       }
@@ -133,7 +133,7 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
       // left
       System.out.println("The drone turns 90 degrees counter clockwise");
       telloDrone.turnCCW(90);
-      System.out.printf("The drone flies forward %d feet\n", lDistance);
+      System.out.printf("The drone flies forward %d cm\n", lDistance);
       telloDrone.flyForward(lDistance);
 
       endFlight();
