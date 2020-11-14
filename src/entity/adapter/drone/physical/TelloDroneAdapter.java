@@ -24,6 +24,15 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     return flightFloor;
   }
 
+  /*
+   * Assuming visitLocation and scanFarm are blocking until completion,
+   * this method can only be called when the drone is not deployed.
+   * Therefore, it always returns false.
+   */
+  public boolean isDeployed() {
+    return false;
+  }
+
   private void startFlight() {
     try {
       telloDrone.activateSDK();
@@ -134,14 +143,5 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /*
-   * Assuming visitLocation and scanFarm are blocking until completion,
-   * this method can only be called when the drone is not deployed.
-   * Therefore, it always returns false.
-   */
-  public boolean isDeployed() {
-    return false;
   }
 }

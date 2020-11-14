@@ -31,6 +31,14 @@ public class AnimatedDrone extends ImageView implements AnimatedDroneInterface {
     );
   }
 
+  public boolean isDeployed() {
+    return (
+      goToOriginAnimation.getStatus() == Animation.Status.RUNNING ||
+      visitLocationAnimation.getStatus() == Animation.Status.RUNNING ||
+      scanFarmAnimation.getStatus() == Animation.Status.RUNNING
+    );
+  }
+
   /*
    * aX, aY, bX, bY: pixels
    * speed: pixels per second
@@ -272,13 +280,5 @@ public class AnimatedDrone extends ImageView implements AnimatedDroneInterface {
     // play animation
     scanFarmAnimation.setCycleCount(1);
     scanFarmAnimation.play();
-  }
-
-  public boolean isDeployed() {
-    return (
-      goToOriginAnimation.getStatus() == Animation.Status.RUNNING ||
-      visitLocationAnimation.getStatus() == Animation.Status.RUNNING ||
-      scanFarmAnimation.getStatus() == Animation.Status.RUNNING
-    );
   }
 }
