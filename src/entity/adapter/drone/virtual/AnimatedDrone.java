@@ -140,8 +140,8 @@ public class AnimatedDrone extends ImageView implements AnimatedDroneInterface {
     if (
       x < 0 ||
       y < 0 ||
-      x > Constants.SCREEN_DRONE_X_BOUND ||
-      y > Constants.SCREEN_DRONE_Y_BOUND
+      x > Constants.REAL_DRONE_X_BOUND ||
+      y > Constants.REAL_DRONE_Y_BOUND
     ) throw new IllegalArgumentException("Location is out of bounds!");
 
     x = x * Constants.PIXELS_PER_FOOT;
