@@ -37,24 +37,15 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
     return feet * Constants.CENTIMETERS_PER_FOOT;
   }
 
-  private void startFlight() {
-    try {
-      telloDrone.activateSDK();
-      telloDrone.takeoff();
-      // make sure the drone is 5 feet above the flight floor
-      telloDrone.increaseAltitude(feetToCentimeters(flightFloor + 5));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  private void startFlight() throws IOException {
+    telloDrone.activateSDK();
+    telloDrone.takeoff();
+    // make sure the drone is 5 feet above the flight floor
+    telloDrone.increaseAltitude(feetToCentimeters(flightFloor + 5));
   }
 
-  private void endFlight() {
-    try {
-      telloDrone.land();
-      telloDrone.end();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  private void endFlight() throws IOException {
+    telloDrone.land();
   }
 
   private double angleFromAToB(double aX, double aY, double bX, double bY) {
