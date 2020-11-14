@@ -43,45 +43,47 @@ public class TelloDroneAdapter implements AnimatedDroneInterface {
       e.printStackTrace();
     }
   }
-  
+
   private double angleFromAToB(double aX, double aY, double bX, double bY) {
-	    return Math.toDegrees(Math.atan2(bY - aY, bX - aX));
+    return Math.toDegrees(Math.atan2(bY - aY, bX - aX));
   }
 
   /*
    * x, y: feet
    */
   public void visitLocation(int x, int y) throws IllegalArgumentException {
-	if (isDeployed()) return;
-	if (
-	   x < 0 ||
-	   y < 0 ||
-	   x > Constants.REAL_FARM_LENGTH ||
-	   y > Constants.REAL_FARM_WIDTH
-	   ) throw new IllegalArgumentException("Location is out of bounds!");
-	try {
-	  startFlight();	
-	  
-	  int turnValue = (int) Math.round(angleFromAToB(0, 0, x, y));
-	  int distanceToTravel = (int) Math.round(Math.sqrt((0-x)*(0-x)-(0-y)*(0-y)));
-	  
-	  // Traveling to.
-	  System.out.println("The drone turns to face the item.");
-	  telloDrone.turnCW(turnValue);
-      System.out.println("The drone flies to the specified position.");
+    if (isDeployed()) return;
+    if (
+      x < 0 ||
+      y < 0 ||
+      x > Constants.REAL_FARM_LENGTH ||
+      y > Constants.REAL_FARM_WIDTH
+    ) throw new IllegalArgumentException("Location is out of bounds!");
+
+    try {
+      startFlight();
+
+      int turnValue = (int) Math.round(angleFromAToB(0, 0, x, y));
+      int distanceToTravel = (int) Math.round(Math.hypot(x, y));
+
+      // travel to
+      System.out.println("The drone turns to face the specified location");
+      telloDrone.turnCW(turnValue);
+      System.out.println("The drone flies to the specified location");
       telloDrone.flyForward(distanceToTravel);
-      System.out.println("The drone has arrived at the position.");
-      
-      // Traveling back.
-      System.out.println("The drone turns to face the starting position.");
+      System.out.println("The drone hovers over the specified location");
+      telloDrone.hoverInPlace((int) Constants.DRONE_STOP_DURATION.toSeconds());
+
+      // travel back
+      System.out.println("The drone turns to face the starting location");
       telloDrone.turnCW(180);
-      System.out.println("The drone flies to the origin.");
+      System.out.println("The drone flies to the starting location");
       telloDrone.flyForward(distanceToTravel);
-      System.out.println("The drone has arrived at the origin.");
-      
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+
+      endFlight();
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   public void scanFarm() {
