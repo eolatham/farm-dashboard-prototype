@@ -1,10 +1,12 @@
 package entity.composite;
 
+import java.io.Serializable;
 import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
-public class Item extends ItemComponent {
+public class Item extends ItemComponent implements Serializable {
+  private static final long serialVersionUID = -5356562559756304713L;
   protected int marketValue = 0; // dollars
 
   public Item() {

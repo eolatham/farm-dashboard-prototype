@@ -1,9 +1,11 @@
 package entity.composite;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
-public class ItemContainer extends ItemComponent {
+public class ItemContainer extends ItemComponent implements Serializable {
+  private static final long serialVersionUID = 1310630748841397939L;
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 
   public ItemContainer() {

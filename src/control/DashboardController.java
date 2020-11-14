@@ -5,8 +5,8 @@
 
 package control;
 
-import boundary.Main;
 import constants.Constants;
+import entity.adapter.drone.physical.TelloDrone;
 import entity.adapter.drone.physical.TelloDroneAdapter;
 import entity.adapter.drone.virtual.AnimatedDrone;
 import entity.composite.Item;
@@ -14,6 +14,11 @@ import entity.composite.ItemComponent;
 import entity.composite.ItemContainer;
 import entity.visitor.AggregateMarketValueVisitor;
 import entity.visitor.AggregatePurchasePriceVisitor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,7 +35,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 public class DashboardController {
-  private Main main;
   private ItemContainer rootItemContainer;
   private AnimatedDrone animatedDrone;
   private TelloDroneAdapter telloDroneAdapter;
@@ -100,38 +104,7 @@ public class DashboardController {
 
   private ToggleGroup modeToggleGroup = new ToggleGroup();
 
-  @FXML
-  public void initialize() {
-    assert infoLog !=
-    null : "fx:id=\"infoLog\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert farmTreeView !=
-    null : "fx:id=\"farmTreeView\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionName !=
-    null : "fx:id=\"selectionName\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionLocationX !=
-    null : "fx:id=\"selectionLocationX\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionLocationY !=
-    null : "fx:id=\"selectionLocationY\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionLength !=
-    null : "fx:id=\"selectionLength\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionWidth !=
-    null : "fx:id=\"selectionWidth\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionHeight !=
-    null : "fx:id=\"selectionHeight\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionPurchasePrice !=
-    null : "fx:id=\"selectionPurchasePrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionMarketValue !=
-    null : "fx:id=\"selectionMarketValue\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionAggregatePurchasePrice !=
-    null : "fx:id=\"selectionAggregatePurchasePrice\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert selectionAggregateMarketValue !=
-    null : "fx:id=\"selectionAggregateMarketValue\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert farmMap !=
-    null : "fx:id=\"farmMap\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert simulationModeButton !=
-    null : "fx:id=\"simulationModeButton\" was not injected: check your FXML file 'Dashboard.fxml'.";
-    assert droneModeButton !=
-    null : "fx:id=\"droneModeButton\" was not injected: check your FXML file 'Dashboard.fxml'.";
+  private void initializeInputsAndOutputs() {
     infoLog.setEditable(false);
     selectionLocationX.setTextFormatter(new TextFormatter<>(intFilter));
     selectionLocationY.setTextFormatter(new TextFormatter<>(intFilter));
@@ -147,8 +120,125 @@ public class DashboardController {
     droneModeButton.setToggleGroup(modeToggleGroup);
   }
 
+  private void initializeRootItemContainer() {
+    // create new rootItemContainer with required components
+    rootItemContainer = new ItemContainer("Root");
+    rootItemContainer.setLength(Constants.REAL_FARM_LENGTH);
+    rootItemContainer.setWidth(Constants.REAL_FARM_WIDTH);
+
+    ItemContainer commandCenter = new ItemContainer("Command Center");
+    commandCenter.setLength(Constants.REAL_DRONE_SIZE);
+    commandCenter.setWidth(Constants.REAL_DRONE_SIZE);
+
+    Item droneItem = new Item("Drone");
+    droneItem.setLength(Constants.REAL_DRONE_SIZE);
+    droneItem.setWidth(Constants.REAL_DRONE_SIZE);
+    droneItem.setPurchasePrice(1000);
+    droneItem.setMarketValue(900);
+
+    commandCenter.addItemComponent(droneItem);
+    rootItemContainer.addItemComponent(commandCenter);
+
+    // read previous rootItemContainer from file
+    ItemContainer loaded = null;
+    try {
+      FileInputStream fis = new FileInputStream("rootItemContainer.ser");
+      ObjectInputStream ois = new ObjectInputStream(fis);
+      loaded = (ItemContainer) ois.readObject();
+      ois.close();
+      fis.close();
+    } catch (IOException | ClassNotFoundException e) {
+      e.printStackTrace();
+      return;
+    }
+
+    // add other components from previous rootItemContainer
+    for (ItemComponent ic : loaded.getComponents()) {
+      if (ic.getName() != "Command Center") {
+        rootItemContainer.addItemComponent(ic);
+      }
+    }
+  }
+
+  private TreeItem<ItemComponent> createTreeItem(ItemComponent ic) {
+    if (ic instanceof Item || ic.getComponents().size() == 0) {
+      return new TreeItem<ItemComponent>(ic);
+    } else {
+      TreeItem<ItemComponent> ti = new TreeItem<ItemComponent>(ic);
+      for (ItemComponent child : ic.getComponents()) {
+        TreeItem<ItemComponent> cti = createTreeItem(child);
+        String name = cti.getValue().getName();
+        if (name == "Command Center") {
+          commandCenterTreeItem = cti;
+        } else if (name == "Drone") {
+          droneTreeItem = cti;
+        }
+        ti.getChildren().add(cti);
+      }
+      ti.setExpanded(true);
+      return ti;
+    }
+  }
+
+  private void initializeFarmTreeView(ItemComponent root) {
+    rootTreeItem = createTreeItem(root);
+    farmTreeView.setRoot(rootTreeItem);
+    farmTreeView.setEditable(false);
+  }
+
+  private void addRectanglesToFarmMap(ItemComponent ic) {
+    String name = ic.getName();
+    if (name != "Root" && name != "Command Center" && name != "Drone") {
+      farmMap.getChildren().add(ic.getRectangle());
+    }
+    if (ic instanceof ItemContainer) {
+      for (ItemComponent child : ic.getComponents()) {
+        addRectanglesToFarmMap(child);
+      }
+    }
+  }
+
+  private void initializeAnimatedDrone() {
+    animatedDrone = new AnimatedDrone("file:img/drone.png");
+    farmMap.getChildren().add(animatedDrone);
+  }
+
+  private void initializeTelloDroneAdapter() {
+    TelloDrone telloDrone = null;
+    try {
+      telloDrone = new TelloDrone();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    telloDroneAdapter = new TelloDroneAdapter(telloDrone);
+    updateTelloDroneAdapterFlightFloor();
+  }
+
+  @FXML
+  public void initialize() {
+    initializeInputsAndOutputs();
+    initializeRootItemContainer();
+    initializeFarmTreeView(rootItemContainer);
+    addRectanglesToFarmMap(rootItemContainer);
+    initializeAnimatedDrone();
+    initializeTelloDroneAdapter();
+  }
+
   private void addToInfoLog(String message) {
     infoLog.appendText(String.format("%s\n", message));
+  }
+
+  private void saveRootItemContainer() {
+    try {
+      FileOutputStream fos = new FileOutputStream("rootItemContainer.ser");
+      ObjectOutputStream oos = new ObjectOutputStream(fos);
+      oos.writeObject(rootItemContainer);
+      oos.close();
+      fos.close();
+      addToInfoLog("Changes saved");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private int getTalletItemHeight(ItemComponent itemComponent) {
@@ -170,41 +260,6 @@ public class DashboardController {
         telloDroneAdapter.getFlightFloor()
       )
     );
-  }
-
-  public void setMain(Main main) {
-    this.main = main;
-
-    rootItemContainer = main.getRootItemContainer();
-    rootItemContainer.setLength(Constants.REAL_FARM_LENGTH);
-    rootItemContainer.setWidth(Constants.REAL_FARM_WIDTH);
-    rootTreeItem = new TreeItem<ItemComponent>(rootItemContainer);
-    ItemContainer commandCenter = new ItemContainer("Command Center");
-    commandCenter.setLength(Constants.REAL_DRONE_SIZE);
-    commandCenter.setWidth(Constants.REAL_DRONE_SIZE);
-    commandCenterTreeItem = new TreeItem<ItemComponent>(commandCenter);
-    Item droneItem = new Item("Drone");
-    droneItem.setLength(Constants.REAL_DRONE_SIZE);
-    droneItem.setWidth(Constants.REAL_DRONE_SIZE);
-    droneItem.setPurchasePrice(1000);
-    droneItem.setMarketValue(900);
-    droneTreeItem = new TreeItem<ItemComponent>(droneItem);
-    commandCenter.addItemComponent(droneItem);
-    rootItemContainer.addItemComponent(commandCenter);
-
-    farmTreeView.setEditable(false);
-    farmTreeView.setRoot(rootTreeItem);
-    commandCenterTreeItem.getChildren().add(droneTreeItem);
-    rootTreeItem.getChildren().add(commandCenterTreeItem);
-    rootTreeItem.setExpanded(true);
-    commandCenterTreeItem.setExpanded(true);
-
-    farmMap.getChildren().add(commandCenter.getRectangle());
-    animatedDrone = main.getAnimatedDrone();
-    farmMap.getChildren().add(animatedDrone);
-
-    telloDroneAdapter = main.getTelloDroneAdapter();
-    updateTelloDroneAdapterFlightFloor();
   }
 
   private TreeItem<ItemComponent> getCurrentSelection() {
@@ -231,6 +286,7 @@ public class DashboardController {
       addToInfoLog(
         String.format("%s added", component.getClass().getSimpleName())
       );
+      saveRootItemContainer();
     }
   }
 
@@ -272,6 +328,7 @@ public class DashboardController {
       farmMap.getChildren().removeAll(component.getRectangles());
       updateTelloDroneAdapterFlightFloor();
       addToInfoLog("Selection deleted");
+      saveRootItemContainer();
       loadSelectionDetails();
     }
   }
@@ -360,6 +417,7 @@ public class DashboardController {
       animatedDrone.toFront();
       updateTelloDroneAdapterFlightFloor();
       addToInfoLog("Selection updated");
+      saveRootItemContainer();
       loadSelectionDetails();
     }
   }
