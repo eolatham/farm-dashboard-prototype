@@ -704,7 +704,7 @@ public class TelloDrone extends MultiRotorDrone {
     try {
       return Double.parseDouble(this.controller.sendCommand("speed?"));
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
@@ -714,7 +714,7 @@ public class TelloDrone extends MultiRotorDrone {
     try {
       return Integer.parseInt(this.controller.sendCommand("battery?"));
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
@@ -734,7 +734,7 @@ public class TelloDrone extends MultiRotorDrone {
       );
       return (temp1 + temp2) / 2;
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
@@ -748,7 +748,7 @@ public class TelloDrone extends MultiRotorDrone {
     try {
       return Double.parseDouble(this.controller.sendCommand("baro?"));
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
@@ -759,7 +759,7 @@ public class TelloDrone extends MultiRotorDrone {
       String time = this.controller.sendCommand("time?");
       return Integer.parseInt(time.substring(0, time.length() - 1));
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
@@ -770,7 +770,7 @@ public class TelloDrone extends MultiRotorDrone {
       String height = this.controller.sendCommand("height?");
       return 10 * Integer.parseInt(height.substring(0, height.length() - 2));
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
@@ -858,7 +858,7 @@ public class TelloDrone extends MultiRotorDrone {
         10
       );
     } catch (NumberFormatException e) {
-      System.out.println("Number Format Exception due to timeout! " + e);
+      // System.out.println("Number Format Exception due to timeout! " + e);
       return 0;
     }
   }
