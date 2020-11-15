@@ -1,11 +1,27 @@
 package entity.composite;
 
-import java.io.Serializable;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
-public class ItemContainer extends ItemComponent implements Serializable {
-  private static final long serialVersionUID = 1310630748841397939L;
+public class ItemContainer extends ItemComponent {
+  private String type = "ItemContainer"; // used in deserialization
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 
   public ItemContainer() {
@@ -48,5 +64,94 @@ public class ItemContainer extends ItemComponent implements Serializable {
   public ArrayList<ItemComponent> getComponents()
     throws UnsupportedOperationException {
     return components;
+  }
+
+  public static void jsonSave(ItemContainer itemContainer, String filePath) {
+    JsonSerializer<Rectangle> rectangleSerializer = new JsonSerializer<Rectangle>() {
+
+      public JsonElement serialize(
+        Rectangle src,
+        Type typeOfSrc,
+        JsonSerializationContext context
+      ) {
+        JsonObject jsonRectangle = new JsonObject();
+        jsonRectangle.addProperty("x", src.getX());
+        jsonRectangle.addProperty("y", src.getY());
+        jsonRectangle.addProperty("width", src.getWidth());
+        jsonRectangle.addProperty("height", src.getHeight());
+        jsonRectangle.addProperty("opacity", src.getOpacity());
+        return jsonRectangle;
+      }
+    };
+
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(Rectangle.class, rectangleSerializer);
+    Gson gson = gsonBuilder.create();
+    String json = gson.toJson(itemContainer);
+
+    FileWriter writer = null;
+    try {
+      writer = new FileWriter(filePath);
+      writer.write(json);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        writer.flush();
+        writer.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public static ItemContainer jsonLoad(String filePath) {
+    JsonDeserializer<Rectangle> rectangleDeserializer = new JsonDeserializer<Rectangle>() {
+
+      public Rectangle deserialize(
+        JsonElement json,
+        Type typeOfT,
+        JsonDeserializationContext context
+      )
+        throws JsonParseException {
+        JsonObject jsonObject = json.getAsJsonObject();
+        Rectangle rectangle = new Rectangle(
+          jsonObject.get("x").getAsDouble(),
+          jsonObject.get("y").getAsDouble(),
+          jsonObject.get("width").getAsDouble(),
+          jsonObject.get("height").getAsDouble()
+        );
+        rectangle.setOpacity(jsonObject.get("opacity").getAsDouble());
+        return rectangle;
+      }
+    };
+
+    RuntimeTypeAdapterFactory<ItemComponent> itemComponentAdapterFactory = RuntimeTypeAdapterFactory
+      .of(ItemComponent.class, "type")
+      .registerSubtype(Item.class, "Item")
+      .registerSubtype(ItemContainer.class, "ItemContainer");
+
+    Reader reader = null;
+    try {
+      reader = Files.newBufferedReader(Paths.get(filePath));
+    } catch (NoSuchFileException e) {
+      return null;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(Rectangle.class, rectangleDeserializer);
+    gsonBuilder.registerTypeAdapterFactory(itemComponentAdapterFactory);
+    Gson gson = gsonBuilder.create();
+    ItemContainer itemContainer = gson.fromJson(reader, ItemContainer.class);
+
+    try {
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return itemContainer;
   }
 }
