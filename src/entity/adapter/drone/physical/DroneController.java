@@ -40,14 +40,14 @@ public class DroneController {
       receiveBufferSize
     );
     hostSocket.send(call);
-    hostSocket.setSoTimeout(30000);
+    hostSocket.setSoTimeout(1);
     try {
       hostSocket.receive(response);
       output = new String(response.getData(), "UTF-8").trim();
       System.out.println("Incoming response: " + output);
     } catch (SocketTimeoutException e) {
       // timeout exception.
-      System.out.println("Timeout reached!!! " + e);
+      // System.out.println("Timeout reached!!! " + e);
       return "Timeout!!!";
     }
     return output;
