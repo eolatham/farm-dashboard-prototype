@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
 public class Item extends ItemComponent {
-  private String type = "Item"; // used in deserialization
+  private String type = "Item"; // for ItemContainer deserialization
   protected int marketValue = 0; // dollars
 
   public Item() {

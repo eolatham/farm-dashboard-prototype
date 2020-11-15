@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
 public class ItemContainer extends ItemComponent {
-  private String type = "ItemContainer"; // used in deserialization
+  private String type = "ItemContainer"; // for deserialization
   private ArrayList<ItemComponent> components = new ArrayList<ItemComponent>();
 
   public ItemContainer() {
@@ -67,6 +67,7 @@ public class ItemContainer extends ItemComponent {
   }
 
   public static void saveJSON(ItemContainer itemContainer, String filePath) {
+    // allow Rectangle objects to be serialized
     JsonSerializer<Rectangle> rectangleSerializer = new JsonSerializer<Rectangle>() {
 
       public JsonElement serialize(
@@ -84,11 +85,13 @@ public class ItemContainer extends ItemComponent {
       }
     };
 
+    // create a GsonBuilder with our custom settings and use it to serialize the ItemContainer
     GsonBuilder gsonBuilder = new GsonBuilder();
     gsonBuilder.registerTypeAdapter(Rectangle.class, rectangleSerializer);
     Gson gson = gsonBuilder.create();
     String json = gson.toJson(itemContainer);
 
+    // write the serialized ItemContainer string to a file at filePath
     FileWriter writer = null;
     try {
       writer = new FileWriter(filePath);
@@ -106,6 +109,7 @@ public class ItemContainer extends ItemComponent {
   }
 
   public static ItemContainer loadJSON(String filePath) {
+    // allow Rectangle objects to be deserialized
     JsonDeserializer<Rectangle> rectangleDeserializer = new JsonDeserializer<Rectangle>() {
 
       public Rectangle deserialize(
@@ -126,11 +130,13 @@ public class ItemContainer extends ItemComponent {
       }
     };
 
+    // allow ItemComponent components to be deserialized as Items and ItemContainers
     RuntimeTypeAdapterFactory<ItemComponent> itemComponentAdapterFactory = RuntimeTypeAdapterFactory
       .of(ItemComponent.class, "type")
       .registerSubtype(Item.class, "Item")
       .registerSubtype(ItemContainer.class, "ItemContainer");
 
+    // open the file that contains a serialized ItemContainer
     Reader reader = null;
     try {
       reader = Files.newBufferedReader(Paths.get(filePath));
@@ -140,18 +146,21 @@ public class ItemContainer extends ItemComponent {
       e.printStackTrace();
     }
 
+    // create a GsonBuilder with our custom settings and use it to deserialize the file
     GsonBuilder gsonBuilder = new GsonBuilder();
     gsonBuilder.registerTypeAdapter(Rectangle.class, rectangleDeserializer);
     gsonBuilder.registerTypeAdapterFactory(itemComponentAdapterFactory);
     Gson gson = gsonBuilder.create();
     ItemContainer itemContainer = gson.fromJson(reader, ItemContainer.class);
 
+    // close the file
     try {
       reader.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
+    // return the deserialized ItemContainer
     return itemContainer;
   }
 }

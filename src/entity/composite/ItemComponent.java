@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 
 public abstract class ItemComponent {
-  // protected String type = "ItemComponent"; // used in deserialization
   protected String name = "Unnamed";
   protected int locationX = 0; // feet
   protected int locationY = 0; // feet
