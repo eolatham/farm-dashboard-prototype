@@ -117,34 +117,26 @@ public class DashboardController {
   }
 
   private void initializeRootItemContainer() {
-    // create new rootItemContainer with required components
-    rootItemContainer = new ItemContainer("Root");
-    rootItemContainer.setLength(Constants.REAL_FARM_LENGTH);
-    rootItemContainer.setWidth(Constants.REAL_FARM_WIDTH);
+    // attempt loading previous rootItemContainer from file
+    rootItemContainer = ItemContainer.loadJSON("rootItemContainer.json");
+    if (rootItemContainer == null) {
+      // create new rootItemContainer with default components
+      rootItemContainer = new ItemContainer("Root");
+      rootItemContainer.setLength(Constants.REAL_FARM_LENGTH);
+      rootItemContainer.setWidth(Constants.REAL_FARM_WIDTH);
 
-    ItemContainer commandCenter = new ItemContainer("Command Center");
-    commandCenter.setLength(Constants.REAL_DRONE_SIZE);
-    commandCenter.setWidth(Constants.REAL_DRONE_SIZE);
+      ItemContainer commandCenter = new ItemContainer("Command Center");
+      commandCenter.setLength(Constants.REAL_DRONE_SIZE);
+      commandCenter.setWidth(Constants.REAL_DRONE_SIZE);
 
-    Item droneItem = new Item("Drone");
-    droneItem.setLength(Constants.REAL_DRONE_SIZE);
-    droneItem.setWidth(Constants.REAL_DRONE_SIZE);
-    droneItem.setPurchasePrice(1000);
-    droneItem.setMarketValue(900);
+      Item droneItem = new Item("Drone");
+      droneItem.setLength(Constants.REAL_DRONE_SIZE);
+      droneItem.setWidth(Constants.REAL_DRONE_SIZE);
+      droneItem.setPurchasePrice(1000);
+      droneItem.setMarketValue(900);
 
-    commandCenter.addItemComponent(droneItem);
-    rootItemContainer.addItemComponent(commandCenter);
-
-    // load previous rootItemContainer from file
-    ItemContainer loaded = ItemContainer.loadJSON("rootItemContainer.json");
-
-    // add other components from previous rootItemContainer
-    if (loaded != null) {
-      for (ItemComponent ic : loaded.getComponents()) {
-        if (!ic.getName().equals("Command Center")) {
-          rootItemContainer.addItemComponent(ic);
-        }
-      }
+      commandCenter.addItemComponent(droneItem);
+      rootItemContainer.addItemComponent(commandCenter);
     }
   }
 
