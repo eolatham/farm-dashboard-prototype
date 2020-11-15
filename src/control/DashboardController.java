@@ -14,11 +14,7 @@ import entity.composite.ItemComponent;
 import entity.composite.ItemContainer;
 import entity.visitor.AggregateMarketValueVisitor;
 import entity.visitor.AggregatePurchasePriceVisitor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.Integer;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -139,23 +135,15 @@ public class DashboardController {
     commandCenter.addItemComponent(droneItem);
     rootItemContainer.addItemComponent(commandCenter);
 
-    // read previous rootItemContainer from file
-    ItemContainer loaded = null;
-    try {
-      FileInputStream fis = new FileInputStream("rootItemContainer.ser");
-      ObjectInputStream ois = new ObjectInputStream(fis);
-      loaded = (ItemContainer) ois.readObject();
-      ois.close();
-      fis.close();
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-      return;
-    }
+    // load previous rootItemContainer from file
+    ItemContainer loaded = ItemContainer.jsonLoad("rootItemContainer.json");
 
     // add other components from previous rootItemContainer
-    for (ItemComponent ic : loaded.getComponents()) {
-      if (ic.getName() != "Command Center") {
-        rootItemContainer.addItemComponent(ic);
+    if (loaded != null) {
+      for (ItemComponent ic : loaded.getComponents()) {
+        if (!ic.getName().equals("Command Center")) {
+          rootItemContainer.addItemComponent(ic);
+        }
       }
     }
   }
@@ -188,7 +176,11 @@ public class DashboardController {
 
   private void addRectanglesToFarmMap(ItemComponent ic) {
     String name = ic.getName();
-    if (name != "Root" && name != "Command Center" && name != "Drone") {
+    if (
+      !name.equals("Root") &&
+      !name.equals("Command Center") &&
+      !name.equals("Drone")
+    ) {
       farmMap.getChildren().add(ic.getRectangle());
     }
     if (ic instanceof ItemContainer) {
@@ -229,16 +221,8 @@ public class DashboardController {
   }
 
   private void saveRootItemContainer() {
-    try {
-      FileOutputStream fos = new FileOutputStream("rootItemContainer.ser");
-      ObjectOutputStream oos = new ObjectOutputStream(fos);
-      oos.writeObject(rootItemContainer);
-      oos.close();
-      fos.close();
-      addToInfoLog("Changes saved");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    ItemContainer.jsonSave(rootItemContainer, "rootItemContainer.json");
+    addToInfoLog("Changes saved");
   }
 
   private int getTalletItemHeight(ItemComponent itemComponent) {
