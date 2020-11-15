@@ -66,7 +66,7 @@ public class ItemContainer extends ItemComponent {
     return components;
   }
 
-  public static void jsonSave(ItemContainer itemContainer, String filePath) {
+  public static void saveJSON(ItemContainer itemContainer, String filePath) {
     JsonSerializer<Rectangle> rectangleSerializer = new JsonSerializer<Rectangle>() {
 
       public JsonElement serialize(
@@ -105,7 +105,7 @@ public class ItemContainer extends ItemComponent {
     }
   }
 
-  public static ItemContainer jsonLoad(String filePath) {
+  public static ItemContainer loadJSON(String filePath) {
     JsonDeserializer<Rectangle> rectangleDeserializer = new JsonDeserializer<Rectangle>() {
 
       public Rectangle deserialize(

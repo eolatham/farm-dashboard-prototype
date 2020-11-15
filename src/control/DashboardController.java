@@ -136,7 +136,7 @@ public class DashboardController {
     rootItemContainer.addItemComponent(commandCenter);
 
     // load previous rootItemContainer from file
-    ItemContainer loaded = ItemContainer.jsonLoad("rootItemContainer.json");
+    ItemContainer loaded = ItemContainer.loadJSON("rootItemContainer.json");
 
     // add other components from previous rootItemContainer
     if (loaded != null) {
@@ -221,7 +221,7 @@ public class DashboardController {
   }
 
   private void saveRootItemContainer() {
-    ItemContainer.jsonSave(rootItemContainer, "rootItemContainer.json");
+    ItemContainer.saveJSON(rootItemContainer, "rootItemContainer.json");
     addToInfoLog("Changes saved");
   }
 
