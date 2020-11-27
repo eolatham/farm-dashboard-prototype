@@ -2,7 +2,7 @@
 
 I initially developed this program as a team leader for a final project in a software engineering course taught by [Dr. Ramaraju Rudraraju](https://www.linkedin.com/in/ramarajur/) at [UAB](https://www.uab.edu/) with the help of Tahseen Robbani, Wesley Hataway, Daniel Swinney, and Hardik Patel.
 
-This program is a prototype for a farmer utility application built with [JavaFX](https://docs.oracle.com/javase/8/javase-clienttechnologies.htm) as an exercise in using design patterns such as [composite](https://en.wikipedia.org/wiki/Composite_pattern), [visitor](https://en.wikipedia.org/wiki/Visitor_pattern), and [adapter](https://en.wikipedia.org/wiki/Adapter_pattern).
+This program is a prototype for a farmer utility application built with [JavaFX](https://docs.oracle.com/javase/8/javase-clienttechnologies.htm) as an exercise in using design patterns such as [entity-control-boundary](https://en.wikipedia.org/wiki/Entity-control-boundary), [composite](https://en.wikipedia.org/wiki/Composite_pattern), [visitor](https://en.wikipedia.org/wiki/Visitor_pattern), and [adapter](https://en.wikipedia.org/wiki/Adapter_pattern).
 
 ![screenshot](img/screenshot.png)
 
@@ -29,6 +29,10 @@ This program is a prototype for a farmer utility application built with [JavaFX]
 
 - **DashboardController** class
 
+### Other Classes
+
+All classes other than `TelloDroneAdapter` in [the physical drone module](src/entity/adapter/physical) were provided by [Seth Lewis](https://gitlab.cs.uab.edu/jesusaur) from his [drone library](https://gitlab.cs.uab.edu/jesusaur/CS420_520_Drone_Library) in order for the adapter design pattern to be completed.
+
 ### Class Diagram
 
 ![Class Diagram](img/class_diagram.png)
@@ -37,9 +41,20 @@ This program is a prototype for a farmer utility application built with [JavaFX]
 
 ### Farm Items Tree View
 
+I used a [TreeView](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TreeView.html) object to allow the user to add, edit, and remove `Items` and `ItemContainers` from the [Farm Map](#farm-map).
+
 ### Farm Map
 
+I used a [Group](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Group.html) object to contain and display the shapes of each `Item` and `ItemContainer`, as well as the drone icon that is used in the [drone animation](#drone-animation).
+
 ### Drone Animation
+
+I used an [ImageView](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/ImageView.html) object to display the drone icon in the farm map and [SequentialTransition](https://docs.oracle.com/javase/8/javafx/api/javafx/animation/SequentialTransition.html) objects to animate the drone icon for two different flight simulations:
+
+- `Item`/`ItemContainer` visits
+- full farm scans
+
+Note that the drone animation feature is intended to mirror what a real drone would do on a real farm if commanded by the `TelloDroneAdapter` class. However, the `TelloDroneAdapter` is untested on real drones and currently only exists for simulation purposes.
 
 ### Automatic Save/Load
 
