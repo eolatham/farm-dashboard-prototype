@@ -45,7 +45,7 @@ I used a [TreeView](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/con
 
 ### Farm Map
 
-I used a [Group](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Group.html) object to contain and display the shapes of each `Item` and `ItemContainer`, as well as the drone icon that is used in the [drone animation](#drone-animation).
+I used a [Group](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Group.html) object to contain and display the shape of each `Item` and `ItemContainer`, as well as the drone icon that is used in the [drone animation](#drone-animation).
 
 ### Drone Animation
 
