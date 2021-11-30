@@ -1,5 +1,13 @@
 # Farm Dashboard Prototype
 
+#### Author: Eric Latham
+
+#### Email: ericoliverlatham@gmail.com
+
+---
+
+## Description
+
 I initially developed this program as a team leader for a final project in a software engineering course taught by [Dr. Ramaraju Rudraraju](https://www.linkedin.com/in/ramarajur/) at [UAB](https://www.uab.edu/) with the help of Tahseen Robbani, Wesley Hataway, Daniel Swinney, and Hardik Patel.
 
 This program is a prototype for a farmer utility application built with [JavaFX](https://docs.oracle.com/javase/8/javase-clienttechnologies.htm) as an exercise in using design patterns such as [entity-control-boundary](https://en.wikipedia.org/wiki/Entity-control-boundary), [composite](https://en.wikipedia.org/wiki/Composite_pattern), [visitor](https://en.wikipedia.org/wiki/Visitor_pattern), and [adapter](https://en.wikipedia.org/wiki/Adapter_pattern).
@@ -91,10 +99,9 @@ Also, I added the required `Gson` jars as dependencies in the project so that th
 
 (assuming you have **Eclipse IDE** and **Java JDK 8** installed)
 
-- go to [https://gitlab.cs.uab.edu/420/project2](https://gitlab.cs.uab.edu/420/project2)
-- clone this repository into `project2`
+- clone this repository into `farm-dashboard-prototype`
 - open **Eclipse**
 - select **File** -> **Import** -> **Existing Projects into Workspace** -> **Next** -> **Browse**
-- locate the cloned `project2` directory in the filesystem dialogue and select to open it
+- locate the cloned `farm-dashboard-prototype` directory in the filesystem dialogue and select to open it
 - select **Finish**
 - click the green play button labeled "Run" on the upper icon bar
